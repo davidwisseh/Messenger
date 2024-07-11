@@ -56,6 +56,7 @@ export async function POST(req: Request) {
   const eventType = evt.type;
   const eventString = JSON.stringify(evt.data);
   const eventData = JSON.parse(eventString);
+  const { user_id } = eventData;
   console.log(`Webhook with and ID of ${id} and type of ${eventType}`);
   console.log("Webhook body:", body);
   if (eventType === "session.created") {
@@ -64,7 +65,7 @@ export async function POST(req: Request) {
     const auth = getAuth();
     const { getToken } = Auth();
     const token = await getToken({
-      sessionId: eventData.user_id,
+      sessionId: user_id,
       template: "integration_firebase",
     });
     const userCredentials = await signInWithCustomToken(auth, token || "");
