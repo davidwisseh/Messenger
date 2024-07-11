@@ -70,7 +70,8 @@ export async function POST(req: Request) {
     auth
       .getUser(userId)
       .then((userRecord) => {
-        console.log(userRecord.email);
+        console.log("got user");
+        console.log(JSON.stringify(userRecord));
       })
       .catch(async (err) => {
         if (err.errorInfo.code === "app/invalid-credential") {
