@@ -96,7 +96,7 @@ export async function POST(req: Request) {
     const usersRef = await db.collection("Users").get();
     usersRef.forEach((result) => {
       console.log("result: ");
-      console.log(result.id, " => " result.data);
+      console.log(result.id, " => ", result.data());
     });
   }
 
