@@ -64,10 +64,10 @@ export async function POST(req: Request) {
     await auth
       .getUser(userId)
       .then((userRecord) => {
-        console.log(JSON.stringify(userRecord));
+        console.log(userRecord.email);
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.errorInfo.code);
       });
   }
 
