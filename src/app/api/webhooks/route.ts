@@ -73,7 +73,7 @@ export async function POST(req: Request) {
         console.log("got user");
         console.log(JSON.stringify(userRecord));
       })
-      .catch(async (err) => {
+      .catch((err) => {
         if (err.errorInfo.code === "app/invalid-credential") {
           auth.createUser({ uid: userId });
         } else {
