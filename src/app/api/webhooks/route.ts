@@ -67,6 +67,7 @@ export async function POST(req: Request) {
     });
     const userCredentials = await signInWithCustomToken(auth, token || "");
     console.log("User:", userCredentials.user);
+    console.log("work pls");
   }
 
   return new Response("", { status: 200 });
