@@ -4,7 +4,7 @@ import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
 import { getFirestore } from "firebase/firestore";
 import { firebaseConfig } from "@/util/util";
-import { getAuth } from "firebase-admin/auth";
+import firebase from "firebase-admin/auth";
 import { initializeApp } from "firebase-admin";
 export async function POST(req: Request) {
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
@@ -63,7 +63,7 @@ export async function POST(req: Request) {
     const app = initializeApp(firebaseConfig);
     console.log("worked");
 
-    const auth = getAuth(app);
+    const auth = firebase.getAuth(app);
     auth
       .getUser(userId)
       .then((userRecord) => {})
