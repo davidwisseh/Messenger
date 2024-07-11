@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import {
   SignInButton,
@@ -9,7 +8,6 @@ import {
   SignedOut,
   UserButton,
 } from "@clerk/nextjs";
-import { signInWithClerk as clerkF } from "@/app/page";
 const NavBar = () => {
   return (
     <nav className="h-20 relative dark:text-white bg-gray-100 dark:bg-gray-900">
@@ -27,7 +25,7 @@ const NavBar = () => {
             <div className="flex gap-2">
               <UserButton></UserButton>
               <SignOutButton>Sign out</SignOutButton>
-              <button onClick={() => clerkF()}>clickme</button>
+              <button>clickme</button>
             </div>
           </SignedIn>
         </div>
