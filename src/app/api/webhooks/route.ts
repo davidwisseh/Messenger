@@ -2,6 +2,10 @@
 import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
+import { getFirestore } from "firebase/firestore";
+import { initializeApp } from "firebase/app";
+import { firebaseConfig } from "@/util/util";
+import { getAuth } from "firebase/auth";
 
 export async function POST(req: Request) {
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
@@ -51,5 +55,20 @@ export async function POST(req: Request) {
   const eventType = evt.type;
   console.log(`Webhook with and ID of ${id} and type of ${eventType}`);
   console.log("Webhook body:", body);
+
+  const app = initializeApp(firebaseConfig);
+  const { user_id } = payload;
+  const auth = getAuth();
+
+  const user = auth
+    .getUser(user_id)
+    .then((userRecord) => {
+      // See the UserRecord reference doc for the contents of userRecord.
+      console.log(`Successfully fetched user data: ${userRecord.toJSON()}`);
+    })
+    .catch((error) => {
+      console.log("Error fetching user data:", error);
+    });
+
   return new Response("", { status: 200 });
 }
