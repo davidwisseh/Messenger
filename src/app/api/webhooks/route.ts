@@ -6,7 +6,14 @@ import { getFirestore } from "firebase/firestore";
 import { firebaseConfig } from "@/util/util";
 import { getAuth } from "firebase-admin/auth";
 import * as firebase from "firebase-admin";
-const app = firebase.initializeApp(firebaseConfig);
+
+const serviceAccount = JSON.parse(process.env.SERVICE_ACCOUNT!);
+
+const app = firebase.initializeApp({
+  ...firebaseConfig,
+  credential: firebase.credential.cert(serviceAccount),
+  databaseURL: "https://messenger-fdf1b.firebaseio.com",
+});
 export async function POST(req: Request) {
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
 
