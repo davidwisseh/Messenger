@@ -52,7 +52,7 @@ export async function POST(req: Request) {
       status: 400,
     });
   }
-  const { id, user_id } = evt.data;
+  const { id } = evt.data;
   const eventType = evt.type;
   console.log(`Webhook with and ID of ${id} and type of ${eventType}`);
   console.log("Webhook body:", body);
@@ -62,7 +62,7 @@ export async function POST(req: Request) {
     const auth = getAuth();
     const { getToken } = Auth();
     const token = await getToken({
-      sessionId: user_id,
+      sessionId: evt.data.user_id,
       template: "integration_firebase",
     });
     const userCredentials = await signInWithCustomToken(auth, token || "");
