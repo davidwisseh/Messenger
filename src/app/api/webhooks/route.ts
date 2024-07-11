@@ -64,7 +64,7 @@ export async function POST(req: Request) {
     await auth
       .getUser(userId)
       .then((userRecord) => {
-        console.log(userRecord.email);
+        console.log(JSON.stringify(userRecord));
       })
       .catch((err) => {
         console.log(err);
