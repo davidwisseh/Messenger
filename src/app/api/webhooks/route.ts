@@ -12,7 +12,7 @@ const serviceAccount = JSON.parse(process.env.SERVICE_ACCOUNT!);
 const app = firebase.initializeApp({
   ...firebaseConfig,
   credential: firebase.credential.cert(serviceAccount),
-  databaseURL: "https://messenger-fdf1b.firebaseio.com",
+  databaseURL: "https://messenger-fdf1b.nam5.firebaseio.com",
 });
 export async function POST(req: Request) {
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
