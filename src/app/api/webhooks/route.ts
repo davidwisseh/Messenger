@@ -75,8 +75,11 @@ export async function POST(req: Request) {
       })
       .catch(async (err) => {
         console.log(err);
-        if (err.errorInfo.code === "app/invalid-credential") {
-          await auth.createUser({ uid: userId });
+        if (err.errorInfo.code === "auth/user-not-found") {
+          await auth.createUser({ uid: userId }).catch((err) => {
+            console.log("Error Creating User: ", err);
+            return new Response("error", { status: 400 });
+          });
         } else {
           return new Response("error", { status: 400 });
         }
