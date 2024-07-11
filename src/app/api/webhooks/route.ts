@@ -94,7 +94,7 @@ export async function POST(req: Request) {
 
     const db = firebase.database(app);
     console.log("getting user from firestore");
-    const docSnap = db.ref("Users");
+    const docSnap = db.ref("restricted_access/secret_document");
     docSnap.once("value", (snapshot) => {
       console.log(JSON.stringify(snapshot.val()));
     });
