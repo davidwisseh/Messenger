@@ -6,6 +6,7 @@ import { getFirestore } from "firebase/firestore";
 import { firebaseConfig } from "@/util/util";
 import { getAuth } from "firebase-admin/auth";
 import * as firebase from "firebase-admin";
+const app = firebase.initializeApp(firebaseConfig);
 export async function POST(req: Request) {
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
 
@@ -62,7 +63,7 @@ export async function POST(req: Request) {
     console.log("work pls");
     console.log("worked");
 
-    const auth = getAuth();
+    const auth = getAuth(app);
     auth
       .getUser(userId)
       .then((userRecord) => {})
