@@ -63,7 +63,9 @@ export async function POST(req: Request) {
     const auth = getAuth(app);
     await auth
       .getUser(userId)
-      .then((userRecord) => {})
+      .then((userRecord) => {
+        console.log(userRecord.email);
+      })
       .catch((err) => {
         console.log(err);
       });
