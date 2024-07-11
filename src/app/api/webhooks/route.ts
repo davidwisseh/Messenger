@@ -47,6 +47,9 @@ export async function POST(req: Request) {
       status: 400,
     });
   }
-
-  return new Response(body, { status: 200 });
+  const { id } = evt.data;
+  const eventType = evt.type;
+  console.log(`Webhook with and ID of ${id} and type of ${eventType}`);
+  console.log("Webhook body:", body);
+  return new Response("", { status: 200 });
 }
