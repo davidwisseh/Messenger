@@ -67,16 +67,16 @@ export async function POST(req: Request) {
   if (eventType === "session.created") {
     console.log(eventType);
     const auth = getAuth(app);
-    auth
+    await auth
       .getUser(userId)
       .then((userRecord) => {
         console.log("got user");
         console.log(JSON.stringify(userRecord));
       })
-      .catch((err) => {
+      .catch(async (err) => {
         console.log(err);
         if (err.errorInfo.code === "app/invalid-credential") {
-          auth.createUser({ uid: userId });
+          await auth.createUser({ uid: userId });
         } else {
           return new Response("error", { status: 400 });
         }
