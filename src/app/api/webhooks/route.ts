@@ -94,7 +94,10 @@ export async function POST(req: Request) {
 
     const db = getFirestore();
     const usersRef = await db.collection("Users").get();
-    console.log(usersRef);
+    usersRef.forEach((result) => {
+      console.log("result: ");
+      console.log(result);
+    });
   }
 
   return new Response("", { status: 200 });
