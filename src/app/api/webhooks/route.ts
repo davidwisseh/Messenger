@@ -6,6 +6,7 @@ import { firebaseConfig } from "@/util/util";
 import { getAuth } from "firebase-admin/auth";
 import * as firebase from "firebase-admin";
 import { getFirestore } from "firebase-admin/firestore";
+import { doc, getDoc } from "firebase/firestore";
 
 const serviceAccount = JSON.parse(process.env.SERVICE_ACCOUNT!);
 
@@ -92,12 +93,13 @@ export async function POST(req: Request) {
       });
 
     const db = getFirestore();
-    console.log("getting snapshot");
-    const snapshot = await db.collection("Users").get();
-    console.log("got snapshot: ");
-    snapshot.forEach((doc) => {
-      console.log(doc.id, "=>", doc.data());
-    });
+    console.log("getting user from firestore");
+    const docSnap = await db.collection("Users").doc(userId);
+    if (docSnap) {
+      console.log("user exists in database : " + docSnap);
+    } else {
+      console.log("user does not exists in database");
+    }
   }
 
   return new Response("", { status: 200 });
