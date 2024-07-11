@@ -4,8 +4,8 @@ import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
 import { getFirestore } from "firebase/firestore";
 import { firebaseConfig } from "@/util/util";
-import firebase from "firebase-admin/auth";
-import { initializeApp } from "firebase-admin";
+import { getAuth } from "firebase-admin/auth";
+import * as firebase from "firebase-admin";
 export async function POST(req: Request) {
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
 
@@ -60,10 +60,10 @@ export async function POST(req: Request) {
 
   if (eventType === "session.created") {
     console.log("work pls");
-    const app = initializeApp(firebaseConfig);
+    const app = firebase.initializeApp(firebaseConfig);
     console.log("worked");
 
-    const auth = firebase.getAuth(app);
+    const auth = getAuth(app);
     auth
       .getUser(userId)
       .then((userRecord) => {})
