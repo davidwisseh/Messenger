@@ -6,7 +6,6 @@ import { getFirestore } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "@/util/util";
 import { getAuth, signInWithCustomToken } from "firebase/auth";
-import { auth as Auth } from "@clerk/nextjs/server";
 
 export async function POST(req: Request) {
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
@@ -63,13 +62,8 @@ export async function POST(req: Request) {
     const app = initializeApp(firebaseConfig);
 
     const auth = getAuth();
-    const { getToken } = Auth();
-    const token = await getToken({
-      sessionId: user_id,
-      template: "integration_firebase",
-    });
-    const userCredentials = await signInWithCustomToken(auth, token || "");
-    console.log("User:", userCredentials.user);
+
+    console.log("User:", user_id);
     console.log("work pls");
   }
 
