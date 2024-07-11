@@ -94,7 +94,7 @@ export async function POST(req: Request) {
 
     const db = getFirestore();
     console.log("getting user from firestore");
-    const docSnap = await db.collection("Users").doc(userId);
+    const docSnap = db.collection("Users");
     if (docSnap) {
       console.log("user exists in database : " + JSON.stringify(docSnap));
     } else {
