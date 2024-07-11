@@ -62,13 +62,6 @@ export async function POST(req: Request) {
 
     const auth = getAuth(app);
 
-    auth
-      .getUser(evt.data.user_id)
-      .then((UserRecord) => {})
-      .catch((err) => {
-        console.log("user does not exist");
-      });
-
     console.log("User:", user_id);
     console.log("work pls");
   }
