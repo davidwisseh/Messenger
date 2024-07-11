@@ -5,12 +5,15 @@ import { WebhookEvent } from "@clerk/nextjs/server";
 import { getFirestore } from "firebase/firestore";
 import { firebaseConfig } from "@/util/util";
 import { getAuth } from "firebase-admin/auth";
-import { initializeApp } from "firebase/app";
-import { collection, getDocs } from "firebase/firestore";
+import * as firebase from "firebase-admin";
 
 const serviceAccount = JSON.parse(process.env.SERVICE_ACCOUNT!);
 
-const app = initializeApp(firebaseConfig);
+const app = firebase.initializeApp({
+  ...firebaseConfig,
+  credential: firebase.credential.cert(serviceAccount),
+  databaseURL: "https://messenger-fdf1b.firebaseio.com",
+});
 export async function POST(req: Request) {
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
 
@@ -62,11 +65,32 @@ export async function POST(req: Request) {
   const userId = data.user_id;
 
   if (eventType === "session.created") {
-    const db = getFirestore(app);
-    const querySnapshot = await getDocs(collection(db, "users"));
-    querySnapshot.forEach((doc) => {
-      console.log(`${doc.id} => ${doc.data()}`);
-    });
+    console.log(eventType);
+    const auth = getAuth(app);
+    await auth
+      .getUser(userId)
+      .then((userRecord) => {
+        console.log("got user");
+        console.log(JSON.stringify(userRecord));
+      })
+      .catch(async (err) => {
+        console.log(err);
+        if (err.errorInfo.code === "auth/user-not-found") {
+          console.log("creating user");
+          await auth
+            .createUser({ uid: userId })
+            .then(() => {
+              console.log("created user successfully");
+            })
+            .catch((err) => {
+              console.error("Error Creating User: ", err);
+
+              return new Response("error", { status: 400 });
+            });
+        } else {
+          return new Response("error", { status: 400 });
+        }
+      });
   }
 
   return new Response("", { status: 200 });
