@@ -96,7 +96,7 @@ export async function POST(req: Request) {
     console.log("getting user from firestore");
     const docSnap = await db.collection("Users").doc(userId);
     if (docSnap) {
-      console.log("user exists in database : ");
+      console.log("user exists in database : " + JSON.stringify(docSnap));
     } else {
       console.log("creating user in database");
       db.collection("Users").add({ userId: { "Signed in": true } });
