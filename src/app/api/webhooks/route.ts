@@ -92,12 +92,9 @@ export async function POST(req: Request) {
         }
       });
 
-    const db = firebase.database(app);
-    console.log("getting user from firestore");
-    const docSnap = db.ref("restricted_access/secret_document");
-    docSnap.once("value", (snapshot) => {
-      console.log(JSON.stringify(snapshot.val()));
-    });
+    const db = firebase.firestore(app);
+    const users = db.collection("Users");
+    console.log(JSON.stringify(users));
   }
 
   return new Response("", { status: 200 });
