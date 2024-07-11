@@ -5,7 +5,8 @@ import { WebhookEvent } from "@clerk/nextjs/server";
 import { getFirestore } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "@/util/util";
-import { getAuth } from "firebase/auth";
+import { getAuth, signInWithCustomToken } from "firebase/auth";
+import { auth as Auth } from "@clerk/nextjs/server";
 
 export async function POST(req: Request) {
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
@@ -51,24 +52,22 @@ export async function POST(req: Request) {
       status: 400,
     });
   }
-  const { id } = evt.data;
+  const { id, user_id } = evt.data;
   const eventType = evt.type;
   console.log(`Webhook with and ID of ${id} and type of ${eventType}`);
   console.log("Webhook body:", body);
+  if (eventType === "session.created") {
+    const app = initializeApp(firebaseConfig);
 
-  const app = initializeApp(firebaseConfig);
-  const { user_id } = payload;
-  const auth = getAuth();
-
-  const user = auth
-    .getUser(user_id)
-    .then((userRecord) => {
-      // See the UserRecord reference doc for the contents of userRecord.
-      console.log(`Successfully fetched user data: ${userRecord.toJSON()}`);
-    })
-    .catch((error) => {
-      console.log("Error fetching user data:", error);
+    const auth = getAuth();
+    const { getToken } = Auth();
+    const token = await getToken({
+      sessionId: user_id,
+      template: "integration_firebase",
     });
+    const userCredentials = await signInWithCustomToken(auth, token || "");
+    console.log("User:", userCredentials.user);
+  }
 
   return new Response("", { status: 200 });
 }
