@@ -92,15 +92,12 @@ export async function POST(req: Request) {
         }
       });
 
-    const db = getFirestore();
+    const db = firebase.database(app);
     console.log("getting user from firestore");
-    const docSnap = db.collection("Users");
-    if (docSnap) {
-      console.log("user exists in database : " + JSON.stringify(docSnap));
-    } else {
-      console.log("creating user in database");
-      db.collection("Users").add({ userId: { "Signed in": true } });
-    }
+    const docSnap = db.ref("Users");
+    docSnap.once("value", (snapshot) => {
+      console.log(JSON.stringify(snapshot.val()));
+    });
   }
 
   return new Response("", { status: 200 });

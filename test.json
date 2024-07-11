@@ -1,5 +1,29 @@
 {
   "_firestore": { "projectId": "messenger-fdf1b" },
-  "_path": { "segments": ["Users", "user_2j5NPvKbeLfUCvWvbOLBZsWMgm2"] },
-  "_converter": {}
+  "_queryOptions": {
+    "parentPath": { "segments": [] },
+    "collectionId": "Users",
+    "converter": {},
+    "allDescendants": false,
+    "filters": [],
+    "fieldOrders": [],
+    "kindless": false,
+    "requireConsistency": true
+  },
+  "_serializer": { "allowUndefined": false },
+  "_allowUndefined": false,
+  "_queryUtil": {
+    "_firestore": { "projectId": "messenger-fdf1b" },
+    "_queryOptions": {
+      "parentPath": { "segments": [] },
+      "collectionId": "Users",
+      "converter": {},
+      "allDescendants": false,
+      "filters": [],
+      "fieldOrders": [],
+      "kindless": false,
+      "requireConsistency": true
+    },
+    "_serializer": { "allowUndefined": false }
+  }
 }
