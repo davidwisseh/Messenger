@@ -3,10 +3,9 @@ import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
 import { getFirestore } from "firebase/firestore";
-import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "@/util/util";
-import { getAuth, signInWithCustomToken } from "firebase/auth";
-
+import { getAuth } from "firebase-admin/auth";
+import { initializeApp } from "firebase-admin";
 export async function POST(req: Request) {
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
 
@@ -61,7 +60,14 @@ export async function POST(req: Request) {
   if (eventType === "session.created") {
     const app = initializeApp(firebaseConfig);
 
-    const auth = getAuth();
+    const auth = getAuth(app);
+
+    auth
+      .getUser(evt.data.user_id)
+      .then((UserRecord) => {})
+      .catch((err) => {
+        console.log("user does not exist");
+      });
 
     console.log("User:", user_id);
     console.log("work pls");
