@@ -68,7 +68,7 @@ export async function POST(req: Request) {
 
   if (eventType === "session.created") {
     const auth = getAuth(app);
-    await auth
+    auth
       .getUser(userId)
       .then((userRecord) => {
         console.log(userRecord.email);
