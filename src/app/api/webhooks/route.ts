@@ -61,12 +61,11 @@ export async function POST(req: Request) {
   const { id } = evt.data;
   const eventType = evt.type;
 
-  console.log(`Webhook with and ID of ${id} and type of ${eventType}`);
-  console.log("Webhook body:", body);
   const { data } = payload;
   const userId = data.user_id;
 
   if (eventType === "session.created") {
+    console.log(eventType);
     const auth = getAuth(app);
     auth
       .getUser(userId)
