@@ -57,10 +57,11 @@ export async function POST(req: Request) {
   console.log("Webhook body:", body);
   const { data } = payload;
 
-  console.log("User: ", data);
+  console.log("User: ", data.user_id);
   if (eventType === "session.created") {
     console.log("work pls");
     const app = initializeApp(firebaseConfig);
+    console.log("worked");
 
     const auth = getAuth(app);
   }
