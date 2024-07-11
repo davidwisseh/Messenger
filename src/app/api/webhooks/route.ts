@@ -60,11 +60,8 @@ export async function POST(req: Request) {
   const userId = data.user_id;
 
   if (eventType === "session.created") {
-    console.log("work pls");
-    console.log("worked");
-
     const auth = getAuth(app);
-    auth
+    await auth
       .getUser(userId)
       .then((userRecord) => {})
       .catch((err) => {
