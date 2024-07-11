@@ -2,10 +2,10 @@
 import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
-import { getFirestore } from "firebase/firestore";
 import { firebaseConfig } from "@/util/util";
 import { getAuth } from "firebase-admin/auth";
 import * as firebase from "firebase-admin";
+import { getFirestore } from "firebase-admin/firestore";
 
 const serviceAccount = JSON.parse(process.env.SERVICE_ACCOUNT!);
 
@@ -91,11 +91,12 @@ export async function POST(req: Request) {
         }
       });
 
-    const db = firebase.database();
-    const ref = db.ref("restricted_access/secret_document");
+    const db = getFirestore();
     console.log("getting snapshot");
-    ref.once("value", function (snapshot) {
-      console.log(snapshot.val());
+    const snapshot = await db.collection("Users").get();
+    console.log("got snapshot: ");
+    snapshot.forEach((doc) => {
+      console.log(doc.id, "=>", doc.data());
     });
   }
 
