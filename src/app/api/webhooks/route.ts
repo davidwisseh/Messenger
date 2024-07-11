@@ -93,7 +93,8 @@ export async function POST(req: Request) {
 
     const db = firebase.database();
     const ref = db.ref("restricted_access/secret_document");
-    await ref.once("value", function (snapshot) {
+    console.log("getting snapshot");
+    ref.once("value", function (snapshot) {
       console.log(snapshot.val());
     });
   }
