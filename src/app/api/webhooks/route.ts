@@ -92,9 +92,9 @@ export async function POST(req: Request) {
         }
       });
 
-    const db = firebase.firestore(app);
-    const user = db.collection("Users").doc(userId).get();
-    console.log(JSON.stringify(user));
+    const db = getFirestore();
+    const usersRef = await db.collection("Users").get();
+    console.log(usersRef);
   }
 
   return new Response("", { status: 200 });
