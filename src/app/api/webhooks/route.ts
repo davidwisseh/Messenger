@@ -75,7 +75,7 @@ export async function POST(req: Request) {
       })
       .catch(async (err) => {
         if (err.errorInfo.code === "app/invalid-credential") {
-          await auth.createUser({ uid: userId });
+          auth.createUser({ uid: userId });
         } else {
           return new Response("error", { status: 400 });
         }
