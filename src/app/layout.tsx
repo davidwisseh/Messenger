@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
+import { initializeApp } from "firebase-admin";
+import { firebaseConfig } from "@/util/util";
+import { useEffect, useState } from "react";
 // Import the functions you need from the SDKs you need
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -22,6 +25,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  useEffect(() => {
+    const app = initializeApp(firebaseConfig);
+  }, []);
   return (
     <ClerkProvider>
       <html lang="en" className="dark:bg-black">

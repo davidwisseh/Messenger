@@ -60,10 +60,9 @@ export async function POST(req: Request) {
 
   if (eventType === "session.created") {
     console.log("work pls");
-    const app = firebase.initializeApp(firebaseConfig);
     console.log("worked");
 
-    const auth = getAuth(app);
+    const auth = getAuth();
     auth
       .getUser(userId)
       .then((userRecord) => {})
