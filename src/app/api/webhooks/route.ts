@@ -94,7 +94,12 @@ export async function POST(req: Request) {
 
     const db = getFirestore();
     const usersRef = await db.collection("Users").get();
-    console.log(usersRef.docs);
+    const user = usersRef.docs.filter((doc) => doc.id === userId);
+    if (user) {
+      console.log(user);
+    } else {
+      console.log("no user");
+    }
   }
 
   return new Response("", { status: 200 });
