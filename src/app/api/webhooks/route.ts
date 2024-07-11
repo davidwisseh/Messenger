@@ -99,7 +99,7 @@ export async function POST(req: Request) {
     if (user.length) {
       console.log(user[0].data);
     } else {
-      console.log("no user");
+      db.collection("Users").add({ id: userId, data: { "Signed in": true } });
     }
   }
 
