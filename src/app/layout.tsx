@@ -1,7 +1,32 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import {
+  ClerkProvider,
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from "@clerk/nextjs";
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: "messenger-fdf1b.firebaseapp.com",
+  projectId: "messenger-fdf1b",
+  storageBucket: "messenger-fdf1b.appspot.com",
+  messagingSenderId: "70071304038",
+  appId: "1:70071304038:web:137a06f0b6f96b8dae92a7",
+  measurementId: "G-BGRXQL8988",
+};
+// Initialize Firebase
+export const app = initializeApp(firebaseConfig);
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -15,8 +40,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
+    <ClerkProvider>
+      <html lang="en" className="dark:bg-black">
+        <body className={inter.className}>{children} </body>
+      </html>
+    </ClerkProvider>
   );
 }
