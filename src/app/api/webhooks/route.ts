@@ -70,8 +70,7 @@ export async function POST(req: Request) {
     await auth
       .getUser(userId)
       .then((userRecord) => {
-        console.log("got user");
-        console.log(JSON.stringify(userRecord));
+        console.log(`got user from firebase Auth`);
       })
       .catch(async (err) => {
         console.log(err);
@@ -91,6 +90,12 @@ export async function POST(req: Request) {
           return new Response("error", { status: 400 });
         }
       });
+
+    const db = firebase.database();
+    const ref = db.ref("restricted_access/secret_document");
+    ref.once("value", function (snapshot) {
+      console.log(snapshot.val());
+    });
   }
 
   return new Response("", { status: 200 });
