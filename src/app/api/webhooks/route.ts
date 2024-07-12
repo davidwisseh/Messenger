@@ -72,7 +72,7 @@ export async function POST(req: Request) {
       const data = evt.data;
       const { id, email_addresses, image_url } = data;
 
-      const firebaseUser = await auth
+      await auth
         .createUser({
           uid: id,
           email: email_addresses.at(0)?.email_address || "",
