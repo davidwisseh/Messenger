@@ -1,7 +1,7 @@
 "use server";
 import { Webhook } from "svix";
 import { headers } from "next/headers";
-import { currentUser, WebhookEvent } from "@clerk/nextjs/server";
+import { currentUser, EmailAddress, WebhookEvent } from "@clerk/nextjs/server";
 import { firebaseConfig } from "@/util/util";
 import { getAuth } from "firebase-admin/auth";
 import * as firebase from "firebase-admin";
@@ -63,20 +63,25 @@ export async function POST(req: Request) {
 
   if (eventType === "session.created") {
     const clerkUser = await currentUser();
-    const userId = clerkUser?.id!;
+    const userId = clerkUser!.id;
     console.log(eventType);
     const auth = getAuth(app);
-    await auth
+    const firebaseUser = await auth
       .getUser(userId)
-      .then(() => {
+      .then((user) => {
         console.log(`got user from firebase Auth`);
+        console.log(user);
+        return user;
       })
       .catch(async (err) => {
         console.log(err);
         if (err.errorInfo.code === "auth/user-not-found") {
           console.log("creating user");
           await auth
-            .createUser({ uid: userId })
+            .createUser({
+              uid: userId,
+              email: clerkUser?.emailAddresses!.at(0)?.emailAddress,
+            })
             .then(() => {
               console.log("created user successfully");
             })
@@ -98,7 +103,7 @@ export async function POST(req: Request) {
       console.log(user[0].data());
     } else {
       console.log("creating firestore user");
-      db.collection("Users").add(clerkUser!);
+      db.collection("Users").add({ firebaseUser });
     }
   }
 
