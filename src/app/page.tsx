@@ -1,11 +1,11 @@
-import Image from "next/image";
+"use server";
+import { auth } from "firebase-admin";
 import Navbar from "../components/NavBar";
-import { useEffect } from "react";
-import { getAuth, signInWithCustomToken } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-import { doc, getDoc } from "firebase/firestore";
-import { auth as useAuth } from "@clerk/nextjs/server";
-import { initializeApp } from "firebase/app";
+import { useEffect, useState } from "react";
+import { getFirestore } from "firebase-admin/firestore";
+import { currentUser } from "@clerk/nextjs/server";
+import MaxWidthWrapper from "@/components/MaxWidthWrapper";
+import { SignedIn, SignInButton } from "@clerk/nextjs";
 
 export default async function Home() {
   return (

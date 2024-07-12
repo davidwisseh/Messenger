@@ -7,3 +7,10 @@ export const firebaseConfig = {
   appId: "1:70071304038:web:137a06f0b6f96b8dae92a7",
   measurementId: "G-BGRXQL8988",
 };
+
+export interface Message {
+  from: string;
+  to: string;
+  message: string;
+  read: boolean;
+}

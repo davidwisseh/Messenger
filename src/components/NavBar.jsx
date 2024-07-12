@@ -10,7 +10,7 @@ import {
 } from "@clerk/nextjs";
 const NavBar = () => {
   return (
-    <nav className="h-20 relative dark:text-white bg-gray-100 dark:bg-gray-900">
+    <nav className="h-16 relative dark:text-white bg-gray-200 dark:bg-gray-900">
       <MaxWidthWrapper className="gap-1 items-center">
         <div>hi</div>
         <div>hello</div>

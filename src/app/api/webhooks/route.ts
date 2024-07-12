@@ -9,13 +9,6 @@ import { getFirestore } from "firebase-admin/firestore";
 import { doc, getDoc } from "firebase/firestore";
 import { error } from "console";
 
-const serviceAccount = JSON.parse(process.env.SERVICE_ACCOUNT!);
-
-const app = firebase.initializeApp({
-  ...firebaseConfig,
-  credential: firebase.credential.cert(serviceAccount),
-  databaseURL: "https://messenger-fdf1b.nam5.firebaseio.com",
-});
 export async function POST(req: Request) {
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
 
@@ -60,11 +53,14 @@ export async function POST(req: Request) {
       status: 400,
     });
   }
+
+  // Get event type, auth, and database
   const eventType = evt.type;
-  console.log(eventType);
-  const auth = getAuth(app);
+  const auth = getAuth();
   const db = getFirestore();
+
   if (eventType === "user.created") {
+    // get event data from clerk UserJson
     const data = evt.data;
     const { id, email_addresses, image_url } = data;
 
