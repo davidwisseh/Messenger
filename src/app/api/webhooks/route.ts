@@ -105,6 +105,8 @@ export async function POST(req: Request) {
       user.ref.delete();
     });
     console.log("successfully deleted firestore user");
+  } else if (eventType === "user.updated") {
+    console.log(evt.data);
   } else {
     console.log(eventType);
   }
