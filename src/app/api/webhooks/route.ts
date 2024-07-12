@@ -78,7 +78,7 @@ export async function POST(req: Request) {
           email: email_addresses.at(0)?.email_address || "",
         })
         .then(() => {
-          console.log("created user successfully");
+          console.log("created firebase user successfully");
         })
         .catch((err) => {
           console.error("Error Creating User: ", err);
@@ -94,6 +94,7 @@ export async function POST(req: Request) {
         email_address: email_addresses.at(0),
         image_url,
       });
+      console.log("created firestore user successfully");
 
       break;
   }
