@@ -15,9 +15,7 @@ const serviceAccount = JSON.parse(process.env.SERVICE_ACCOUNT!);
 let s = null;
 try {
   s = getApp();
-} catch (err) {
-  console.error(err);
-}
+} catch (err) {}
 if (!s) {
   firebase.initializeApp({
     ...firebaseConfig,
