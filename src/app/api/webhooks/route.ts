@@ -7,6 +7,7 @@ import { getAuth } from "firebase-admin/auth";
 import * as firebase from "firebase-admin";
 import { getFirestore } from "firebase-admin/firestore";
 import { doc, getDoc } from "firebase/firestore";
+import { error } from "console";
 
 const serviceAccount = JSON.parse(process.env.SERVICE_ACCOUNT!);
 
@@ -63,38 +64,54 @@ export async function POST(req: Request) {
   console.log(eventType);
   const auth = getAuth(app);
   const db = getFirestore();
-  switch (eventType) {
-    case "user.created":
-      const data = evt.data;
-      const { id, email_addresses, image_url } = data;
+  if (eventType === "user.created") {
+    const data = evt.data;
+    const { id, email_addresses, image_url } = data;
 
-      await auth
-        .createUser({
-          uid: id,
-          email: email_addresses.at(0)?.email_address,
-        })
-        .then(() => {
-          console.log("created firebase user successfully");
-        })
-        .catch((err) => {
-          console.error("Error Creating User: ", err);
+    await auth
+      .createUser({
+        uid: id,
+        email: email_addresses.at(0)?.email_address,
+      })
+      .then(() => {
+        console.log("created firebase user successfully");
+      })
+      .catch((err) => {
+        console.error("Error Creating User: ", err);
 
-          return new Response("error", { status: 400 });
-        });
-
-      const usersRef = await db.collection("Users").get();
-      const user = usersRef.docs.filter((doc) => doc.data().id === id);
-      console.log("creating firestore user");
-      await db.collection("Users").add({
-        id,
-        email_address: email_addresses.at(0)?.email_address,
-        image_url,
+        return new Response("error", { status: 400 });
       });
-      console.log("created firestore user successfully");
 
-      break;
-    default:
-      console.log(eventType);
+    console.log("creating firestore user");
+    await db.collection("Users").add({
+      id,
+      email_address: email_addresses.at(0)?.email_address,
+      image_url,
+    });
+    console.log("created firestore user successfully");
+  } else if (eventType === "user.deleted") {
+    const data = evt.data;
+    const { id } = data;
+
+    await auth
+      .deleteUser(id!)
+      .then(() => {
+        console.log("deleted from firebase successfully");
+      })
+      .catch((error) => {
+        console.log("error deleting from firebase");
+        return new Response("error", { status: 400 });
+      });
+
+    console.log("deleting firestore user");
+    const userRef = db.collection("Users").doc(id!);
+    await userRef.delete().catch((error) => {
+      console.log("error deleting from firestore");
+      return new Response("error", { status: 400 });
+    });
+    console.log("successfully deleted firestore user");
+  } else {
+    console.log(eventType);
   }
 
   return new Response("", { status: 200 });
