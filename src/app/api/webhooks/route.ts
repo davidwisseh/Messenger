@@ -94,12 +94,12 @@ export async function POST(req: Request) {
 
     const db = getFirestore();
     const usersRef = await db.collection("Users").get();
-    const user = usersRef.docs.filter((doc) => doc.id === userId);
+    const user = usersRef.docs.filter((doc) => doc.data().id === userId);
 
     if (user.length) {
-      console.log(user[0].data);
+      console.log(user[0].data());
     } else {
-      db.collection("Users").add({ id: userId, data: { "Signed in": true } });
+      db.collection("Users").add({ id: userId, "Signed-In": true });
     }
   }
 
