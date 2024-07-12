@@ -9,7 +9,22 @@ import { getFirestore } from "firebase-admin/firestore";
 import { doc, getDoc } from "firebase/firestore";
 import { error } from "console";
 
+import { getApp } from "firebase-admin/app";
 export async function POST(req: Request) {
+  const serviceAccount = JSON.parse(process.env.SERVICE_ACCOUNT!);
+  let s = null;
+  try {
+    s = getApp();
+  } catch (err) {
+    console.error(err);
+  }
+  if (!s) {
+    firebase.initializeApp({
+      ...firebaseConfig,
+      credential: firebase.credential.cert(serviceAccount),
+      databaseURL: "https://messenger-fdf1b.nam5.firebaseio.com",
+    });
+  }
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
 
   if (!WEBHOOK_SECRET) {
