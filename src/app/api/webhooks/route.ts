@@ -64,10 +64,6 @@ export async function POST(req: Request) {
   const auth = getAuth(app);
   const db = getFirestore();
   switch (eventType) {
-    case "session.created":
-      console.log(eventType);
-
-      break;
     case "user.created":
       const data = evt.data;
       const { id, email_addresses, image_url } = data;
@@ -75,7 +71,7 @@ export async function POST(req: Request) {
       await auth
         .createUser({
           uid: id,
-          email: email_addresses.at(0)?.email_address || "",
+          email: email_addresses.at(0)?.email_address,
         })
         .then(() => {
           console.log("created firebase user successfully");
@@ -97,6 +93,8 @@ export async function POST(req: Request) {
       console.log("created firestore user successfully");
 
       break;
+    default:
+      console.log(eventType);
   }
 
   return new Response("", { status: 200 });
