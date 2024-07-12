@@ -85,7 +85,7 @@ export async function POST(req: Request) {
       const usersRef = await db.collection("Users").get();
       const user = usersRef.docs.filter((doc) => doc.data().id === id);
       console.log("creating firestore user");
-      db.collection("Users").add({
+      await db.collection("Users").add({
         id,
         email_address: email_addresses.at(0),
         image_url,
