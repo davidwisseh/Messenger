@@ -60,6 +60,7 @@ export async function POST(req: Request) {
     });
   }
   const eventType = evt.type;
+  console.log(eventType);
 
   if (eventType === "session.created") {
     const clerkUser = await currentUser();
