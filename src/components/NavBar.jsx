@@ -17,7 +17,7 @@ const NavBar = () => {
         <div className=" ml-auto">
           <SignedOut>
             <div className=" flex gap-2">
-              <button onClick={() => clerkF()}>Login</button>
+              <SignInButton>Login</SignInButton>{" "}
               <SignUpButton>Sign up</SignUpButton>
             </div>
           </SignedOut>
@@ -25,7 +25,6 @@ const NavBar = () => {
             <div className="flex gap-2">
               <UserButton></UserButton>
               <SignOutButton>Sign out</SignOutButton>
-              <button>clickme</button>
             </div>
           </SignedIn>
         </div>
