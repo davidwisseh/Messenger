@@ -61,51 +61,41 @@ export async function POST(req: Request) {
   }
   const eventType = evt.type;
   console.log(eventType);
+  const auth = getAuth(app);
+  const db = getFirestore();
+  switch (eventType) {
+    case "session.created":
+      console.log(eventType);
 
-  if (eventType === "session.created") {
-    const clerkUser = await currentUser();
-    const userId = clerkUser!.id;
-    console.log(eventType);
-    const auth = getAuth(app);
-    const firebaseUser = await auth
-      .getUser(userId)
-      .then((user) => {
-        console.log(`got user from firebase Auth`);
-        console.log(user);
-        return user;
-      })
-      .catch(async (err) => {
-        console.log(err);
-        if (err.errorInfo.code === "auth/user-not-found") {
-          console.log("creating user");
-          await auth
-            .createUser({
-              uid: userId,
-              email: clerkUser?.emailAddresses!.at(0)?.emailAddress,
-            })
-            .then(() => {
-              console.log("created user successfully");
-            })
-            .catch((err) => {
-              console.error("Error Creating User: ", err);
+      break;
+    case "user.created":
+      const data = evt.data;
+      const { id, email_addresses, image_url } = data;
 
-              return new Response("error", { status: 400 });
-            });
-        } else {
+      const firebaseUser = await auth
+        .createUser({
+          uid: id,
+          email: email_addresses.at(0)?.email_address || "",
+        })
+        .then(() => {
+          console.log("created user successfully");
+        })
+        .catch((err) => {
+          console.error("Error Creating User: ", err);
+
           return new Response("error", { status: 400 });
-        }
+        });
+
+      const usersRef = await db.collection("Users").get();
+      const user = usersRef.docs.filter((doc) => doc.data().id === id);
+      console.log("creating firestore user");
+      db.collection("Users").add({
+        id,
+        email_address: email_addresses.at(0),
+        image_url,
       });
 
-    const db = getFirestore();
-    const usersRef = await db.collection("Users").get();
-    const user = usersRef.docs.filter((doc) => doc.data().id === userId);
-
-    if (user.length) {
-      console.log(user[0].data());
-    } else {
-      console.log("creating firestore user");
-      db.collection("Users").add({ firebaseUser });
-    }
+      break;
   }
 
   return new Response("", { status: 200 });
