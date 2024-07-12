@@ -104,10 +104,9 @@ export async function POST(req: Request) {
       });
 
     console.log("deleting firestore user");
-    const userRef = db.collection("Users").doc(id!);
-    await userRef.delete().catch((error) => {
-      console.log("error deleting from firestore");
-      return new Response("error", { status: 400 });
+    const userRef = await db.collection("Users").where("id", "==", id).get();
+    userRef.forEach((user) => {
+      user.ref.delete();
     });
     console.log("successfully deleted firestore user");
   } else {
