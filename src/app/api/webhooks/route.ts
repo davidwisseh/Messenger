@@ -84,12 +84,15 @@ export async function POST(req: Request) {
       });
 
     console.log("creating firestore user");
-    await db.collection("Users").add({
-      id,
-      email_address: email_addresses.at(0)?.email_address,
-      image_url,
-      friends: [],
-    });
+    await db
+      .collection("Users")
+      .doc(id)
+      .set({
+        id,
+        email_address: email_addresses.at(0)?.email_address,
+        image_url,
+        friends: [],
+      });
     console.log("created firestore user successfully");
   } else if (eventType === "user.deleted") {
     const data = evt.data;

@@ -9,6 +9,7 @@ import {
   where,
   updateDoc,
   arrayUnion,
+  getDoc,
 } from "firebase/firestore";
 import { app } from "../../app/fb";
 import { nanoid } from "nanoid";
@@ -33,12 +34,12 @@ export const sendMessage = async ({
   const db = getFirestore(app);
   console.log(messObj);
   const q = doc(db, "Messages", messId);
-  const q1 = doc(db, "Users", id);
+  const q1 = query(collection(db, "Users"), where("id", "==", id));
 
   await setDoc(q, messObj).catch((err) => {
     console.error(err);
   });
-  await updateDoc(q1, {
+  await updateDoc(up, {
     messages: arrayUnion(messId),
   });
 };
