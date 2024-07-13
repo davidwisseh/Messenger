@@ -34,12 +34,12 @@ export const sendMessage = async ({
   const db = getFirestore(app);
   console.log(messObj);
   const q = doc(db, "Messages", messId);
-  const q1 = query(collection(db, "Users"), where("id", "==", id));
+  const q1 = doc(db, "Users", id);
 
   await setDoc(q, messObj).catch((err) => {
     console.error(err);
   });
-  await updateDoc(up, {
+  await updateDoc(q1, {
     messages: arrayUnion(messId),
   });
 };
