@@ -1,3 +1,4 @@
+"use client";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import MessageTable from "@/components/MessageTable/MessageTable";
 import { currentUser } from "@clerk/nextjs/server";
