@@ -1,5 +1,6 @@
 "use server";
-import admin from "firebase-admin";
+import { getDatabase, set, onValue, ref } from "firebase/database";
+
 import { columns } from "../DataTable/columns";
 import { DataTable } from "../DataTable/DataTable";
 const DATA = [
@@ -18,8 +19,11 @@ const MessageTable = async ({
   type: string;
   userId: string;
 }) => {
-  const db = admin.database();
-  const messagesRef = db.ref("Messages");
+  const db = getDatabase();
+  const messagesRef = ref(db, "Messages");
+  onValue(messagesRef, (snap) => {
+    console.log(snap.toJSON());
+  });
   const m = await messagesRef.get();
   console.log("m: " + m.toJSON());
   return (
