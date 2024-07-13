@@ -1,6 +1,12 @@
 "use server";
-import { getDatabase, set, onValue, ref } from "firebase/database";
 
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  where,
+  query,
+} from "firebase/firestore";
 import { columns } from "../DataTable/columns";
 import { DataTable } from "../DataTable/DataTable";
 const DATA = [
@@ -19,17 +25,17 @@ const MessageTable = async ({
   type: string;
   userId: string;
 }) => {
-  const db = getDatabase();
-  const messagesRef = ref(db, "Messages");
-  console.log("here");
-  onValue(messagesRef, (snap) => {
-    console.log(snap.toJSON());
-  });
+  const db = getFirestore();
+  const q = query(collection(db, "Messages"), where(type, "==", userId));
+  const data = (await getDocs(q)).docs.map((d) => d.data());
 
   return (
     <div className="w-full flex flex-col">
       <div className="mb-2">{type === "to" ? "Received" : "Sent"}:</div>
-      <DataTable data={DATA} columns={columns}></DataTable>
+      {
+        //@ts-ignore
+        <DataTable data={data} columns={columns}></DataTable>
+      }
     </div>
   );
 };
