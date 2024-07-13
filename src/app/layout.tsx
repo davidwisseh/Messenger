@@ -1,20 +1,15 @@
+import { firebaseConfig } from "@/util/util";
+import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { ClerkProvider } from "@clerk/nextjs";
-import { firebaseConfig } from "@/util/util";
+import { app } from "./fb";
 
 import { Toaster } from "@/components/ui/toaster";
-import { initializeApp, getApp } from "firebase/app";
 
 const inter = Inter({ subsets: ["latin"] });
-const serviceAccount = JSON.parse(process.env.SERVICE_ACCOUNT!);
 
-initializeApp({
-  ...firebaseConfig,
-  databaseURL: "https://messenger-fdf1b.nam5.firebaseio.com",
-});
-console.log("Initialized App");
+console.log("Initialized App" + app);
 
 export const metadata: Metadata = {
   title: "Create Next App",

@@ -1,12 +1,21 @@
-"use server";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import MessageTable from "@/components/MessageTable/MessageTable";
 import { currentUser } from "@clerk/nextjs/server";
 import Message from "../components/Message/Message";
 import Navbar from "../components/NavBar";
+import Tess from "@/components/test";
+import {
+  getFirestore,
+  query,
+  collection,
+  onSnapshot,
+  getDocs,
+  where,
+} from "firebase/firestore";
 
 export default async function Home() {
   const user = await currentUser();
+
   return (
     <>
       <Navbar user={JSON.stringify(user)}></Navbar>

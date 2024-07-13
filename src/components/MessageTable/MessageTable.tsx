@@ -1,15 +1,17 @@
-"use server";
-
+"use client";
 import {
   getFirestore,
-  collection,
-  getDocs,
-  where,
   query,
+  collection,
+  where,
+  getDocs,
   onSnapshot,
+  DocumentData,
 } from "firebase/firestore";
+import { app } from "../../app/fb";
 import { columns } from "../DataTable/columns";
 import { DataTable } from "../DataTable/DataTable";
+import { useState } from "react";
 const DATA = [
   {
     read: false,
@@ -19,18 +21,15 @@ const DATA = [
     message: "hello",
   },
 ];
-const MessageTable = async ({
-  type,
-  userId,
-}: {
-  type: string;
-  userId: string;
-}) => {
-  const db = getFirestore();
+
+const MessageTable = ({ type, userId }: { type: string; userId: string }) => {
+  const [data, setData] = useState<[] | DocumentData[]>([]);
+  const db = getFirestore(app);
   const q = query(collection(db, "Messages"), where(type, "==", userId));
-  let data = (await getDocs(q)).docs.map((data) => data.data());
+
   const unsub = onSnapshot(q, (snap) => {
-    data = snap.docs.map((d) => d.data());
+    const d = snap.docs.map((d) => d.data());
+    setData(d);
   });
 
   return (
@@ -38,7 +37,7 @@ const MessageTable = async ({
       <div className="mb-2">{type === "to" ? "Received" : "Sent"}:</div>
       {
         //@ts-ignore
-        <DataTable data={data} columns={columns}></DataTable>
+        <DataTable data={data} columns={columns[type]}></DataTable>
       }
     </div>
   );

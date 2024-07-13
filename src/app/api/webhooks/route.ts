@@ -7,7 +7,6 @@ import { getFirestore } from "firebase-admin/firestore";
 import { headers } from "next/headers";
 import { Webhook } from "svix";
 
-import { getApp } from "firebase-admin/app";
 
 const serviceAccount = JSON.parse(process.env.SERVICE_ACCOUNT!);
 const app = firebase.initializeApp({

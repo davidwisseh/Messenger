@@ -11,12 +11,15 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "../ui/use-toast";
 import { sendMessage } from "./actions";
+import { useUser } from "@clerk/nextjs";
+import { getFirestore } from "firebase/firestore";
 
 const contacts = ["user1", "user2"];
 const Message = () => {
   const { toast } = useToast();
   const [messageText, setMessageText] = useState("");
   const [toUser, setToUser] = useState<null | string>("me");
+  const user = useUser();
 
   const handleMessageSend = () => {
     if (!messageText) {
@@ -26,7 +29,11 @@ const Message = () => {
       });
       return;
     } else {
-      sendMessage({ message: messageText, to: toUser! });
+      sendMessage({
+        message: messageText,
+        to: toUser!,
+        id: user.user?.id!,
+      });
     }
   };
 
