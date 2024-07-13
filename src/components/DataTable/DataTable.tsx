@@ -16,15 +16,20 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useEffect, useState } from "react";
+import { Button } from "../ui/button";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  handleDelete: Function;
+  types: string;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  handleDelete,
+  types,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
@@ -33,9 +38,9 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="rounded-md border w-full overflow-y-scroll">
+    <div className="rounded-md border w-full overflow-scroll ">
       <Table>
-        <TableBody className=" block  ">
+        <TableBody className="  ">
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow
@@ -43,10 +48,19 @@ export function DataTable<TData, TValue>({
                 data-state={row.getIsSelected() && "selected"}
               >
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  <TableCell className=" text-wrap break-words" key={cell.id}>
+                    {/* {flexRender(cell.column.columnDef.cell, cell.getContext())} */}
+
+                    <div>{`${cell.getValue()}`}</div>
                   </TableCell>
                 ))}
+                {types === "from" && (
+                  <TableCell className="" key={`delete-${row.id}`}>
+                    <Button onClick={() => handleDelete(row.original)}>
+                      Delete
+                    </Button>
+                  </TableCell>
+                )}
               </TableRow>
             ))
           ) : (
