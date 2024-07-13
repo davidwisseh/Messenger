@@ -1,5 +1,5 @@
 "use client";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import {
@@ -18,7 +18,7 @@ const contacts = ["user1", "user2"];
 const Message = () => {
   const { toast } = useToast();
   const [messageText, setMessageText] = useState("");
-  const [toUser, setToUser] = useState<null | string>("me");
+  const [toUser, setToUser] = useState("me");
   const user = useUser();
 
   const handleMessageSend = () => {
@@ -32,22 +32,36 @@ const Message = () => {
     } else {
       sendMessage({
         message: messageText,
-        to: toUser!,
+        to: toUser,
         id: user.user?.id!,
       });
+      setMessageText("");
+      setToUser("me");
     }
   };
 
   return (
     <div className="h-fit w-full flex flex-col">
       <Textarea
-        onChange={(el) => setMessageText(el.target.value)}
-        className="max-h-80 mb-4 w-full"
+        value={messageText}
+        onChange={(e) => {
+          setMessageText(e.target.value);
+          console.log(e.currentTarget.scrollHeight);
+          e.currentTarget.style.height = "1px";
+          e.currentTarget.style.height =
+            25 + e.currentTarget.scrollHeight + "px";
+        }}
+        className="max-h-80 mb-4 w-full  overflow-hidden h-fit "
         placeholder="..."
       ></Textarea>
       <div className="flex gap-2 items-center">
         <p>To:</p>
-        <Select onValueChange={(value) => setToUser(value)}>
+        <Select
+          value={toUser}
+          onValueChange={(val) => {
+            setToUser(val);
+          }}
+        >
           <SelectTrigger className="w-40">
             <SelectValue placeholder={"me"} />
           </SelectTrigger>
