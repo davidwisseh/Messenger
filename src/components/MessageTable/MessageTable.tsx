@@ -21,6 +21,7 @@ const MessageTable = async ({
 }) => {
   const db = getDatabase();
   const messagesRef = ref(db, "Messages");
+  console.log("here");
   onValue(messagesRef, (snap) => {
     console.log(snap.toJSON());
   });
