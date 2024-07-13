@@ -5,7 +5,11 @@ import { Avatar, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 //@ts-ignore
 const NavBar = ({ user }) => {
-  const USER = JSON.parse(user);
+  let USER = null;
+  try {
+    USER = JSON.parse(user);
+  } catch (error) {}
+
   if (USER) {
     return (
       <nav className="h-16 relative dark:text-white bg-gray-200 dark:bg-gray-900">
