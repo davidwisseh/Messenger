@@ -84,7 +84,7 @@ export async function POST(req: Request) {
       });
 
     console.log("creating firestore user");
-    await db.collection("Users").add({
+    await db.collection("TestUsers").add({
       id,
       email_address: email_addresses.at(0)?.email_address,
       image_url,
