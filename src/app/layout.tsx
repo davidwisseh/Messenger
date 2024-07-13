@@ -2,17 +2,11 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-import firebase from "firebase-admin";
 import { firebaseConfig } from "@/util/util";
-import { getApp } from "firebase-admin/app";
-// Import the functions you need from the SDKs you need
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+import { Toaster } from "@/components/ui/toaster";
+import { initializeApp, getApp } from "firebase/app";
 
-// Initialize Firebase
 const inter = Inter({ subsets: ["latin"] });
 const serviceAccount = JSON.parse(process.env.SERVICE_ACCOUNT!);
 let s = null;
@@ -22,11 +16,11 @@ try {
   console.error(err);
 }
 if (!s) {
-  firebase.initializeApp({
+  initializeApp({
     ...firebaseConfig,
-    credential: firebase.credential.cert(serviceAccount),
     databaseURL: "https://messenger-fdf1b.nam5.firebaseio.com",
   });
+  console.log("Initialized App");
 }
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -40,8 +34,12 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en" className="dark:bg-black">
-        <body className={inter.className}>{children} </body>
+      <html lang="en" className=" dark:bg-black">
+        <body className={inter.className}>
+          {children}
+
+          <Toaster />
+        </body>
       </html>
     </ClerkProvider>
   );

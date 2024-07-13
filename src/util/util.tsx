@@ -13,4 +13,5 @@ export interface Message {
   to: string;
   message: string;
   read: boolean;
+  time: number;
 }

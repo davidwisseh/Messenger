@@ -1,28 +1,20 @@
 "use server";
-import { Webhook } from "svix";
-import { headers } from "next/headers";
-import { currentUser, EmailAddress, WebhookEvent } from "@clerk/nextjs/server";
 import { firebaseConfig } from "@/util/util";
-import { getAuth } from "firebase-admin/auth";
+import { WebhookEvent } from "@clerk/nextjs/server";
 import * as firebase from "firebase-admin";
+import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
-import { doc, getDoc } from "firebase/firestore";
-import { error } from "console";
+import { headers } from "next/headers";
+import { Webhook } from "svix";
 
 import { getApp } from "firebase-admin/app";
 
 const serviceAccount = JSON.parse(process.env.SERVICE_ACCOUNT!);
-let s = null;
-try {
-  s = getApp();
-} catch (err) {}
-if (!s) {
-  firebase.initializeApp({
-    ...firebaseConfig,
-    credential: firebase.credential.cert(serviceAccount),
-    databaseURL: "https://messenger-fdf1b.nam5.firebaseio.com",
-  });
-}
+const app = firebase.initializeApp({
+  ...firebaseConfig,
+  credential: firebase.credential.cert(serviceAccount),
+  databaseURL: "https://messenger-fdf1b.nam5.firebaseio.com",
+});
 
 export async function POST(req: Request) {
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
@@ -71,8 +63,8 @@ export async function POST(req: Request) {
 
   // Get event type, auth, and database
   const eventType = evt.type;
-  const auth = getAuth();
-  const db = getFirestore();
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
   if (eventType === "user.created") {
     // get event data from clerk UserJson

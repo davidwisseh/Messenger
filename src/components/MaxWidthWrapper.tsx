@@ -5,13 +5,15 @@ const MaxWidthWrapper = ({
   className,
 }: {
   children: ReactNode;
-  className: string;
+  className?: string;
 }) => {
   return (
     <div
-      className={`absolute w-full h-full py-5 px-5 flex ${
-        className ? className : ""
-      }`}
+      className={
+        className
+          ? className + "  w-full  py-5 px-5 flex"
+          : " w-full  py-5 px-5 flex"
+      }
     >
       {children}
     </div>
