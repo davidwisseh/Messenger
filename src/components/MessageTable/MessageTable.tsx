@@ -24,8 +24,7 @@ const MessageTable = async ({
   onValue(messagesRef, (snap) => {
     console.log(snap.toJSON());
   });
-  const m = await messagesRef.get();
-  console.log("m: " + m.toJSON());
+
   return (
     <div className="w-full flex flex-col">
       <div className="mb-2">{type === "to" ? "Received" : "Sent"}:</div>
