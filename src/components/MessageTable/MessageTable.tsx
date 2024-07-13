@@ -6,6 +6,7 @@ import {
   getDocs,
   where,
   query,
+  onSnapshot,
 } from "firebase/firestore";
 import { columns } from "../DataTable/columns";
 import { DataTable } from "../DataTable/DataTable";
@@ -27,7 +28,10 @@ const MessageTable = async ({
 }) => {
   const db = getFirestore();
   const q = query(collection(db, "Messages"), where(type, "==", userId));
-  const data = (await getDocs(q)).docs.map((d) => d.data());
+  let data = (await getDocs(q)).docs.map((data) => data.data());
+  const unsub = onSnapshot(q, (snap) => {
+    data = snap.docs.map((d) => d.data());
+  });
 
   return (
     <div className="w-full flex flex-col">

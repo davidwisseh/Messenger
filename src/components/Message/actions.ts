@@ -1,8 +1,8 @@
 "use server";
 import { Message } from "@/util/util";
 import { currentUser } from "@clerk/nextjs/server";
-import { firestore } from "firebase-admin";
-import { getFirestore } from "firebase-admin/firestore";
+import { getFirestore, collection, setDoc, doc } from "firebase/firestore";
+import nanoid from "nanoid";
 
 export const sendMessage = async ({
   message,
@@ -21,5 +21,6 @@ export const sendMessage = async ({
     read: false,
   };
   const db = getFirestore();
-  await db.collection("Messages").add(messObj);
+
+  setDoc(doc(db, "Messages", nanoid.nanoid()), messObj);
 };
