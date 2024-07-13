@@ -26,6 +26,7 @@ const Message = () => {
       toast({
         title: "no message",
         description: new Date(Date.now()).toLocaleString("en-US"),
+        variant: "destructive",
       });
       return;
     } else {
