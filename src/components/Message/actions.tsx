@@ -1,6 +1,15 @@
 "use server";
 import { Message } from "@/util/util";
-import { collection, doc, getFirestore, setDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getFirestore,
+  setDoc,
+  query,
+  where,
+  updateDoc,
+  arrayUnion,
+} from "firebase/firestore";
 import { app } from "../../app/fb";
 import { nanoid } from "nanoid";
 export const sendMessage = async ({
@@ -23,8 +32,13 @@ export const sendMessage = async ({
   };
   const db = getFirestore(app);
   console.log(messObj);
+  const q = doc(db, "Messages", messId);
+  const q1 = doc(db, "Users", id);
 
-  await setDoc(doc(db, "Messages", messId), messObj).catch((err) => {
+  await setDoc(q, messObj).catch((err) => {
     console.error(err);
+  });
+  await updateDoc(q1, {
+    messages: arrayUnion(messId),
   });
 };
