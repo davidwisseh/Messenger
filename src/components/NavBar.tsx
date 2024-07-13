@@ -1,5 +1,5 @@
 "use client";
-import { SignInButton, SignOutButton } from "@clerk/nextjs";
+import { SignInButton, SignOutButton, UserButton } from "@clerk/nextjs";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
@@ -14,6 +14,7 @@ const NavBar = ({ user }) => {
           <div>hello</div>
           <div className=" ml-auto">
             <div className={"flex gap-2 "}>
+              <UserButton></UserButton>
               <Avatar>
                 <AvatarImage src={USER.imageUrl} />
               </Avatar>
