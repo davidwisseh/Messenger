@@ -7,7 +7,6 @@ import { getFirestore } from "firebase-admin/firestore";
 import { headers } from "next/headers";
 import { Webhook } from "svix";
 
-
 const serviceAccount = JSON.parse(process.env.SERVICE_ACCOUNT!);
 const app = firebase.initializeApp({
   ...firebaseConfig,
@@ -89,6 +88,7 @@ export async function POST(req: Request) {
       id,
       email_address: email_addresses.at(0)?.email_address,
       image_url,
+      friends: [],
     });
     console.log("created firestore user successfully");
   } else if (eventType === "user.deleted") {
