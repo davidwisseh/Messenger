@@ -22,32 +22,10 @@ import {
 import { app } from "@/app/fb";
 import { UserObj } from "@/util/util";
 const Message = () => {
-  const [contacts, setContacts] = useState<string[] | null>(null);
   const { toast } = useToast();
   const [messageText, setMessageText] = useState("");
   const [toUser, setToUser] = useState("me");
   const user = useUser();
-  const db = getFirestore(app);
-  useEffect(() => {
-    const doWork = async () => {
-      const dbUser = (
-        await getDoc(doc(db, "Users", user.user?.id!))
-      ).data() as UserObj;
-      const blockedBy = dbUser.blockedBy;
-      const dbUsers = await getDocs(collection(db, "Users"));
-      const filtered = dbUsers.docs.filter((d) => {
-        const ud = d.data() as UserObj;
-
-        if (!blockedBy?.includes(ud.id) && ud.id !== user.user?.id) {
-          return true;
-        }
-      });
-      const setcon = filtered.map((d) => d.data().id) as string[];
-
-      setContacts(setcon);
-    };
-    doWork();
-  }, []);
 
   const handleMessageSend = () => {
     if (!messageText) {
@@ -87,25 +65,6 @@ const Message = () => {
         placeholder="..."
       ></Textarea>
       <div className="flex gap-2 items-center">
-        <p>To:</p>
-        <Select
-          value={toUser}
-          onValueChange={(val) => {
-            setToUser(val);
-          }}
-        >
-          <SelectTrigger className="w-40">
-            <SelectValue placeholder={"me"} />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="me">me</SelectItem>
-            {contacts?.map((c, i) => (
-              <SelectItem key={`${c}_${i}`} value={c}>
-                {c}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
         <Button className="ml-auto w-20" onClick={() => handleMessageSend()}>
           Send
         </Button>

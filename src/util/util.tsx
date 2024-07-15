@@ -22,19 +22,24 @@ export interface Messaged {
 }
 
 export interface UserObj {
-  friends?: string[];
-  blocked?: string[];
-  blockedBy?: string[];
-  chats?: string[];
+  friends: string[];
+  blocked: string[];
+  blockedBy: string[];
+  chats: string[];
   displayName: string;
   id: string;
   email: string;
   img_url: string;
-  messaged?: Messaged[];
+  messaged: Messaged[];
   complete: boolean;
-  userName?: string;
+  userName: string;
 }
 
 export interface Chat {
   messages: Message[];
+}
+
+export interface UserName {
+  id: string;
+  name: string;
 }

@@ -13,6 +13,7 @@ import {
   getDoc,
   doc,
   where,
+  getDocs,
 } from "firebase/firestore";
 import { useUser } from "@clerk/nextjs";
 import { json } from "stream/consumers";
@@ -24,38 +25,42 @@ import ChatTemp from "../components/ChatTemp/ChatTemp";
 import { Router } from "next/router";
 import { useRouter } from "next/navigation";
 
+import SearchBar from "@/components/SearchBar/SearchBar";
+
 export default function Home() {
   const user = useUser();
   const [dbUser, setDbUser] = useState<null | UserObj>(null);
+  const [contacts, setContacts] = useState<string[] | undefined>(undefined);
+  const [chats, setChats] = useState<undefined | string[]>(undefined);
+
   const router = useRouter();
   useEffect(() => {
-    if (user.user) {
+    if (user.isSignedIn) {
       const db = getFirestore(app);
-      const u = getDoc(doc(db, "Users", user.user.id)).then((d) => {
-        setDbUser(d.data() as UserObj);
+      const u = onSnapshot(doc(db, "Users", user.user.id), (d) => {
+        const dbUserTemp = d.data();
+        setDbUser(dbUserTemp as UserObj);
       });
+      return () => {
+        u();
+      };
     }
-  }, [user.user]);
+    return () => {};
+  }, [user.isSignedIn]);
+  const db = getFirestore(app);
 
   if (user.isLoaded) {
-    // if (user.isSignedIn && dbUser) {
-    //   if (!dbUser.complete) {
-    //     router.push(`/user/${user.user.id}/profile/complete`);
-    //   } else {
-    //     return (
-    //       <div className="h-screen w-screen pt-14">
-    //         <ChatTemp></ChatTemp>
-    //       </div>
-    //     );
-    //   }
-    // } else {
-    //   return <></>;
-    // }
-    return (
-      <div className="h-screen w-screen pt-14">
-        <ChatTemp></ChatTemp>
-      </div>
-    );
+    if (user.isSignedIn) {
+      if (dbUser) {
+        return (
+          <div className="h-screen w-screen pt-16">
+            <ChatTemp dbUser={dbUser}></ChatTemp>
+          </div>
+        );
+      }
+      return <></>;
+    }
+    return <></>;
   }
   return (
     <div className="w-full h-screen flex items-center justify-center">
