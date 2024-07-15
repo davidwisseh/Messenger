@@ -1,5 +1,5 @@
 "use server";
-import { Chat, Message, UserObj } from "@/util/util";
+import { Chat, Message, Messaged, UserObj } from "@/util/util";
 import {
   collection,
   doc,
@@ -49,10 +49,15 @@ export const sendMessage = async ({
     chat = nanoid();
     await setDoc(doc(db, "Chats", chat), { messages: [messObj] } as Chat);
     await updateDoc(doc(db, "Users", id), {
-      messaged: arrayUnion(to),
+      messaged: arrayUnion({
+        chat: chat,
+        user: to === "me" ? id : to,
+      } as Messaged),
+      chats: arrayUnion(chat),
     });
-    await updateDoc(doc(db, "Users", to), {
-      messaged: arrayUnion(id),
+    await updateDoc(doc(db, "Users", to === "me" ? id : to), {
+      messaged: arrayUnion({ chat: chat, user: id }),
+      chats: arrayUnion(chat),
     });
   } else {
     await updateDoc(doc(db, "Chats", chat), {
