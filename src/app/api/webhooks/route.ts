@@ -71,13 +71,13 @@ export async function POST(req: Request) {
   if (eventType === "user.created") {
     // get event data from clerk UserJson
     const data = evt.data;
-    const { id, email_addresses, image_url, username } = data;
+    const { id, email_addresses, image_url, first_name } = data;
 
     console.log("creating firestore user");
 
     await setDoc(doc(db, "Users", id), {
       id,
-      displayName: username,
+      displayName: first_name,
       complete: false,
       email: email_addresses[0].email_address,
       img_url: image_url,
