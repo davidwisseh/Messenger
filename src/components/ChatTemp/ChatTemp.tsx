@@ -29,7 +29,7 @@ const ChatTemp = ({ dbUser }: { dbUser: UserObj }) => {
       {chats && chats?.length > 0 && (
         <div className="m-auto w-[80%] h-max relative">
           {chats?.map((chat) => {
-            return <Chat />;
+            return <Chat key={chat} />;
           })}
         </div>
       )}
