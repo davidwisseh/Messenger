@@ -7,18 +7,46 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useUser } from "@clerk/nextjs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { useToast } from "../ui/use-toast";
 import { sendMessage } from "./actions";
-
-const contacts = ["user1", "user2"];
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  getFirestore,
+} from "firebase/firestore";
+import { app } from "@/app/fb";
+import { UserObj } from "@/util/util";
+const contactsd = ["u"];
 const Message = () => {
+  const [contacts, setContacts] = useState<string[] | null>(null);
   const { toast } = useToast();
   const [messageText, setMessageText] = useState("");
   const [toUser, setToUser] = useState("me");
   const user = useUser();
+  const db = getFirestore(app);
+  useEffect(() => {
+    const doWork = async () => {
+      const dbUser = (
+        await getDoc(doc(db, "Users", user.user?.id!))
+      ).data() as UserObj;
+      const { blockedBy } = dbUser;
+      const dbUsers = await getDocs(collection(db, "Users"));
+      const setcon = dbUsers.docs.map((d) => {
+        const ud = d.data() as UserObj;
+        if (!dbUser.blockedBy?.includes(ud.id)) {
+          return ud.id;
+        }
+      }) as string[];
+
+      setContacts(setcon);
+    };
+    doWork();
+  }, []);
 
   const handleMessageSend = () => {
     if (!messageText) {
@@ -32,6 +60,11 @@ const Message = () => {
       sendMessage({
         message: messageText,
         to: toUser,
+      }).catch((error: Error) => {
+        toast({
+          title: error.message,
+          variant: "destructive",
+        });
       });
       setMessageText("");
       setToUser("me");
@@ -65,7 +98,7 @@ const Message = () => {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="me">me</SelectItem>
-            {contacts.map((c) => (
+            {contacts?.map((c) => (
               <SelectItem key={c} value={c}>
                 {c}
               </SelectItem>

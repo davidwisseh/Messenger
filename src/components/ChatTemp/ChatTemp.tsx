@@ -30,14 +30,18 @@ const ChatTemp = () => {
           <Message></Message>
         </MaxWidthWrapper>
       </div>
-
-      {chats && (
+      {chats && chats?.length > 0 && (
         <div className="m-auto w-[80%] h-max relative">
-          <MaxWidthWrapper className="mt-14 shadow-md rounded-md">
-            {chats?.map((chat) => {
-              return <MessageTable key={chat} chat={chat}></MessageTable>;
-            })}
-          </MaxWidthWrapper>
+          {chats?.map((chat) => {
+            return (
+              <MaxWidthWrapper
+                key={chat}
+                className="mt-14 shadow-md rounded-md"
+              >
+                <MessageTable chat={chat}></MessageTable>
+              </MaxWidthWrapper>
+            );
+          })}
         </div>
       )}
     </>

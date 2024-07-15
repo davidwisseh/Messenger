@@ -47,18 +47,15 @@ export function DataTable<TData, TValue>({
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell className=" text-wrap break-words" key={cell.id}>
-                    {/* {flexRender(cell.column.columnDef.cell, cell.getContext())} */}
-
-                    <div>{`${cell.getValue()}`}</div>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
-                (
+
                 <TableCell className="" key={`delete-${row.id}`}>
                   <Button onClick={() => handleDelete(row.original)}>
                     Delete
                   </Button>
                 </TableCell>
-                )
               </TableRow>
             ))
           ) : (

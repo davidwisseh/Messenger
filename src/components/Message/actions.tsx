@@ -30,6 +30,12 @@ export const sendMessage = async ({
   const messId = nanoid();
   const db = getFirestore(app);
   const dbUser = (await getDoc(doc(db, "Users", id))).data() as UserObj;
+  const toUser = (await getDoc(doc(db, "Users", to === "me" ? id : to))).data();
+  if (!toUser) {
+    throw new Error("No user");
+    return;
+  }
+
   if (dbUser.blockedBy?.includes(to)) {
     throw new Error("Blocked By User");
     return;
@@ -44,7 +50,9 @@ export const sendMessage = async ({
     id: messId,
   };
 
-  let chat = dbUser.messaged?.find((mess) => mess.user === to)?.chat;
+  let chat = dbUser.messaged?.find(
+    (mess) => mess.user === (to === "me" ? id : to)
+  )?.chat;
   if (!chat) {
     chat = nanoid();
     await setDoc(doc(db, "Chats", chat), { messages: [messObj] } as Chat);
