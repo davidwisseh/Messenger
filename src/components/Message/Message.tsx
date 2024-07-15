@@ -1,7 +1,4 @@
 "use client";
-import { ReactNode, useEffect, useRef, useState } from "react";
-import { Textarea } from "../ui/textarea";
-import { Button } from "../ui/button";
 import {
   Select,
   SelectContent,
@@ -9,10 +6,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useUser } from "@clerk/nextjs";
+import { useState } from "react";
+import { Button } from "../ui/button";
+import { Textarea } from "../ui/textarea";
 import { useToast } from "../ui/use-toast";
 import { sendMessage } from "./actions";
-import { useUser } from "@clerk/nextjs";
-import { getFirestore } from "firebase/firestore";
 
 const contacts = ["user1", "user2"];
 const Message = () => {
@@ -33,7 +32,6 @@ const Message = () => {
       sendMessage({
         message: messageText,
         to: toUser,
-        id: user.user?.id!,
       });
       setMessageText("");
       setToUser("me");
