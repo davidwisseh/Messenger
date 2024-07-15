@@ -21,13 +21,39 @@ import { Loader2Icon } from "lucide-react";
 import { app } from "./fb";
 import { UserObj } from "@/util/util";
 import ChatTemp from "../components/ChatTemp/ChatTemp";
+import { Router } from "next/router";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const user = useUser();
+  const [dbUser, setDbUser] = useState<null | UserObj>(null);
+  const router = useRouter();
+  useEffect(() => {
+    if (user.user) {
+      const db = getFirestore(app);
+      const u = getDoc(doc(db, "Users", user.user.id)).then((d) => {
+        setDbUser(d.data() as UserObj);
+      });
+    }
+  }, [user.user]);
+
   if (user.isLoaded) {
+    // if (user.isSignedIn && dbUser) {
+    //   if (!dbUser.complete) {
+    //     router.push(`/user/${user.user.id}/profile/complete`);
+    //   } else {
+    //     return (
+    //       <div className="h-screen w-screen pt-14">
+    //         <ChatTemp></ChatTemp>
+    //       </div>
+    //     );
+    //   }
+    // } else {
+    //   return <></>;
+    // }
     return (
       <div className="h-screen w-screen pt-14">
-        {user.isSignedIn && <ChatTemp></ChatTemp>}
+        <ChatTemp></ChatTemp>
       </div>
     );
   }

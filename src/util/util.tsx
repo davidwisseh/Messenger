@@ -32,6 +32,7 @@ export interface UserObj {
   img_url: string;
   messaged?: Messaged[];
   complete: boolean;
+  userName?: string;
 }
 
 export interface Chat {
