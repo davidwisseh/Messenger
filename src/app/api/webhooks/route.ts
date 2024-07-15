@@ -81,11 +81,11 @@ export async function POST(req: Request) {
       complete: false,
       email: email_addresses[0].email_address,
       img_url: image_url,
-      blocked: [""],
-      blockedBy: [""],
-      chats: [""],
-      friends: [""],
-      messaged: [{ chat: "", user: "" }],
+      blocked: [],
+      blockedBy: [],
+      chats: [],
+      friends: [],
+      messaged: [],
       userName: "",
     } as UserObj);
 

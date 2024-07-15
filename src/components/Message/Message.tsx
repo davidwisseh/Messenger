@@ -21,7 +21,8 @@ import {
 } from "firebase/firestore";
 import { app } from "@/app/fb";
 import { UserObj } from "@/util/util";
-const Message = () => {
+import SearchBar from "../SearchBar/SearchBar";
+const Message = ({ dbUser }: { dbUser: UserObj }) => {
   const { toast } = useToast();
   const [messageText, setMessageText] = useState("");
   const [toUser, setToUser] = useState("me");
@@ -65,6 +66,8 @@ const Message = () => {
         placeholder="..."
       ></Textarea>
       <div className="flex gap-2 items-center">
+        <SearchBar dbUser={dbUser}></SearchBar>
+
         <Button className="ml-auto w-20" onClick={() => handleMessageSend()}>
           Send
         </Button>

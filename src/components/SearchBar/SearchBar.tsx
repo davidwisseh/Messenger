@@ -12,6 +12,7 @@ import { Button } from "../ui/button";
 import { ChangeEvent, LegacyRef, useEffect, useRef, useState } from "react";
 import { match } from "assert";
 import {
+  and,
   collection,
   doc,
   getDoc,
@@ -21,7 +22,7 @@ import {
   where,
 } from "firebase/firestore";
 import { app } from "@/app/fb";
-import { UserObj } from "@/util/util";
+import { UserName, UserObj } from "@/util/util";
 
 const SearchBar = ({
   className,
@@ -33,7 +34,7 @@ const SearchBar = ({
   const [toUser, setToUser] = useState("me");
   const [db, setDb] = useState(getFirestore(app));
   const inputRef = useRef<undefined | HTMLInputElement>(undefined);
-  const [filteredCon, setFilteredCon] = useState<string[] | undefined>(
+  const [filteredCon, setFilteredCon] = useState<UserName[] | undefined>(
     undefined
   );
   const btnRef = useRef<null | HTMLButtonElement>(null);
@@ -51,7 +52,21 @@ const SearchBar = ({
               collection(db, "UserNames"),
               where("id", "not-in", dbUser.blockedBy)
             )
-          );
+          ).then((snap) => {
+            const data = snap.docs
+              .filter((d) => {
+                if (
+                  d
+                    .data()
+                    .name.match(new RegExp(`${inputRef.current?.value}`, "ig"))
+                ) {
+                  return true;
+                }
+                return false;
+              })
+              .map((d) => d.data()) as UserName[];
+            setFilteredCon(data);
+          });
         }
 
         buffering = !buffering;
@@ -60,7 +75,9 @@ const SearchBar = ({
   };
 
   return (
-    <div className={cn(["h-fit mx-auto my-1 shadow-lg w-fit", className])}>
+    <div
+      className={cn(["h-fit ring ring-slate-300 rounded-sm  w-fit", className])}
+    >
       <input
         type="text"
         className="w-full min-w-fit px-2"
@@ -69,18 +86,18 @@ const SearchBar = ({
         ref={inputRef}
       />
       <div>
-        {filteredCon?.map((id: string) => {
+        {filteredCon?.map((username) => {
           return (
             <Button
               className="block w-full rounded-none text-left"
               variant={"ghost"}
-              key={id}
+              key={username.id}
               onClick={() => {
-                inputRef.current!.value = id;
+                inputRef.current!.value = username.name;
                 setFilteredCon(undefined);
               }}
             >
-              {id}
+              {username.name}
             </Button>
           );
         })}
