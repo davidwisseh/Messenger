@@ -16,8 +16,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 const NavBar = () => {
   const user = useUser();
 
-  console.log("rendered navbar");
-
   if (user.isSignedIn) {
     return (
       <nav className="h-16 relative dark:text-white bg-gray-200 dark:bg-gray-900">

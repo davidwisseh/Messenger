@@ -11,6 +11,7 @@ import {
   arrayUnion,
   getDoc,
 } from "firebase/firestore";
+var AES = require("crypto-js/aes");
 import { app } from "../../app/fb";
 import { nanoid } from "nanoid";
 import { currentUser } from "@clerk/nextjs/server";
@@ -41,20 +42,20 @@ export const sendMessage = async ({
     return;
   }
 
-  const messObj: Message = {
-    time: Date.now(),
-    to: to === "me" ? id : to,
-    message,
-    from: id,
-    read: false,
-    id: messId,
-  };
-
   let chat = dbUser.messaged?.find(
     (mess) => mess.user === (to === "me" ? id : to)
   )?.chat;
+  console.log(chat);
   if (!chat) {
     chat = nanoid();
+    const messObj: Message = {
+      time: Date.now(),
+      to: to === "me" ? id : to,
+      message: AES.encrypt(message, chat).toString(),
+      from: id,
+      read: false,
+      id: messId,
+    };
     await setDoc(doc(db, "Chats", chat), { messages: [messObj] } as Chat);
     await updateDoc(doc(db, "Users", id), {
       messaged: arrayUnion({
@@ -68,6 +69,14 @@ export const sendMessage = async ({
       chats: arrayUnion(chat),
     });
   } else {
+    const messObj: Message = {
+      time: Date.now(),
+      to: to === "me" ? id : to,
+      message: AES.encrypt(message, chat).toString(),
+      from: id,
+      read: false,
+      id: messId,
+    };
     await updateDoc(doc(db, "Chats", chat), {
       messages: arrayUnion(messObj),
     });

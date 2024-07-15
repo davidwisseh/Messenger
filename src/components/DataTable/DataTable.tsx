@@ -22,12 +22,14 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   handleDelete: Function;
+  chat: string;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   handleDelete,
+  chat,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
@@ -45,11 +47,19 @@ export function DataTable<TData, TValue>({
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
               >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell className=" text-wrap break-words" key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
+                {row.getVisibleCells().map((cell) => {
+                  return (
+                    <TableCell
+                      className={`${cell.getValue()} text-wrap break-words `}
+                      key={cell.id}
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  );
+                })}
 
                 <TableCell className="" key={`delete-${row.id}`}>
                   <Button onClick={() => handleDelete(row.original)}>

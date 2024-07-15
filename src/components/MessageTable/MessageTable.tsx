@@ -13,11 +13,14 @@ import {
   updateDoc,
   arrayUnion,
   arrayRemove,
+  Unsubscribe,
 } from "firebase/firestore";
+var AES = require("crypto-js/aes");
+var enc = require("crypto-js/enc-utf8");
 import { app } from "../../app/fb";
 import { columns } from "../DataTable/columns";
 import { DataTable } from "../DataTable/DataTable";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Chat, Message } from "@/util/util";
 const DATA = [
   {
@@ -33,11 +36,22 @@ const MessageTable = ({ chat }: { chat: string }) => {
   const [data, setData] = useState<null | Message[]>(null);
   const db = getFirestore(app);
 
-  const unsub = onSnapshot(doc(db, "Chats", chat), (snap) => {
-    const d = snap.data() as Chat;
+  useEffect(() => {
+    const unsu = onSnapshot(doc(db, "Chats", chat), (snap) => {
+      const d = snap.data() as Chat;
 
-    setData(d.messages);
-  });
+      const decrypted = d.messages.map((val) => ({
+        ...val,
+        message: AES.decrypt(val.message, chat).toString(enc),
+      }));
+      setData(decrypted);
+    });
+
+    return () => {
+      unsu();
+    };
+  }, []);
+
   const handleDelete = ({ id }: { id: string }) => {
     updateDoc(doc(db, "Chats", chat), {
       messages: data?.filter((message) => message.id !== id),
@@ -55,6 +69,7 @@ const MessageTable = ({ chat }: { chat: string }) => {
         <DataTable
           data={data}
           //@ts-ignore
+          chat={chat}
           columns={columns}
           handleDelete={handleDelete}
         ></DataTable>
