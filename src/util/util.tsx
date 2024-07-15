@@ -16,3 +16,25 @@ export interface Message {
   time: number;
   id: string;
 }
+export interface SimpMessage {
+  user: string;
+  chat: string;
+}
+
+export interface UserObj {
+  friends?: string[];
+  blocked?: string[];
+  blockedBy?: string[];
+  chats?: string[];
+  displayName: string;
+  id: string;
+  email: string;
+  img_url: string;
+  messaged?: SimpMessage[];
+  complete: boolean;
+}
+
+export interface Chat {
+  id: string;
+  messages: Message[];
+}

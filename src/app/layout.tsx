@@ -9,6 +9,7 @@ import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
+
 console.log("Initialized App" + app);
 
 export const metadata: Metadata = {

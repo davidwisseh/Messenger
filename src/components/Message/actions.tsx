@@ -31,6 +31,7 @@ export const sendMessage = async ({
     read: false,
     id: messId,
   };
+
   const db = getFirestore(app);
   console.log(messObj);
   const q = doc(db, "Messages", messId);
@@ -40,6 +41,6 @@ export const sendMessage = async ({
     console.error(err);
   });
   await updateDoc(q1, {
-    messages: arrayUnion(messId),
+    messages: arrayUnion({ id: messId }),
   });
 };

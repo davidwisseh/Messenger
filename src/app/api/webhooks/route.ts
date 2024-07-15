@@ -1,18 +1,22 @@
 "use server";
-import { firebaseConfig } from "@/util/util";
+import { firebaseConfig, UserObj } from "@/util/util";
 import { WebhookEvent } from "@clerk/nextjs/server";
-import * as firebase from "firebase-admin";
-import { getAuth } from "firebase-admin/auth";
-import { getFirestore } from "firebase-admin/firestore";
+import { initializeApp } from "firebase/app";
 import { headers } from "next/headers";
 import { Webhook } from "svix";
-
-const serviceAccount = JSON.parse(process.env.SERVICE_ACCOUNT!);
-const app = firebase.initializeApp({
-  ...firebaseConfig,
-  credential: firebase.credential.cert(serviceAccount),
-  databaseURL: "https://messenger-fdf1b.nam5.firebaseio.com",
-});
+import {
+  collection,
+  doc,
+  getFirestore,
+  setDoc,
+  query,
+  where,
+  updateDoc,
+  arrayUnion,
+  deleteDoc,
+  getDoc,
+} from "firebase/firestore";
+import { app } from "../../../app/fb";
 
 export async function POST(req: Request) {
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
@@ -61,57 +65,30 @@ export async function POST(req: Request) {
 
   // Get event type, auth, and database
   const eventType = evt.type;
-  const auth = getAuth(app);
+  const auth = app;
   const db = getFirestore(app);
 
   if (eventType === "user.created") {
     // get event data from clerk UserJson
     const data = evt.data;
-    const { id, email_addresses, image_url } = data;
-
-    await auth
-      .createUser({
-        uid: id,
-        email: email_addresses.at(0)?.email_address,
-      })
-      .then(() => {
-        console.log("created firebase user successfully");
-      })
-      .catch((err) => {
-        console.error("Error Creating User: ", err);
-
-        return new Response("error", { status: 400 });
-      });
+    const { id, email_addresses, image_url, username } = data;
 
     console.log("creating firestore user");
-    await db
-      .collection("Users")
-      .doc(id)
-      .set({
-        id,
-        email_address: email_addresses.at(0)?.email_address,
-        image_url,
-        friends: [],
-      });
+
+    await setDoc(doc(db, "Users", id), {
+      id,
+      displayName: username,
+      complete: false,
+      email: email_addresses[0].email_address,
+      img_url: image_url,
+    } as UserObj);
     console.log("created firestore user successfully");
   } else if (eventType === "user.deleted") {
     const data = evt.data;
     const { id } = data;
-
-    await auth
-      .deleteUser(id!)
-      .then(() => {
-        console.log("deleted from firebase successfully");
-      })
-      .catch((error) => {
-        console.log("error deleting from firebase");
-        return new Response("error", { status: 400 });
-      });
-
     console.log("deleting firestore user");
-    const userRef = await db.collection("Users").where("id", "==", id).get();
-    userRef.forEach((user) => {
-      user.ref.delete();
+    await deleteDoc(doc(db, "Users", id!)).catch((error) => {
+      console.error(error);
     });
     console.log("successfully deleted firestore user");
   } else if (eventType === "user.updated") {
