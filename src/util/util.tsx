@@ -16,7 +16,7 @@ export interface Message {
   time: number;
   id: string;
 }
-export interface SimpMessage {
+export interface Messaged {
   user: string;
   chat: string;
 }
@@ -30,11 +30,10 @@ export interface UserObj {
   id: string;
   email: string;
   img_url: string;
-  messaged?: SimpMessage[];
+  messaged?: Messaged[];
   complete: boolean;
 }
 
 export interface Chat {
-  id: string;
   messages: Message[];
 }

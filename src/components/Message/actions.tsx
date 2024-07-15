@@ -1,5 +1,5 @@
 "use server";
-import { Message } from "@/util/util";
+import { Chat, Message, UserObj } from "@/util/util";
 import {
   collection,
   doc,
@@ -26,9 +26,15 @@ export const sendMessage = async ({
     throw new Error("Not Logged In");
     return;
   }
-
-  const messId = nanoid();
   const { id } = user;
+  const messId = nanoid();
+  const db = getFirestore(app);
+  const dbUser = (await getDoc(doc(db, "Users", id))).data() as UserObj;
+  if (dbUser.blockedBy?.includes(to)) {
+    throw new Error("Blocked By User");
+    return;
+  }
+
   const messObj: Message = {
     time: Date.now(),
     to: to === "me" ? id : to,
@@ -38,15 +44,19 @@ export const sendMessage = async ({
     id: messId,
   };
 
-  const db = getFirestore(app);
-  console.log(messObj);
-  const q = doc(db, "Messages", messId);
-  const q1 = doc(db, "Users", id);
-
-  await setDoc(q, messObj).catch((err) => {
-    console.error(err);
-  });
-  await updateDoc(q1, {
-    messages: arrayUnion({ id: messId }),
-  });
+  let chat = dbUser.messaged?.find((mess) => mess.user === to)?.chat;
+  if (!chat) {
+    chat = nanoid();
+    await setDoc(doc(db, "Chats", chat), { messages: [messObj] } as Chat);
+    await updateDoc(doc(db, "Users", id), {
+      messaged: arrayUnion(to),
+    });
+    await updateDoc(doc(db, "Users", to), {
+      messaged: arrayUnion(id),
+    });
+  } else {
+    await updateDoc(doc(db, "Chats", chat), {
+      messages: arrayUnion(messObj),
+    });
+  }
 };
