@@ -35,7 +35,7 @@ export default function Home() {
 
   const router = useRouter();
   useEffect(() => {
-    if (user.isSignedIn) {
+    if (user.user) {
       const db = getFirestore(app);
       const u = onSnapshot(doc(db, "Users", user.user.id), (d) => {
         const dbUserTemp = d.data();
@@ -46,7 +46,7 @@ export default function Home() {
       };
     }
     return () => {};
-  }, [user.isSignedIn]);
+  }, [user.user]);
   const db = getFirestore(app);
 
   if (user.isLoaded) {
