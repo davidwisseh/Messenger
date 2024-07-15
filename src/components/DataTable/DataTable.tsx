@@ -29,7 +29,6 @@ export function DataTable<TData, TValue>({
   columns,
   data,
   handleDelete,
-  types,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
@@ -54,13 +53,13 @@ export function DataTable<TData, TValue>({
                     <div>{`${cell.getValue()}`}</div>
                   </TableCell>
                 ))}
-                {types === "from" && (
-                  <TableCell className="" key={`delete-${row.id}`}>
-                    <Button onClick={() => handleDelete(row.original)}>
-                      Delete
-                    </Button>
-                  </TableCell>
-                )}
+                (
+                <TableCell className="" key={`delete-${row.id}`}>
+                  <Button onClick={() => handleDelete(row.original)}>
+                    Delete
+                  </Button>
+                </TableCell>
+                )
               </TableRow>
             ))
           ) : (

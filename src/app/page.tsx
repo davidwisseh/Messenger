@@ -10,13 +10,17 @@ import {
   query,
   collection,
   onSnapshot,
-  getDocs,
+  getDoc,
+  doc,
   where,
 } from "firebase/firestore";
 import { useUser } from "@clerk/nextjs";
 import { json } from "stream/consumers";
 import { useEffect, useState } from "react";
 import { Loader2Icon } from "lucide-react";
+import { app } from "./fb";
+import { UserObj } from "@/util/util";
+import ChatTemp from "../components/ChatTemp/ChatTemp";
 
 export default function Home() {
   const user = useUser();
@@ -25,25 +29,7 @@ export default function Home() {
       <>
         <Navbar></Navbar>
 
-        {user.isSignedIn && (
-          <>
-            <div className="m-auto w-[80%] h-max relative">
-              <MaxWidthWrapper className="mt-14 shadow-md rounded-md">
-                <Message></Message>
-              </MaxWidthWrapper>
-            </div>
-            <div className="m-auto w-[80%] h-max relative">
-              <MaxWidthWrapper className="mt-14 shadow-md rounded-md">
-                <MessageTable type="to" userId={user.user.id}></MessageTable>
-              </MaxWidthWrapper>
-            </div>
-            <div className="m-auto w-[80%] h-max relative">
-              <MaxWidthWrapper className="mt-14 shadow-md rounded-md">
-                <MessageTable type="from" userId={user.user.id}></MessageTable>
-              </MaxWidthWrapper>
-            </div>
-          </>
-        )}
+        {user.isSignedIn && <ChatTemp></ChatTemp>}
       </>
     );
   }

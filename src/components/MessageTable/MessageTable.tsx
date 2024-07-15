@@ -15,7 +15,7 @@ import { app } from "../../app/fb";
 import { columns } from "../DataTable/columns";
 import { DataTable } from "../DataTable/DataTable";
 import { useState } from "react";
-import { Message } from "@/util/util";
+import { Chat, Message } from "@/util/util";
 const DATA = [
   {
     read: false,
@@ -26,38 +26,42 @@ const DATA = [
   },
 ];
 
-const MessageTable = ({ type, userId }: { type: string; userId: string }) => {
-  const [data, setData] = useState<[] | DocumentData[]>([]);
+const MessageTable = ({ chat }: { chat: string }) => {
+  const [data, setData] = useState<null | Message[]>(null);
   const db = getFirestore(app);
-  const q = query(collection(db, "Messages"), where(type, "==", userId));
+  
 
-  const unsub = onSnapshot(q, (snap) => {
-    const d = snap.docs
-      .sort((a, b) => b.get("time") - a.get("time"))
-      .map((d) => d.data());
-    setData(d);
+  const unsub = onSnapshot(doc(db,"Chats",chat), (snap) => {
+    const d = snap.data() as Chat
+      
+    setData(d.messages);
   });
   const handleDelete = ({ id }: { id: string }) => {
     deleteDoc(doc(db, "Messages", id));
   };
-  return (
-    <div className="w-full  flex flex-col max-h-80 overflow-hidden">
-      <div className="mb-2">{type === "to" ? "Received" : "Sent"}:</div>
+
+  if(data){
+
+    
+    return (
+      <div className="w-full  flex flex-col max-h-80 overflow-hidden">
+      <div className="mb-2">{`Chat id: ${chat}` }:</div>
       <div className="flex  px-4 border-t border-r border-l -mb-2 justify-start border-gray-200 rounded-sm  py-4">
-        <p className="w-72">{type === "to" ? "from" : "to"}</p>
-        <p className="mx-auto">message</p>
+       
         {/* <p className="ml-auto">delete</p> */}
       </div>
 
       <DataTable
         data={data}
         //@ts-ignore
-        columns={columns[type]}
+        columns={columns["from"]}
         handleDelete={handleDelete}
-        types={type}
-      ></DataTable>
+        
+        ></DataTable>
     </div>
   );
+}
+return<></> 
 };
 
 export default MessageTable;
