@@ -22,7 +22,6 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   handleDelete: Function;
-  types: string;
 }
 
 export function DataTable<TData, TValue>({
