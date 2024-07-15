@@ -21,7 +21,6 @@ import {
 } from "firebase/firestore";
 import { app } from "@/app/fb";
 import { UserObj } from "@/util/util";
-const contactsd = ["u"];
 const Message = () => {
   const [contacts, setContacts] = useState<string[] | null>(null);
   const { toast } = useToast();
@@ -34,14 +33,16 @@ const Message = () => {
       const dbUser = (
         await getDoc(doc(db, "Users", user.user?.id!))
       ).data() as UserObj;
-      const { blockedBy } = dbUser;
+      const blockedBy = dbUser.blockedBy;
       const dbUsers = await getDocs(collection(db, "Users"));
-      const setcon = dbUsers.docs.map((d) => {
+      const filtered = dbUsers.docs.filter((d) => {
         const ud = d.data() as UserObj;
-        if (!dbUser.blockedBy?.includes(ud.id)) {
-          return ud.id;
+
+        if (!blockedBy?.includes(ud.id) && ud.id !== user.user?.id) {
+          return true;
         }
-      }) as string[];
+      });
+      const setcon = filtered.map((d) => d.data().id) as string[];
 
       setContacts(setcon);
     };
@@ -98,8 +99,8 @@ const Message = () => {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="me">me</SelectItem>
-            {contacts?.map((c) => (
-              <SelectItem key={c} value={c}>
+            {contacts?.map((c, i) => (
+              <SelectItem key={`${c}_${i}`} value={c}>
                 {c}
               </SelectItem>
             ))}

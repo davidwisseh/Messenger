@@ -26,11 +26,9 @@ export default function Home() {
   const user = useUser();
   if (user.isLoaded) {
     return (
-      <>
-        <Navbar></Navbar>
-
+      <div className="h-screen w-screen pt-14">
         {user.isSignedIn && <ChatTemp></ChatTemp>}
-      </>
+      </div>
     );
   }
   return (

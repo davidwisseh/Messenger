@@ -26,7 +26,7 @@ const ChatTemp = () => {
   return (
     <>
       <div className="m-auto w-[80%] h-max relative">
-        <MaxWidthWrapper className="mt-14 shadow-md rounded-md">
+        <MaxWidthWrapper className=" shadow-md rounded-md">
           <Message></Message>
         </MaxWidthWrapper>
       </div>

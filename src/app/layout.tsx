@@ -6,9 +6,9 @@ import "./globals.css";
 import { app } from "./fb";
 
 import { Toaster } from "@/components/ui/toaster";
+import NavBar from "@/components/NavBar";
 
 const inter = Inter({ subsets: ["latin"] });
-
 
 console.log("Initialized App" + app);
 
@@ -25,7 +25,10 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" className=" dark:bg-black">
-        <body className={inter.className}>
+        <body className={inter.className + "relative"}>
+          <header>
+            <NavBar />
+          </header>
           {children}
 
           <Toaster />
