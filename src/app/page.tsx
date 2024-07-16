@@ -17,8 +17,8 @@ import {
 } from "firebase/firestore";
 import { useUser } from "@clerk/nextjs";
 import { json } from "stream/consumers";
-import { useEffect, useState } from "react";
-import { Loader2Icon } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Loader2Icon, SearchIcon } from "lucide-react";
 import { app } from "./fb";
 import { UserObj } from "@/util/util";
 import ChatTemp from "../components/ChatTemp/ChatTemp";
@@ -26,12 +26,14 @@ import { Router } from "next/router";
 import { useRouter } from "next/navigation";
 
 import SearchBar from "@/components/SearchBar/SearchBar";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   const user = useUser();
   const [dbUser, setDbUser] = useState<null | UserObj>(null);
   const [contacts, setContacts] = useState<string[] | undefined>(undefined);
   const [chats, setChats] = useState<undefined | string[]>(undefined);
+  const chatTo = useRef<string>("");
 
   const router = useRouter();
   useEffect(() => {
@@ -54,7 +56,7 @@ export default function Home() {
       if (dbUser) {
         return (
           <div className="h-screen w-screen pt-16">
-            <ChatTemp dbUser={dbUser}></ChatTemp>
+            <ChatTemp toUser={chatTo} dbUser={dbUser}></ChatTemp>
           </div>
         );
       }

@@ -88,12 +88,10 @@ const SearchBar = ({
   };
 
   return (
-    <div
-      className={cn(["h-fit ring ring-slate-300 rounded-sm  w-fit", className])}
-    >
+    <div className={cn([" ring ring-slate-300 rounded-sm  w-fit", className])}>
       <input
         type="text"
-        className="w-full min-w-fit px-2"
+        className="w-full h-full min-w-fit px-2"
         onChange={() => buffer()}
         //@ts-ignore
         ref={inputRef}
