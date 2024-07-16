@@ -88,10 +88,10 @@ const SearchBar = ({
   };
 
   return (
-    <div className={cn([" ring ring-slate-300 rounded-sm  w-fit", className])}>
+    <div className={cn([" ring ring-slate-300 rounded-sm   w-fit", className])}>
       <input
         type="text"
-        className="w-full h-full min-w-fit px-2"
+        className="w-full pt-2 h-full min-w-fit px-2"
         onChange={() => buffer()}
         //@ts-ignore
         ref={inputRef}
@@ -100,7 +100,7 @@ const SearchBar = ({
         {filteredCon?.map((username) => {
           return (
             <Button
-              className="block w-full rounded-none text-left"
+              className="  block w-full rounded-none text-left"
               variant={"ghost"}
               key={username.id}
               onClick={() => {

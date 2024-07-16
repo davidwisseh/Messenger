@@ -36,10 +36,12 @@ const ChatTemp = ({
   return (
     <>
       <div className="m-auto w-[80%] h-max relative">
-        <MaxWidthWrapper className="justify-center gap-2 items-center">
-          <SearchIcon></SearchIcon>
+        <MaxWidthWrapper className="justify-center items-start  gap-2 ">
+          <div className="pt-2">
+            <SearchIcon></SearchIcon>
+          </div>
           <SearchBar
-            className="h-full"
+            className="h-full "
             toUser={toUser}
             dbUser={dbUser}
           ></SearchBar>
