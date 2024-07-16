@@ -1,7 +1,7 @@
 "use client";
 import { UserObj } from "@/util/util";
 import { useUser } from "@clerk/nextjs";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { useToast } from "../ui/use-toast";
@@ -9,6 +9,7 @@ import { sendMessage } from "./actions";
 const Message = ({ toUser }: { toUser: string }) => {
   const { toast } = useToast();
   const [messageText, setMessageText] = useState("");
+  const textRef = useRef<HTMLTextAreaElement | undefined>(undefined);
 
   const handleMessageSend = () => {
     if (!messageText) {
@@ -36,9 +37,9 @@ const Message = ({ toUser }: { toUser: string }) => {
     <div className="h-fit w-full  flex flex-col">
       <Textarea
         value={messageText}
+        ref={textRef}
         onChange={(e) => {
           setMessageText(e.target.value);
-          console.log(e.currentTarget.scrollHeight);
           e.currentTarget.style.height = "1px";
           e.currentTarget.style.height =
             25 + e.currentTarget.scrollHeight + "px";

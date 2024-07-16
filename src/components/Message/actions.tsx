@@ -45,7 +45,6 @@ export const sendMessage = async ({
   let chat = dbUser.messaged?.find(
     (mess) => mess.user === (to === "me" ? id : to)
   )?.chat;
-  console.log(chat);
   if (!chat) {
     chat = nanoid();
     const messObj: Message = {

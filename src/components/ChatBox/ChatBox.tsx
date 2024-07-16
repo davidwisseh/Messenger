@@ -45,7 +45,7 @@ const ChatBox = ({
         setChatObj({ ...data, messages: decMess } as Chat);
       },
       (err) => {
-        console.log(err.message);
+        console.error(err.message);
         console.log(messaged.chat);
       }
     );
