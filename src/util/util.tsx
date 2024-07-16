@@ -43,4 +43,5 @@ export interface UserName {
   id: string;
   name: string;
   displayName: string;
+  imageUrl: string;
 }

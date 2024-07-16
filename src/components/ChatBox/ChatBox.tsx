@@ -4,6 +4,7 @@ import MaxWidthWrapper from "../MaxWidthWrapper";
 import { Chat } from "@/util/util";
 import { doc, getFirestore, onSnapshot } from "firebase/firestore";
 import { app } from "@/app/fb";
+import { Avatar, AvatarImage } from "../ui/avatar";
 
 const ChatBox = ({ chat }: { chat: string }) => {
   const [chatObj, setChatObj] = useState<null | Chat>();
@@ -27,7 +28,9 @@ const ChatBox = ({ chat }: { chat: string }) => {
 
   return (
     <MaxWidthWrapper className="mt-14 border-t-[1px] border-gray-200/50 shadow-md rounded-md">
-      <>d</>
+      <Avatar>
+        <AvatarImage src=""></AvatarImage>
+      </Avatar>
     </MaxWidthWrapper>
   );
 };

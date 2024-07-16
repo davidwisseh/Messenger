@@ -7,7 +7,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useUser } from "@clerk/nextjs";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { useToast } from "../ui/use-toast";
@@ -25,13 +25,21 @@ import SearchBar from "../SearchBar/SearchBar";
 const Message = ({ dbUser }: { dbUser: UserObj }) => {
   const { toast } = useToast();
   const [messageText, setMessageText] = useState("");
-  const [toUser, setToUser] = useState("me");
+  const toUser = useRef<string>("");
+
   const user = useUser();
 
   const handleMessageSend = () => {
     if (!messageText) {
       toast({
-        title: "no message",
+        title: "No Message",
+        description: new Date(Date.now()).toLocaleString("en-US"),
+        variant: "destructive",
+      });
+      return;
+    } else if (!toUser.current) {
+      toast({
+        title: "No User",
         description: new Date(Date.now()).toLocaleString("en-US"),
         variant: "destructive",
       });
@@ -39,7 +47,7 @@ const Message = ({ dbUser }: { dbUser: UserObj }) => {
     } else {
       sendMessage({
         message: messageText,
-        to: toUser,
+        to: toUser.current,
       }).catch((error: Error) => {
         toast({
           title: error.message,
@@ -47,7 +55,7 @@ const Message = ({ dbUser }: { dbUser: UserObj }) => {
         });
       });
       setMessageText("");
-      setToUser("me");
+      toUser.current = "";
     }
   };
 
@@ -66,7 +74,7 @@ const Message = ({ dbUser }: { dbUser: UserObj }) => {
         placeholder="..."
       ></Textarea>
       <div className="flex gap-2 items-center">
-        <SearchBar dbUser={dbUser}></SearchBar>
+        <SearchBar toUser = {toUser} dbUser={dbUser}></SearchBar>
 
         <Button className="ml-auto w-20" onClick={() => handleMessageSend()}>
           Send

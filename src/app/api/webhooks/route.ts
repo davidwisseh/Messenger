@@ -92,6 +92,7 @@ export async function POST(req: Request) {
       id,
       name: "",
       displayName: first_name,
+      imageUrl: image_url,
     } as UserName);
 
     console.log("created firestore user successfully");

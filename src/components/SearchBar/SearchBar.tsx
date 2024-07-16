@@ -9,7 +9,14 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Button } from "../ui/button";
-import { ChangeEvent, LegacyRef, useEffect, useRef, useState } from "react";
+import {
+  ChangeEvent,
+  LegacyRef,
+  MutableRefObject,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { match } from "assert";
 import {
   and,
@@ -27,11 +34,12 @@ import { UserName, UserObj } from "@/util/util";
 const SearchBar = ({
   className,
   dbUser,
+  toUser,
 }: {
   className?: ClassValue;
   dbUser: UserObj;
+  toUser: MutableRefObject<string>;
 }) => {
-  const [toUser, setToUser] = useState("me");
   const [db, setDb] = useState(getFirestore(app));
   const inputRef = useRef<undefined | HTMLInputElement>(undefined);
   const [filteredCon, setFilteredCon] = useState<UserName[] | undefined>(
@@ -41,6 +49,7 @@ const SearchBar = ({
   let buffering = false;
 
   const buffer = () => {
+    toUser.current = "";
     if (!buffering) {
       buffering = !buffering;
       setTimeout(() => {
@@ -50,7 +59,11 @@ const SearchBar = ({
           getDocs(
             query(
               collection(db, "UserNames"),
-              where("id", "not-in", dbUser.blockedBy)
+              where(
+                "id",
+                "not-in",
+                dbUser.blockedBy.length ? dbUser.blockedBy : [""]
+              )
             )
           ).then((snap) => {
             const data = snap.docs
@@ -70,7 +83,7 @@ const SearchBar = ({
         }
 
         buffering = !buffering;
-      }, 1000);
+      }, 500);
     }
   };
 
@@ -93,11 +106,13 @@ const SearchBar = ({
               variant={"ghost"}
               key={username.id}
               onClick={() => {
-                inputRef.current!.value = username.name;
+                inputRef.current!.value = username.displayName;
+                toUser.current = username.id;
                 setFilteredCon(undefined);
               }}
             >
-              {username.name}
+              <span>@{username.name}-</span>
+              <span className="text-slate-600">{username.displayName}</span>
             </Button>
           );
         })}
