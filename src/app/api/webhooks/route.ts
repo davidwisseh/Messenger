@@ -1,5 +1,5 @@
 "use server";
-import { firebaseConfig, UserObj } from "@/util/util";
+import { firebaseConfig, UserName, UserObj } from "@/util/util";
 import { WebhookEvent } from "@clerk/nextjs/server";
 import { initializeApp } from "firebase/app";
 import { headers } from "next/headers";
@@ -88,6 +88,11 @@ export async function POST(req: Request) {
       messaged: [],
       userName: "",
     } as UserObj);
+    await setDoc(doc(db, "UserNames", id), {
+      id,
+      name: "",
+      displayName: first_name,
+    } as UserName);
 
     console.log("created firestore user successfully");
   } else if (eventType === "user.deleted") {

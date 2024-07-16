@@ -42,4 +42,5 @@ export interface Chat {
 export interface UserName {
   id: string;
   name: string;
+  displayName: string;
 }
