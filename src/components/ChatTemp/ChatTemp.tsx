@@ -22,8 +22,8 @@ const ChatTemp = ({ dbUser }: { dbUser: UserObj }) => {
       </div>
 
       <div className="m-auto w-[80%] h-max relative">
-        {dbUser.chats.map((chat) => {
-          return <ChatBox chat={chat} key={chat} />;
+        {dbUser.messaged.map((messaged) => {
+          return <ChatBox messaged={messaged} key={messaged.chat} />;
         })}
       </div>
     </>
