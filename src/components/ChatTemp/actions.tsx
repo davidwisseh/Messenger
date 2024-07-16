@@ -10,5 +10,14 @@ export const makeEmptyChat = async (to: string) => {
   const user = await currentUser();
   const db = getFirestore(app);
   const chat = nanoid();
-  console.log(user);
+  if (user) {
+    updateDoc(doc(db, "Users", to), {
+      messaged: arrayUnion({ chat, user: user?.id } as Messaged),
+      chats: arrayUnion(chat),
+    }),
+      updateDoc(doc(db, "Users", user!.id), {
+        messaged: arrayUnion({ chat, user: to } as Messaged),
+        chats: arrayUnion(chat),
+      });
+  }
 };
