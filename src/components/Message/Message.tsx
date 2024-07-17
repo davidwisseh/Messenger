@@ -36,7 +36,14 @@ const Message = ({ toUser }: { toUser: string }) => {
   return (
     <div className="h-fit w-full  flex flex-col">
       <Textarea
+        onKeyDown={(e) => {
+          if (e.shiftKey && e.key === "Enter") {
+            e.preventDefault();
+            handleMessageSend();
+          }
+        }}
         value={messageText}
+        //@ts-ignore
         ref={textRef}
         onChange={(e) => {
           setMessageText(e.target.value);
@@ -48,7 +55,8 @@ const Message = ({ toUser }: { toUser: string }) => {
         placeholder="..."
       ></Textarea>
       <div className="flex gap-2 items-center">
-        <Button className="ml-auto w-20" onClick={() => handleMessageSend()}>
+        <p className="ml-auto text-xs text-slate-500/50">Shift + Enter</p>
+        <Button className=" w-20" onClick={() => handleMessageSend()}>
           Send
         </Button>
       </div>

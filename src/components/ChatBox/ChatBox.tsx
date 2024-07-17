@@ -10,6 +10,7 @@ import DefUser from "../DefUser";
 import Message from "../Message/Message";
 import { useUser } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
+import { ChevronDown, ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 var AES = require("crypto-js/aes");
 var enc = require("crypto-js/enc-utf8");
 
@@ -24,6 +25,8 @@ const ChatBox = ({
   const [db, setDb] = useState(getFirestore(app));
   const [toUser, setToUser] = useState<UserName | null>(null);
   const chatDivRef = useRef<HTMLDivElement | undefined>(undefined);
+  const [isSmall, setIsSmall] = useState<boolean>(true);
+  const [isClosed, setIsClosed] = useState<boolean>(true);
 
   useEffect(() => {
     getDoc(doc(db, "UserNames", messaged.user)).then((doc) => {
@@ -62,8 +65,8 @@ const ChatBox = ({
   return (
     chatObj && (
       <div className="flex flex-col mt-10 border-t-[1px]  border-gray-200/50 shadow-md rounded-md">
-        <MaxWidthWrapper className="">
-          <Avatar className="transition  hover:ring ring-slate-500/50 hover:scale-110">
+        <MaxWidthWrapper className="items-end">
+          <Avatar className="transition h-8 w-8 sm:h-10 sm:w-10  hover:ring ring-slate-500/50 hover:scale-110">
             <AvatarImage src={toUser?.image_url}></AvatarImage>
             <AvatarFallback className="w-10 h-10">
               <DefUser></DefUser>
@@ -74,8 +77,61 @@ const ChatBox = ({
             <p className="font-semibold">{toUser?.displayName}</p>
             <p className="text-xs text-slate-500">@{toUser?.name}</p>
           </div>
+          {isClosed && (
+            <>
+              {chatObj.messages.length > 0 && (
+                <>
+                  <div
+                    className={cn(
+                      " overflow-hidden  flex  flex-col justify-end ml-auto"
+                    )}
+                  >
+                    <p className="truncate ">
+                      {chatObj.messages.at(-1)?.message}
+                    </p>
+                  </div>
+                  <span
+                    className={cn(
+                      "text-[8px] mb-1 w-fit text-nowrap  text-slate-500 ml-2"
+                    )}
+                  >
+                    {new Date(
+                      chatObj.messages.at(-1)?.time!
+                    ).toLocaleTimeString("en-US", {
+                      hour: "2-digit",
+                      minute: "numeric",
+                    })}
+                  </span>
+                </>
+              )}
+
+              <div
+                className={cn(
+                  "    flex items-center ml-2",
+                  chatObj.messages.length > 0 ? "" : "ml-auto"
+                )}
+              >
+                {isSmall && (
+                  <ChevronDownIcon
+                    onClick={() => {
+                      setIsSmall(false);
+                    }}
+                    className=" hover:scale-125 "
+                  ></ChevronDownIcon>
+                )}
+                {!isSmall && (
+                  <ChevronUpIcon
+                    onClick={() => {
+                      setIsSmall(true);
+                    }}
+                    className="hover:scale-125"
+                  ></ChevronUpIcon>
+                )}
+              </div>
+            </>
+          )}
         </MaxWidthWrapper>
-        {
+        {isClosed && (
           //@ts-ignore
           <div ref={chatDivRef} className="max-h-[50vh]  overflow-y-scroll">
             {chatObj.messages.map((messa) => {
@@ -86,7 +142,7 @@ const ChatBox = ({
                   }`}
                   key={messa.id}
                 >
-                  <Avatar className="transition mr-2 hover:ring ring-slate-500/50 hover:scale-110">
+                  <Avatar className="transition mr-2 hover:ring h-7 sm:h-10 w-7 sm:w-10 ring-slate-500/50 hover:scale-110">
                     <AvatarImage
                       onLoad={() => handleLoad()}
                       src={
@@ -95,24 +151,11 @@ const ChatBox = ({
                           : toUser?.image_url
                       }
                     ></AvatarImage>
-                    <AvatarFallback className="w-10 h-10">
+                    <AvatarFallback className="h-7 sm:h-10 w-7 sm:w-10k">
                       <DefUser></DefUser>
                     </AvatarFallback>
                   </Avatar>
 
-                  <div className="flex flex-col w-fit h-full hidden      items-start   mr-4">
-                    <p className="font-semibold">
-                      {messa.from === dbUser.id
-                        ? dbUser.displayName
-                        : toUser?.displayName}
-                    </p>
-                    <p className="text-xs text-slate-500">
-                      @
-                      {messa.from === dbUser.id
-                        ? dbUser.userName
-                        : toUser?.name}
-                    </p>
-                  </div>
                   <div
                     className={cn(
                       " overflow-hidden flex  flex-col justify-end ",
@@ -123,13 +166,11 @@ const ChatBox = ({
                   </div>
                   <span
                     className={cn(
-                      "text-[8px]  w-fit text-nowrap  text-slate-500",
+                      "text-[8px]  w-fit text-nowrap mb-1 text-slate-500",
                       messa.from === dbUser.id ? "mr-2" : "ml-2"
                     )}
                   >
-                    {new Date(
-                      chatObj.messages.at(-1)?.time!
-                    ).toLocaleTimeString("en-US", {
+                    {new Date(messa.time).toLocaleTimeString("en-US", {
                       hour: "2-digit",
                       minute: "numeric",
                     })}
@@ -138,10 +179,12 @@ const ChatBox = ({
               );
             })}
           </div>
-        }
-        <div className="p-4">
-          <Message toUser={toUser?.id!}></Message>
-        </div>
+        )}
+        {!isSmall && (
+          <div className="p-4">
+            <Message toUser={toUser?.id!}></Message>
+          </div>
+        )}
       </div>
     )
   );

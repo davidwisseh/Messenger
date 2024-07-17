@@ -10,6 +10,7 @@ import {
   updateDoc,
   arrayUnion,
   getDoc,
+  arrayRemove,
 } from "firebase/firestore";
 var AES = require("crypto-js/aes");
 import { app } from "../../app/fb";
@@ -42,42 +43,37 @@ export const sendMessage = async ({
     return;
   }
 
-  let chat = dbUser.messaged?.find(
-    (mess) => mess.user === (to === "me" ? id : to)
-  )?.chat;
-  if (!chat) {
-    chat = nanoid();
-    const messObj: Message = {
-      time: Date.now(),
-      to: to === "me" ? id : to,
-      message: AES.encrypt(message, chat).toString(),
-      from: id,
-      read: false,
-      id: messId,
-    };
-    await setDoc(doc(db, "Chats", chat), { messages: [messObj] } as Chat);
-    await updateDoc(doc(db, "Users", id), {
-      messaged: arrayUnion({
-        chat: chat,
-        user: to === "me" ? id : to,
-      } as Messaged),
-      chats: arrayUnion(chat),
-    });
-    await updateDoc(doc(db, "Users", to === "me" ? id : to), {
-      messaged: arrayUnion({ chat: chat, user: id }),
-      chats: arrayUnion(chat),
-    });
-  } else {
-    const messObj: Message = {
-      time: Date.now(),
-      to: to === "me" ? id : to,
-      message: AES.encrypt(message, chat).toString(),
-      from: id,
-      read: false,
-      id: messId,
-    };
-    await updateDoc(doc(db, "Chats", chat), {
-      messages: arrayUnion(messObj),
-    });
-  }
+  let chat = dbUser.messaged.find((mess) => mess.user === to)!;
+
+  const messObj: Message = {
+    time: Date.now(),
+    to,
+    message: AES.encrypt(message, chat.chat).toString(),
+    from: id,
+    read: false,
+    id: messId,
+  };
+  await updateDoc(doc(db, "Chats", chat.chat), {
+    messages: arrayUnion(messObj),
+  });
+
+  let myMessaged = (await getDoc(doc(db, "Users", id))).get(
+    "messaged"
+  ) as Messaged[];
+  myMessaged = myMessaged.filter((me) => me.chat !== chat.chat);
+  myMessaged.push(chat);
+
+  await updateDoc(doc(db, "Users", id), {
+    messaged: myMessaged,
+  });
+
+  let toMessaged = (await getDoc(doc(db, "Users", id))).get(
+    "messaged"
+  ) as Messaged[];
+  toMessaged = toMessaged.filter((me) => me.chat !== chat.chat);
+  toMessaged.push(chat);
+
+  await updateDoc(doc(db, "Users", to), {
+    messaged: toMessaged,
+  });
 };

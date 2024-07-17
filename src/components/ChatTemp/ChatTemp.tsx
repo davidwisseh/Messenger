@@ -1,9 +1,9 @@
 "use client";
 import { app } from "@/app/fb";
-import { useUser } from "@clerk/nextjs";
-import { getFirestore } from "firebase/firestore";
-import { MutableRefObject, useState } from "react";
-import { UserObj } from "../../util/util";
+import { SignedIn, SignOutButton, UserButton, useUser } from "@clerk/nextjs";
+import { doc, getDoc, getFirestore, onSnapshot } from "firebase/firestore";
+import { MutableRefObject, useEffect, useState } from "react";
+import { Chat, UserObj } from "../../util/util";
 import ChatBox from "../ChatBox/ChatBox";
 import MaxWidthWrapper from "../MaxWidthWrapper";
 import Message from "../Message/Message";
@@ -20,14 +20,19 @@ const ChatTemp = ({
   dbUser: UserObj;
   toUser: MutableRefObject<string>;
 }) => {
-  const [users, setUsers] = useState<string[] | undefined>(undefined);
-  const user = useUser();
-  const db = getFirestore(app);
+  const [chats, setChats] = useState();
+  const db = getFirestore();
+
   const handleCLick = () => {
     if (!toUser.current) {
       toast({ title: "No User", variant: "destructive" });
     } else if (dbUser.blockedBy.includes(toUser.current)) {
       toast({ title: "Blocked by User", variant: "destructive" });
+    } else if (!dbUser.messaged.every((me) => me.user !== toUser.current)) {
+      toast({
+        title: "Messaged Already",
+        variant: "destructive",
+      });
     } else {
       makeEmptyChat(toUser.current);
     }
@@ -47,12 +52,21 @@ const ChatTemp = ({
           ></SearchBar>
           <Button onClick={() => handleCLick()}>Chat</Button>
         </MaxWidthWrapper>
-        {dbUser.messaged.map((messaged) => {
-          return (
-            <ChatBox dbUser={dbUser} messaged={messaged} key={messaged.chat} />
-          );
-        })}
+        {dbUser.messaged
+          .map((messaged) => {
+            return (
+              <ChatBox
+                dbUser={dbUser}
+                messaged={messaged}
+                key={messaged.chat}
+              />
+            );
+          })
+          .reverse()}
       </div>
+      <SignedIn>
+        <UserButton></UserButton>
+      </SignedIn>
     </>
   );
 };

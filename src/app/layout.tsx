@@ -26,9 +26,6 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" className=" dark:bg-black">
         <body className={inter.className + "relative"}>
-          <header>
-            <NavBar />
-          </header>
           {children}
 
           <Toaster />
