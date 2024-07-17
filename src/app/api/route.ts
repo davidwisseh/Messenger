@@ -14,5 +14,5 @@ export const POST = async (req: Request) => {
     }
     console.log(clerkUser?.id);
   }
-  return new Response("Ok", { status: 200 });
+  return new Response("dfadffadsffdsf", { status: 200 });
 };

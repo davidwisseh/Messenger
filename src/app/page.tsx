@@ -63,7 +63,7 @@ export default function Home() {
   if (dbUser?.userName) {
     return (
       <div>
-        <div className="h-screen w-screen pt-16">
+        <div className="h-screen  w-screen overflow-y-scroll pt-16">
           <ChatTemp toUser={chatTo} dbUser={dbUser}></ChatTemp>
         </div>
       </div>

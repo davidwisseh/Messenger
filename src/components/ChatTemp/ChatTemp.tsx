@@ -39,8 +39,8 @@ const ChatTemp = ({
   };
 
   return (
-    <>
-      <div className="m-auto w-[80%] h-max relative">
+    <div className="h-fit w-full ">
+      <div className="m-auto w-[80%] h-fit relative">
         <MaxWidthWrapper className="justify-center items-start  gap-2 ">
           <div className="pt-2">
             <SearchIcon></SearchIcon>
@@ -67,7 +67,7 @@ const ChatTemp = ({
       <SignedIn>
         <UserButton></UserButton>
       </SignedIn>
-    </>
+    </div>
   );
 };
 

@@ -7,6 +7,7 @@ import { app } from "./fb";
 
 import { Toaster } from "@/components/ui/toaster";
 import NavBar from "@/components/NavBar";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,11 +25,13 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en" className=" dark:bg-black">
+      <html lang="en">
         <body className={inter.className + "relative"}>
-          {children}
+          <ThemeProvider attribute="class" defaultTheme="system">
+            {children}
 
-          <Toaster />
+            <Toaster />
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>
