@@ -121,11 +121,15 @@ const page = () => {
               }}
               className="flex flex-col"
             >
-              <img className="rounded-full" src={user.user.imageUrl} alt="" />
+              <img
+                className="rounded-full ring-offset-2 ring  ring-black"
+                src={user.user.imageUrl}
+                alt=""
+              />
               <div
                 //@ts-ignore
                 ref={pencilRef}
-                className=" rounded-full outline outline-1   transition ml-auto mr-1 h-5 w-5 -mt-6 flex items-center justify-center"
+                className=" rounded-full outline outline-1 invisible  transition ml-auto mr-1 h-5 w-5 -mt-6 flex items-center justify-center"
               >
                 <PencilIcon className="   h-4 w-4 "></PencilIcon>
               </div>
@@ -141,7 +145,7 @@ const page = () => {
                 //@ts-ignore
                 ref={userNameRef}
                 type="text"
-                className=" md:ml-1 mt-2 md:mt-0 caret-black/30  border-b-4 focus:outline-none border-black/30 bg-transparent  "
+                className=" md:ml-1 mt-2 md:mt-0 caret-black  border-b-4 focus:outline-none border-black bg-transparent  "
               />
             </span>
           </div>
@@ -151,30 +155,26 @@ const page = () => {
               <span className="mr-1 invisible md:hidden">@</span>
               <input
                 type="text"
-                className="  md:ml-1 mt-2 md:mt-0 caret-black/30  border-b-4 focus:outline-none border-black/30 bg-transparent  "
+                className="  md:ml-1 mt-2 md:mt-0 caret-black  border-b-4 focus:outline-none border-black bg-transparent  "
                 //@ts-ignore
                 ref={displayNameRef}
               />
             </span>
           </div>
-          {!isLoading && (
-            <div
-              className={cn(
-                " flex  mt-4 md:mt-7",
-                isLoading ? "pointer-events-none" : ""
-              )}
-            >
-              <ArrowRightCircle
-                onClick={() => {
-                  handleClick();
-                }}
-                className=" transition active:scale-100 hover:cursor-pointer hover:text-slate-600  h-10 w-10 md:h-14 md:w-14 hover:scale-110 hover:shadow-md rounded-full"
-              ></ArrowRightCircle>
-            </div>
-          )}
-          <SignedIn>
-            <UserButton></UserButton>
-          </SignedIn>
+
+          <div
+            className={cn(
+              " flex  mt-4 md:mt-7",
+              isLoading ? "pointer-events-none" : ""
+            )}
+          >
+            <ArrowRightCircle
+              onClick={() => {
+                handleClick();
+              }}
+              className=" transition  active:scale-100 hover:cursor-pointer hover:animate-pulse text-black h-10 w-10 md:h-14 md:w-14 hover:scale-110  rounded-full"
+            ></ArrowRightCircle>
+          </div>
         </MaxWidthWrapper>
       </div>
     );

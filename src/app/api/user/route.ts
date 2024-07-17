@@ -22,7 +22,7 @@ export const POST = async (req: Request) => {
     return new Response("Firebase Error", { status: 400 });
   });
   await updateDoc(doc(db, "Users", id), {
-    userName: name,
+    userName: name.toLowerCase(),
     displayName: displayName,
     img_url: image_url,
   }).catch((e) => {
