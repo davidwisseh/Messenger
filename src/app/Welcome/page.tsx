@@ -11,7 +11,10 @@ const Page = () => {
   const user = useUser();
   useEffect(() => {
     if (user.isSignedIn) {
-      router.push("/");
+      if(router){
+
+        router.push("/");
+      }
     }
   }, [user.isSignedIn]);
   if (!user.isSignedIn) {

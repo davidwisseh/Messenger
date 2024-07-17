@@ -40,14 +40,18 @@ export default function Home() {
   const router = useRouter();
   useEffect(() => {
     if (user.isLoaded && !user.isSignedIn) {
-      router.push("/Welcome");
+      if (router) {
+        router.push("/Welcome");
+      }
     }
     if (user.user) {
       const db = getFirestore(app);
       const u = onSnapshot(doc(db, "Users", user.user.id), (d) => {
         const dbUserTemp = d.data() as UserObj;
         if (!dbUserTemp.userName) {
-          router.push(`/user/complete/`);
+          if (router) {
+            router.push(`/user/complete/`);
+          }
         }
 
         setDbUser(dbUserTemp);

@@ -23,7 +23,7 @@ import { ArrowRightCircle, Loader2Icon, PencilIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-const page = () => {
+const Page = () => {
   const user = useUser();
   const db = getFirestore(app);
   const [dbUser, setDbUser] = useState<UserObj | undefined>(undefined);
@@ -181,4 +181,4 @@ const page = () => {
   }
   return <LoadingPage />;
 };
-export default page;
+export default Page;

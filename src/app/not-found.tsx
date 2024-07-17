@@ -5,7 +5,9 @@ import { useEffect } from "react";
 export default function notFound() {
   const router = useRouter();
   useEffect(() => {
-    router.push("/");
+    if (router) {
+      router.push("/");
+    }
   });
   return <></>;
 }

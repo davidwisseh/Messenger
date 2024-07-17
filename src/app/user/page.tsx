@@ -8,7 +8,7 @@ import { UserObj } from "@/util/util";
 import { useRouter } from "next/navigation";
 import LoadingPage from "@/components/LoadingPage";
 
-const user = () => {
+const User = () => {
   const user = useUser();
   const db = getFirestore(app);
   const [dbUser, setDbUser] = useState<UserObj | undefined>(undefined);
@@ -34,4 +34,4 @@ const user = () => {
   }
 };
 
-export default user;
+export default User;
