@@ -26,7 +26,7 @@ const User = () => {
         });
       }
     }
-  }, [user.isLoaded]);
+  }, [user.isLoaded, router]);
   if (dbUser) {
     return <>yep</>;
   } else {
