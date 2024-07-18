@@ -35,6 +35,7 @@ const ChatBox = ({
   const [toUser, setToUser] = useState<UserName | null>(null);
   const chatDivRef = useRef<HTMLDivElement | undefined>(undefined);
   const [isClosed, setIsClosed] = useState<boolean>(true);
+  const messageDate = useRef<number>(0);
 
   useEffect(() => {
     getDoc(doc(db, "UserNames", messaged.user)).then((doc) => {
@@ -75,13 +76,15 @@ const ChatBox = ({
       chatObj && (
         <div
           onClick={() => {
-            onClick(true);
-            setIsClosed(false);
+            if (isClosed) {
+              onClick(true);
+              setIsClosed(false);
+            }
           }}
           className={cn(
-            "flex flex-col mt-10 border-t-[1px] w-[90%] max-w-screen-xl mx-auto border-gray-200/50 shadow-md dark:shadow-slate-800 dark:border-slate-800 dark:bg-slate-800 rounded-md",
+            "flex flex-col mt-10 bg-gray-600/20   border-t-[1px] w-[90%] max-w-screen-2xl mx-auto border-gray-200/50 shadow-md dark:shadow-slate-800 dark:border-slate-800 dark:bg-slate-800 rounded-md",
             isClosed
-              ? ""
+              ? " hover:scale-105 transition"
               : "h-screen w-full mt-0 dark:bg-slate-900 rounded-none"
           )}
         >
@@ -144,18 +147,28 @@ const ChatBox = ({
             <div
               //@ts-ignore
               ref={chatDivRef}
-              className="h-full flex flex-col dark:bg-slate-800 bg-gray-200 overflow-y-scroll "
+              className="h-full flex flex-col dark:bg-slate-800 bg-gray-100 overflow-y-scroll "
             >
               {chatObj.messages.map((messa, i) => {
+                const date = new Date(messa.time);
+                const bool =
+                  date.getDate() != messageDate.current ? true : false;
+                messageDate.current = date.getDate();
+
                 return (
                   <MaxWidthWrapper
                     className={cn(
-                      "shadow-sm  items-end ",
+                      "shadow-sm relative items-end ",
                       messa.from === dbUser.id ? "flex-row-reverse" : "",
                       i === 0 ? "mt-auto" : ""
                     )}
                     key={messa.id}
                   >
+                    {bool && (
+                      <div className="absolute left-[50%] right-[50%]">
+                        <p className="text-nowrap text-[0.5rem] text-slate-400">{`${date.getMonth()} ${date.getDate()}`}</p>
+                      </div>
+                    )}
                     <Avatar className="transition mr-2 hover:ring h-7 sm:h-10 w-7 sm:w-10 ring-slate-500/50 hover:scale-110">
                       <AvatarImage
                         onLoad={() => handleLoad()}

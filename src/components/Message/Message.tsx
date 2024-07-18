@@ -12,7 +12,7 @@ const Message = ({ toUser }: { toUser: string }) => {
   const textRef = useRef<HTMLTextAreaElement | undefined>(undefined);
 
   const handleMessageSend = () => {
-    if (!messageText) {
+    if (!messageText.trim()) {
       toast({
         title: "No Message",
         description: new Date(Date.now()).toLocaleString("en-US"),
@@ -21,7 +21,7 @@ const Message = ({ toUser }: { toUser: string }) => {
       return;
     } else {
       sendMessage({
-        message: messageText,
+        message: messageText.trim(),
         to: toUser,
       }).catch((error: Error) => {
         toast({
@@ -36,6 +36,7 @@ const Message = ({ toUser }: { toUser: string }) => {
   return (
     <div className="h-fit w-full  flex flex-col">
       <Textarea
+        autoFocus
         onKeyDown={(e) => {
           if (e.shiftKey && e.key === "Enter") {
             e.preventDefault();

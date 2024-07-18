@@ -26,7 +26,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={inter.className + "relative"}>
+        <body className={inter.className + "relative overflow-hidden"}>
           <ThemeProvider attribute="class" defaultTheme="system">
             {children}
 

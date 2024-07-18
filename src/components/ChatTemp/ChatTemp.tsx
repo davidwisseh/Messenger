@@ -16,9 +16,11 @@ import { makeEmptyChat } from "./actions";
 const ChatTemp = ({
   dbUser,
   toUser,
+  navRef,
 }: {
   dbUser: UserObj;
   toUser: MutableRefObject<string>;
+  navRef: MutableRefObject<HTMLDivElement | undefined>;
 }) => {
   const [chats, setChats] = useState();
   const db = getFirestore();
@@ -76,8 +78,10 @@ const ChatTemp = ({
                 selected={selected}
                 onClick={(isTrue) => {
                   if (isTrue) {
+                    navRef.current?.classList.toggle("hidden");
                     setSelected(messaged.chat);
                   } else {
+                    navRef.current?.classList.toggle("hidden");
                     setSelected("");
                   }
                 }}
