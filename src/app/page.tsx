@@ -15,7 +15,7 @@ import {
   where,
   getDocs,
 } from "firebase/firestore";
-import { useUser } from "@clerk/nextjs";
+import { SignedIn, UserButton, useUser } from "@clerk/nextjs";
 import { json } from "stream/consumers";
 import { useEffect, useRef, useState } from "react";
 import { Loader2Icon, SearchIcon } from "lucide-react";
@@ -62,10 +62,15 @@ export default function Home() {
 
   if (dbUser?.userName) {
     return (
-      <div>
-        <div className="h-screen  w-screen overflow-y-scroll pt-16">
-          <ChatTemp toUser={chatTo} dbUser={dbUser}></ChatTemp>
+      <div className="flex h-screen w-screen bg-gray-100 dark:bg-gray-900">
+        <div className="  absolute invisible sm:visible sm:flex sm:relative   flex-col dark:bg-slate-900/80 brightness-125 w-40 bg-gray-600/20 border-r-2 border-black/20 shadow-lg h-full">
+          <div className="ml-auto px-2 my-2 mt-auto">
+            <SignedIn>
+              <UserButton></UserButton>
+            </SignedIn>
+          </div>
         </div>
+        <ChatTemp toUser={chatTo} dbUser={dbUser}></ChatTemp>
       </div>
     );
   }

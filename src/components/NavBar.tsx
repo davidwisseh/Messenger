@@ -39,14 +39,17 @@ const NavBar = () => {
       );
     } else {
       return (
-        <nav className="h-16 fixed w-full dark:text-white bg-gray-400/80 dark:bg-gray-700/80">
+        <nav className="h-16 fixed brightness-125 w-full dark:text-white bg-gray-400/80 dark:bg-slate-900/80">
           <MaxWidthWrapper className="gap-1 h-full items-center">
             <div>hi</div>
             <div>hello</div>
             <div className=" ml-auto">
               <div className={"flex gap-2 "}>
                 <SignInButton>
-                  <Button className="bg-gray-200 dark: bg-slate-900">
+                  <Button
+                    variant={"secondary"}
+                    className="bg-slate-600/60 dark:bg-slate-900"
+                  >
                     Sign in
                   </Button>
                 </SignInButton>

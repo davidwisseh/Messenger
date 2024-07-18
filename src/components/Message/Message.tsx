@@ -51,12 +51,16 @@ const Message = ({ toUser }: { toUser: string }) => {
           e.currentTarget.style.height =
             25 + e.currentTarget.scrollHeight + "px";
         }}
-        className="max-h-80 mb-4 w-full  overflow-hidden h-fit "
+        className="max-h-80 mb-2 sm:mb-4 w-full  overflow-hidden h-fit "
         placeholder="..."
       ></Textarea>
       <div className="flex gap-2 items-center">
         <p className="ml-auto text-xs text-slate-500/50">Shift + Enter</p>
-        <Button className=" w-20" onClick={() => handleMessageSend()}>
+        <Button
+          variant={"secondary"}
+          className="bg-gray-600/20 w-20 hover:bg-gray-600/40"
+          onClick={() => handleMessageSend()}
+        >
           Send
         </Button>
       </div>
