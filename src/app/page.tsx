@@ -18,7 +18,7 @@ import {
 import { SignedIn, UserButton, useUser } from "@clerk/nextjs";
 
 import { json } from "stream/consumers";
-import { useEffect, useRef, useState } from "react";
+import { LegacyRef, useEffect, useRef, useState } from "react";
 import { Loader2Icon, SearchIcon } from "lucide-react";
 import { app } from "./fb";
 import { Messaged, UserObj, UserObjStr } from "@/util/util";
@@ -67,6 +67,7 @@ export default function Home() {
     return (
       <div className="flex h-screen w-screen  flex-col-reverse sm:flex-row bg-gray-100 dark:bg-gray-900">
         <div
+          //@ts-ignore
           ref={navRef}
           className={cn(
             "     sm:flex    flex-col dark:bg-slate-900/80 brightness-125 sm:w-40 bg-gray-600/20 border-t-2 sm:border-t-0 sm:border-r-2 border-black/20 shadow-lg h-14 w-full sm:h-full"
