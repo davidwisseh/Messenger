@@ -57,7 +57,7 @@ const ChatBox = ({
       },
       (err) => {
         console.error(err.message);
-        console.log(messaged.chat);
+        console.error(messaged.chat);
       }
     );
 
@@ -79,7 +79,7 @@ const ChatBox = ({
             setIsClosed(false);
           }}
           className={cn(
-            "flex flex-col mt-10 border-t-[1px] w-[90%] mx-auto border-gray-200/50 shadow-md dark:shadow-slate-800 dark:border-slate-800 dark:bg-slate-800 rounded-md",
+            "flex flex-col mt-10 border-t-[1px] w-[90%] max-w-screen-xl mx-auto border-gray-200/50 shadow-md dark:shadow-slate-800 dark:border-slate-800 dark:bg-slate-800 rounded-md",
             isClosed
               ? ""
               : "h-screen w-full mt-0 dark:bg-slate-900 rounded-none"

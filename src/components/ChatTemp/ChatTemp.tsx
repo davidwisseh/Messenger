@@ -75,7 +75,6 @@ const ChatTemp = ({
               <ChatBox
                 selected={selected}
                 onClick={(isTrue) => {
-                  console.log(messaged.chat, isTrue);
                   if (isTrue) {
                     setSelected(messaged.chat);
                   } else {
