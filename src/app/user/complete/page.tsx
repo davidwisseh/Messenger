@@ -146,8 +146,16 @@ const Page = ({ DUser }: { DUser?: UserObj }) => {
               <div
                 //@ts-ignore
                 ref={pencilRef}
-                className=" rounded-full  outline outline-1 invisible  transition ml-auto mr-1 h-5 w-5  -mt-3 sm:-mt-5 flex items-center justify-center"
+                className=" rounded-full relative outline outline-1 invisible  transition ml-auto mr-1 h-5 w-5  -mt-3 sm:-mt-5 flex items-center justify-center"
               >
+                <input
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                  accept="image/jpeg,image/jpg,image/png"
+                  type="file"
+                  className="h-full hover:cursor-pointer opacity-0  absolute w-full"
+                />
                 <PencilIcon className="   h-4 w-4 "></PencilIcon>
               </div>
             </div>
