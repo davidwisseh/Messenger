@@ -31,9 +31,9 @@ export const ourFileRouter = {
     .onUploadComplete(async ({ metadata, file }) => {
       // This code RUNS ON YOUR SERVER after upload
       const db = getFirestore(app);
-      const userDoc: UserObj = (
+      const userDoc = (
         await getDoc(doc(db, "Users", metadata.userId))
-      ).data();
+      ).data()! as UserObj;
       await setDoc(doc(db, "Users", metadata.userId), {
         ...userDoc!,
         img_url: file.url,
