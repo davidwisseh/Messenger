@@ -121,7 +121,7 @@ const Page = ({ DUser }: { DUser?: UserObj }) => {
             { "mt-14 h-[70%]": onUser }
           )}
         >
-          <div className="md:w-40 w-20 flex flex-col h-20 md:h-40 rounded-full mx-auto object-contain">
+          <div className="sm:w-40 w-32 flex flex-col sm:h-40 h-32 rounded-full mx-auto object-contain">
             <div
               onMouseEnter={() => {
                 if (pencilRef.current) {
@@ -133,17 +133,20 @@ const Page = ({ DUser }: { DUser?: UserObj }) => {
                   pencilRef.current.classList.add("invisible");
                 }
               }}
+              onClick={() => {
+                pencilRef.current?.classList.toggle("invisible");
+              }}
               className="flex flex-col"
             >
               <img
                 className="rounded-full ring-offset-2 ring  ring-black"
-                src={user.user.imageUrl}
+                src={onUser ? user.user.imageUrl : dbUser?.img_url}
                 alt=""
               />
               <div
                 //@ts-ignore
                 ref={pencilRef}
-                className=" rounded-full outline outline-1 invisible  transition ml-auto mr-1 h-5 w-5 -mt-6 flex items-center justify-center"
+                className=" rounded-full  outline outline-1 invisible  transition ml-auto mr-1 h-5 w-5  -mt-3 sm:-mt-5 flex items-center justify-center"
               >
                 <PencilIcon className="   h-4 w-4 "></PencilIcon>
               </div>
@@ -164,8 +167,8 @@ const Page = ({ DUser }: { DUser?: UserObj }) => {
             </span>
           </div>
           <div className="mt-8 max-w-full sm:text-2xl  lg:text-3xl text-nowrap capitalize flex flex-col md:flex-row">
-            <p className="mx-auto">Display Name:</p>
-            <span className="w-full   md:ml-2 h-full">
+            <p className="mx-auto pr-1">Display Name:</p>
+            <span className="w-full ml-1 md:ml-0 h-full">
               <span className="mr-1 invisible md:hidden">@</span>
               <input
                 type="text"
