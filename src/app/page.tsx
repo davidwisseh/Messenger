@@ -49,7 +49,7 @@ export default function Home() {
       /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
     return regex.test(navigator.userAgent);
   }
-  console.log(isMobile());
+
   useEffect(() => {
     if (user.isLoaded && !user.isSignedIn) {
       router.push("/Welcome");

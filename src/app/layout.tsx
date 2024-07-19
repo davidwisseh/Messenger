@@ -26,6 +26,12 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
+        <head>
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, maximum-scale=1"
+          />
+        </head>
         <body className={inter.className + "relative overflow-hidden"}>
           <ThemeProvider attribute="class" defaultTheme="light">
             {children}
