@@ -64,7 +64,7 @@ export default function Home() {
       };
     }
     return () => {};
-  }, [user.user, router]);
+  }, [user, router]);
   const db = getFirestore(app);
 
   if (dbUser?.userName) {

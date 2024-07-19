@@ -146,6 +146,7 @@ const ChatBox = ({
 
                 return (
                   <div
+                    key={messa.id}
                     className={cn("flex flex-col ", i === 0 ? "mt-auto" : "")}
                   >
                     {bool && (
