@@ -1,21 +1,13 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
-import MaxWidthWrapper from "../MaxWidthWrapper";
+import { app } from "@/app/fb";
+import { cn } from "@/lib/utils";
 import { Chat, Messaged, UserName, UserObj } from "@/util/util";
 import { doc, getDoc, getFirestore, onSnapshot } from "firebase/firestore";
-import { app } from "@/app/fb";
-import { Avatar, AvatarImage } from "../ui/avatar";
-import { AvatarFallback } from "@radix-ui/react-avatar";
+import { XIcon } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import DefUser from "../DefUser";
+import MaxWidthWrapper from "../MaxWidthWrapper";
 import Message from "../Message/Message";
-import { useUser } from "@clerk/nextjs";
-import { cn } from "@/lib/utils";
-import {
-  ChevronDown,
-  ChevronDownIcon,
-  ChevronUpIcon,
-  XIcon,
-} from "lucide-react";
 var AES = require("crypto-js/aes");
 var enc = require("crypto-js/enc-utf8");
 
@@ -36,7 +28,7 @@ const ChatBox = ({
   const chatDivRef = useRef<HTMLDivElement | undefined>(undefined);
   const [isClosed, setIsClosed] = useState<boolean>(true);
   const messageDate = useRef<number>(0);
-
+  const year = new Date(Date.now()).getFullYear();
   useEffect(() => {
     getDoc(doc(db, "UserNames", messaged.user)).then((doc) => {
       const username = doc.data() as UserName;
@@ -82,19 +74,16 @@ const ChatBox = ({
             }
           }}
           className={cn(
-            "flex flex-col mt-10 bg-gray-600/20   border-t-[1px] w-[90%] max-w-screen-2xl mx-auto border-gray-200/50 shadow-md dark:shadow-slate-800 dark:border-slate-800 dark:bg-slate-800 rounded-md",
+            "flex flex-col  mt-5  bg-gray-600/20   border-t-[1px] w-[90%]  mx-auto border-gray-200/50 shadow-md dark:shadow-slate-800 dark:border-slate-800 dark:bg-slate-800 rounded-md",
             isClosed
-              ? " hover:scale-105 transition"
+              ? "max-w-screen-2xl hover:scale-105 transition"
               : "h-screen w-full mt-0 dark:bg-slate-900 rounded-none"
           )}
         >
           <MaxWidthWrapper className="items-end">
-            <Avatar className="transition h-8 w-8 sm:h-10 sm:w-10  hover:ring ring-slate-500/50 hover:scale-110">
-              <AvatarImage src={toUser?.image_url}></AvatarImage>
-              <AvatarFallback className="w-10 h-10">
-                <DefUser></DefUser>
-              </AvatarFallback>
-            </Avatar>
+            <div className="pb-1 sm:pb-0">
+              <DefUser img={toUser!.image_url}></DefUser>
+            </div>
 
             <div className="flex flex-col w-fit h-full   ml-2   items-start   mr-4">
               <p className="font-semibold">{toUser?.displayName}</p>
@@ -156,53 +145,62 @@ const ChatBox = ({
                 messageDate.current = date.getDate();
 
                 return (
-                  <MaxWidthWrapper
-                    className={cn(
-                      "shadow-sm relative items-end ",
-                      messa.from === dbUser.id ? "flex-row-reverse" : "",
-                      i === 0 ? "mt-auto" : ""
-                    )}
-                    key={messa.id}
+                  <div
+                    className={cn("flex flex-col ", i === 0 ? "mt-auto" : "")}
                   >
                     {bool && (
-                      <div className="absolute left-[50%] right-[50%]">
-                        <p className="text-nowrap text-[0.5rem] text-slate-400">{`${date.getMonth()} ${date.getDate()}`}</p>
+                      <div className="flex w-full justify-center">
+                        <p className="text-nowrap text-[0.5rem] text-slate-500">
+                          {date.toLocaleString("default", {
+                            month: "long",
+                            day: "2-digit",
+                          })}
+                          {date.getFullYear() != year
+                            ? `, ${date.toLocaleString("default", {
+                                year: "2-digit",
+                              })}`
+                            : ""}
+                        </p>
                       </div>
                     )}
-                    <Avatar className="transition mr-2 hover:ring h-7 sm:h-10 w-7 sm:w-10 ring-slate-500/50 hover:scale-110">
-                      <AvatarImage
-                        onLoad={() => handleLoad()}
-                        src={
-                          messa.from === dbUser.id
-                            ? dbUser.img_url
-                            : toUser?.image_url
-                        }
-                      ></AvatarImage>
-                      <AvatarFallback className="h-7 sm:h-10 w-7 sm:w-10k">
-                        <DefUser></DefUser>
-                      </AvatarFallback>
-                    </Avatar>
 
-                    <div
+                    <MaxWidthWrapper
                       className={cn(
-                        " overflow-hidden flex  flex-col justify-end ",
-                        messa.from === dbUser.id ? "mr-auto" : "ml-auto"
+                        "shadow-sm relative  items-end",
+                        messa.from === dbUser.id ? "flex-row-reverse" : ""
                       )}
+                      key={messa.id}
                     >
-                      <p className=" break-words">{messa.message}</p>
-                    </div>
-                    <span
-                      className={cn(
-                        "text-[8px]  w-fit text-nowrap mb-1 text-slate-500",
-                        messa.from === dbUser.id ? "mr-2" : "ml-2"
-                      )}
-                    >
-                      {new Date(messa.time).toLocaleTimeString("en-US", {
-                        hour: "2-digit",
-                        minute: "numeric",
-                      })}
-                    </span>
-                  </MaxWidthWrapper>
+                      <DefUser
+                        className={
+                          messa.from === dbUser.id
+                            ? "ml-1 sm:ml-2"
+                            : "mr-1 sm:mr-2"
+                        }
+                        img={dbUser.img_url}
+                      ></DefUser>
+
+                      <div
+                        className={cn(
+                          " overflow-hidden flex   flex-col justify-end  ",
+                          messa.from === dbUser.id ? "mr-auto" : "ml-auto"
+                        )}
+                      >
+                        <p className=" break-words">{messa.message}</p>
+                      </div>
+                      <span
+                        className={cn(
+                          "text-[8px]  w-fit text-nowrap mb-1 text-slate-500",
+                          messa.from === dbUser.id ? "mr-2" : "ml-2"
+                        )}
+                      >
+                        {new Date(messa.time).toLocaleTimeString("en-US", {
+                          hour: "2-digit",
+                          minute: "numeric",
+                        })}
+                      </span>
+                    </MaxWidthWrapper>
+                  </div>
                 );
               })}
             </div>

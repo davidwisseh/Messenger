@@ -30,6 +30,8 @@ import SearchBar from "@/components/SearchBar/SearchBar";
 import { Button } from "@/components/ui/button";
 import LoadingPage from "@/components/LoadingPage";
 import { cn } from "@/lib/utils";
+import { useTheme } from "next-themes";
+import NavCol from "@/components/NavCol";
 
 export default function Home() {
   const navRef = useRef<HTMLDivElement>();
@@ -39,8 +41,10 @@ export default function Home() {
   const [chats, setChats] = useState<undefined | string[]>(undefined);
   const chatTo = useRef<string>("");
   const dbUserRef = useRef<UserObj | undefined>(undefined);
-
   const router = useRouter();
+  const { theme, setTheme } = useTheme();
+  const [page, setPage] = useState<string>("Chat");
+
   useEffect(() => {
     if (user.isLoaded && !user.isSignedIn) {
       router.push("/Welcome");
@@ -66,22 +70,13 @@ export default function Home() {
   if (dbUser?.userName) {
     return (
       <div className="flex h-screen w-screen  flex-col-reverse sm:flex-row bg-gray-100 dark:bg-gray-900">
-        <div
-          //@ts-ignore
-          ref={navRef}
-          className={cn(
-            "     sm:flex    flex-col dark:bg-slate-900/80 brightness-125 sm:w-40 bg-gray-600/20 border-t-2 sm:border-t-0 sm:border-r-2 border-black/20 shadow-lg h-14 w-full sm:h-full"
-          )}
-        >
-          <div className="ml-auto px-2 my-2 mt-auto">
-            <SignedIn>
-              <UserButton></UserButton>
-            </SignedIn>
-          </div>
-        </div>
-        <ChatTemp navRef={navRef} toUser={chatTo} dbUser={dbUser}></ChatTemp>
+        <NavCol dbUser={dbUser} page={page} setPage={setPage} navRef={navRef} />
+        {page == "Chat" && (
+          <ChatTemp navRef={navRef} toUser={chatTo} dbUser={dbUser}></ChatTemp>
+        )}
       </div>
     );
   }
+
   return <LoadingPage />;
 }
