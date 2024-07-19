@@ -9,6 +9,7 @@ import { useEffect } from "react";
 const Page = () => {
   const router = useRouter();
   const user = useUser();
+
   useEffect(() => {
     if (user.isSignedIn) {
       router.push("/");
