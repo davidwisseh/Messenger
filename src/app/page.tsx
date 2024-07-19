@@ -11,12 +11,14 @@ import { app } from "./fb";
 import LoadingPage from "@/components/LoadingPage";
 import NavCol from "@/components/NavCol";
 import { useTheme } from "next-themes";
+import Profile from "@/components/Profile/page";
+import Page from "./user/complete/page";
 
 export default function Home() {
   const navRef = useRef<HTMLDivElement>();
   const user = useUser();
   const [dbUser, setDbUser] = useState<null | UserObj>(null);
-  const [contacts, setContacts] = useState<string[] | undefined>(undefined);
+
   const [chats, setChats] = useState<undefined | string[]>(undefined);
   const chatTo = useRef<string>("");
   const dbUserRef = useRef<UserObj | undefined>(undefined);
@@ -60,9 +62,10 @@ export default function Home() {
     return (
       <div className="flex h-full w-full  flex-col-reverse sm:flex-row bg-gray-100 dark:bg-gray-900">
         <NavCol dbUser={dbUser} page={page} setPage={setPage} navRef={navRef} />
-        {page == "Chat" && (
+        {page === "Chat" && (
           <ChatTemp navRef={navRef} toUser={chatTo} dbUser={dbUser}></ChatTemp>
         )}
+        {page === "Profile" && <Page DUser={dbUser} />}
       </div>
     );
   }

@@ -20,19 +20,19 @@ import {
   where,
 } from "firebase/firestore";
 import { ArrowRightCircle, Loader2Icon, PencilIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-const Page = () => {
+const Page = ({ DUser }: { DUser?: UserObj }) => {
   const user = useUser();
   const db = getFirestore(app);
-  const [dbUser, setDbUser] = useState<UserObj | undefined>(undefined);
+  const [dbUser, setDbUser] = useState<UserObj | undefined>(DUser);
   const router = useRouter();
   const userNameRef = useRef<HTMLInputElement>();
   const displayNameRef = useRef<HTMLInputElement>();
   const pencilRef = useRef<HTMLDivElement>();
   const [isLoading, setIsLoading] = useState(false);
-
+  const pathname = usePathname();
   const handleClick = () => {
     setIsLoading(true);
     if (userNameRef.current) {
@@ -89,24 +89,38 @@ const Page = () => {
     }
   };
   useEffect(() => {
-    if (user.isLoaded) {
-      if (!user.isSignedIn) {
-        router.push("/Welcome");
-      } else {
-        getDoc(doc(db, "Users", user.user.id)).then((doc) => {
-          setDbUser(doc.data() as UserObj);
-          displayNameRef.current!.value = doc.get("displayName");
-        });
+    if (!dbUser) {
+      if (user.isLoaded) {
+        if (!user.isSignedIn) {
+          router.push("/Welcome");
+        } else {
+          getDoc(doc(db, "Users", user.user.id)).then((doc) => {
+            setDbUser(doc.data() as UserObj);
+            displayNameRef.current!.value = doc.get("displayName");
+          });
+        }
       }
+    } else {
+      displayNameRef.current!.value = dbUser.displayName;
+      userNameRef.current!.value = dbUser.userName;
     }
   }, [user.isLoaded, router]);
+
   if (user.isSignedIn) {
+    const onUser = pathname.includes("user");
     return (
       <div className="h-full w-screen min-w-80 min-h-[600px] bg-gray-100 dark:bg-gray-900 flex flex-col items-center justify-center">
-        <h1 className="text-3xl md:text-5xl font-bold drop-shadow-md  ">
-          Complete your acount
-        </h1>
-        <MaxWidthWrapper className=" w-[70vw] min-h-[520px] p-5  min-w-fit h-[70vh] items-center mt-14 flex-col  dark:bg-gray-700/30 shadow-2xl rounded-3xl">
+        {onUser && (
+          <h1 className="text-3xl md:text-5xl font-bold drop-shadow-md  ">
+            Complete your acount
+          </h1>
+        )}
+        <MaxWidthWrapper
+          className={cn(
+            " w-[70vw] min-h-[520px] p-5  min-w-fit h-[80%] items-center  flex-col  dark:bg-gray-700/30 shadow-2xl rounded-3xl",
+            { "mt-14 h-[70%]": onUser }
+          )}
+        >
           <div className="md:w-40 w-20 flex flex-col h-20 md:h-40 rounded-full mx-auto object-contain">
             <div
               onMouseEnter={() => {
@@ -165,7 +179,8 @@ const Page = () => {
           <div
             className={cn(
               " flex  mt-4 md:mt-7",
-              isLoading ? "pointer-events-none" : ""
+              isLoading ? "pointer-events-none" : "",
+              { hidden: !onUser }
             )}
           >
             <ArrowRightCircle
