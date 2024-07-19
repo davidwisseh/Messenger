@@ -66,7 +66,8 @@ const ChatBox = ({
 
   if (!selected || selected == messaged.chat) {
     return (
-      chatObj && (
+      chatObj &&
+      toUser && (
         <div
           onClick={() => {
             if (isClosed) {
