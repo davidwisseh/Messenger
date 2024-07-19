@@ -23,10 +23,10 @@ import { ArrowRightCircle, Loader2Icon, PencilIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-const Page = ({ DUser }: { DUser?: UserObj }) => {
+const Page = (props) => {
   const user = useUser();
   const db = getFirestore(app);
-  const [dbUser, setDbUser] = useState<UserObj | undefined>(DUser);
+  const [dbUser, setDbUser] = useState<UserObj | undefined>(props.DUser);
   const router = useRouter();
   const userNameRef = useRef<HTMLInputElement>();
   const displayNameRef = useRef<HTMLInputElement>();
@@ -153,6 +153,9 @@ const Page = ({ DUser }: { DUser?: UserObj }) => {
                     e.stopPropagation();
                   }}
                   accept="image/jpeg,image/jpg,image/png"
+                  onSubmit={(e) => {
+                    console.log(e);
+                  }}
                   type="file"
                   className="h-full hover:cursor-pointer opacity-0  absolute w-full"
                 />
