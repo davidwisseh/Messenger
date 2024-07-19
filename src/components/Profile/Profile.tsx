@@ -96,8 +96,10 @@ const Profile = ({ DUser }: { DUser?: UserObj }) => {
         }
       }
     } else {
-      displayNameRef.current!.value = dbUser.displayName;
-      userNameRef.current!.value = dbUser.userName;
+      if (displayNameRef.current && userNameRef.current) {
+        displayNameRef.current!.value = dbUser.displayName;
+        userNameRef.current!.value = dbUser.userName;
+      }
     }
   }, [user.isLoaded, router]);
 
