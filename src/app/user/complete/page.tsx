@@ -24,7 +24,7 @@ import { ArrowRightCircle, Loader2Icon, PencilIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-const Page = ({ DUser }: { DUser?: UserObj }) => {
+const Page = () => {
   return (
     <div className="w-full h-full">
       <Profile />
