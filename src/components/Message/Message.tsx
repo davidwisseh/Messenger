@@ -44,7 +44,7 @@ const Message = ({ toUser }: { toUser: string }) => {
       <Textarea
         autoFocus
         onKeyDown={(e) => {
-          if (e.key === "Enter") {
+          if (e.key === "Enter" || e.key == "Return") {
             if (mobile) {
               e.preventDefault();
               handleMessageSend();
