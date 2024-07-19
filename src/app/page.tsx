@@ -46,22 +46,25 @@ export default function Home() {
   const [page, setPage] = useState<string>("Chat");
 
   useEffect(() => {
+    console.log("here");
     if (user.isLoaded && !user.isSignedIn) {
       router.push("/Welcome");
     }
     if (user.user) {
-      const db = getFirestore(app);
-      const u = onSnapshot(doc(db, "Users", user.user.id), (d) => {
-        const dbUserTemp = d.data() as UserObj;
-        if (!dbUserTemp.userName) {
-          router.push(`/user/complete/`);
-        }
+      if (!dbUser) {
+        const db = getFirestore(app);
+        const u = onSnapshot(doc(db, "Users", user.user.id), (d) => {
+          const dbUserTemp = d.data() as UserObj;
+          if (!dbUserTemp.userName) {
+            router.push(`/user/complete/`);
+          }
 
-        setDbUser(dbUserTemp);
-      });
-      return () => {
-        u();
-      };
+          setDbUser(dbUserTemp);
+        });
+        return () => {
+          u();
+        };
+      }
     }
     return () => {};
   }, [user, router]);
