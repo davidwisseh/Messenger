@@ -44,11 +44,6 @@ export default function Home() {
   const router = useRouter();
   const { theme, setTheme } = useTheme();
   const [page, setPage] = useState<string>("Chat");
-  function isMobile() {
-    const regex =
-      /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
-    return regex.test(navigator.userAgent);
-  }
 
   useEffect(() => {
     if (user.isLoaded && !user.isSignedIn) {

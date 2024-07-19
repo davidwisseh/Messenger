@@ -32,15 +32,28 @@ const Message = ({ toUser }: { toUser: string }) => {
       setMessageText("");
     }
   };
+  function isMobile() {
+    const regex =
+      /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+    return regex.test(navigator.userAgent);
+  }
+  const mobile = isMobile();
 
   return (
     <div className="h-fit w-full  flex flex-col">
       <Textarea
         autoFocus
         onKeyDown={(e) => {
-          if (e.shiftKey && e.key === "Enter") {
-            e.preventDefault();
-            handleMessageSend();
+          if (e.key === "Enter") {
+            if (mobile) {
+              e.preventDefault();
+              handleMessageSend();
+            } else {
+              if (e.shiftKey) {
+                e.preventDefault();
+                handleMessageSend();
+              }
+            }
           }
         }}
         value={messageText}
@@ -52,19 +65,21 @@ const Message = ({ toUser }: { toUser: string }) => {
           e.currentTarget.style.height =
             25 + e.currentTarget.scrollHeight + "px";
         }}
-        className="max-h-80 mb-2 sm:mb-4 w-full  overflow-hidden h-fit "
+        className="max-h-40  w-full  overflow-hidden h-fit "
         placeholder="..."
       ></Textarea>
-      <div className="flex gap-2 items-center">
-        <p className="ml-auto text-xs text-slate-500/50">Shift + Enter</p>
-        <Button
-          variant={"secondary"}
-          className="bg-gray-600/20 w-20 hover:bg-gray-600/40"
-          onClick={() => handleMessageSend()}
-        >
-          Send
-        </Button>
-      </div>
+      {!mobile && (
+        <div className="flex gap-2 mt-2 sm:mt-4 items-center">
+          <p className="ml-auto text-xs text-slate-500/50">Shift + Enter</p>
+          <Button
+            variant={"secondary"}
+            className="bg-gray-600/20 w-20 hover:bg-gray-600/40"
+            onClick={() => handleMessageSend()}
+          >
+            Send
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
