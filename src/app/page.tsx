@@ -69,7 +69,7 @@ export default function Home() {
 
   if (dbUser?.userName) {
     return (
-      <div className="flex h-screen w-screen  flex-col-reverse sm:flex-row bg-gray-100 dark:bg-gray-900">
+      <div className="flex h-full w-full  flex-col-reverse sm:flex-row bg-gray-100 dark:bg-gray-900">
         <NavCol dbUser={dbUser} page={page} setPage={setPage} navRef={navRef} />
         {page == "Chat" && (
           <ChatTemp navRef={navRef} toUser={chatTo} dbUser={dbUser}></ChatTemp>
