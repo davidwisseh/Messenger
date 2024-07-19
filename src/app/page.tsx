@@ -1,37 +1,16 @@
 "use client";
-import MaxWidthWrapper from "@/components/MaxWidthWrapper";
-import MessageTable from "@/components/MessageTable/MessageTable";
-import { currentUser } from "@clerk/nextjs/server";
-import Message from "../components/Message/Message";
-import Navbar from "../components/NavBar";
-import Tess from "@/components/test";
-import {
-  getFirestore,
-  query,
-  collection,
-  onSnapshot,
-  getDoc,
-  doc,
-  where,
-  getDocs,
-} from "firebase/firestore";
-import { SignedIn, UserButton, useUser } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
+import { doc, getFirestore, onSnapshot } from "firebase/firestore";
 
-import { json } from "stream/consumers";
-import { LegacyRef, useEffect, useRef, useState } from "react";
-import { Loader2Icon, SearchIcon } from "lucide-react";
-import { app } from "./fb";
-import { Messaged, UserObj, UserObjStr } from "@/util/util";
-import ChatTemp from "../components/ChatTemp/ChatTemp";
-import { Router } from "next/router";
+import { UserObj } from "@/util/util";
 import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import ChatTemp from "../components/ChatTemp/ChatTemp";
+import { app } from "./fb";
 
-import SearchBar from "@/components/SearchBar/SearchBar";
-import { Button } from "@/components/ui/button";
 import LoadingPage from "@/components/LoadingPage";
-import { cn } from "@/lib/utils";
-import { useTheme } from "next-themes";
 import NavCol from "@/components/NavCol";
+import { useTheme } from "next-themes";
 
 export default function Home() {
   const navRef = useRef<HTMLDivElement>();
@@ -53,14 +32,21 @@ export default function Home() {
     if (user.user) {
       if (!dbUser) {
         const db = getFirestore(app);
-        const u = onSnapshot(doc(db, "Users", user.user.id), (d) => {
-          const dbUserTemp = d.data() as UserObj;
-          if (!dbUserTemp.userName) {
-            router.push(`/user/complete/`);
-          }
+        const u = onSnapshot(
+          doc(db, "Users", user.user.id),
+          (d) => {
+            console.log("snap dbUser");
+            const dbUserTemp = d.data() as UserObj;
+            if (!dbUserTemp.userName) {
+              router.push(`/user/complete/`);
+            }
 
-          setDbUser(dbUserTemp);
-        });
+            setDbUser(dbUserTemp);
+          },
+          (e) => {
+            console.error(e);
+          }
+        );
         return () => {
           u();
         };

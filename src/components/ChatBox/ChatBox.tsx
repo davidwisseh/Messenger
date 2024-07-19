@@ -37,6 +37,7 @@ const ChatBox = ({
     const unsub = onSnapshot(
       doc(db, "Chats", messaged.chat),
       (snap) => {
+        console.log("Message snap")
         const data = snap.data();
         const { messages } = data as Chat;
         const decMess = messages.map((mes) => {

@@ -19,6 +19,7 @@ const User = () => {
         router.push("/Welcome");
       } else {
         onSnapshot(doc(db, "Users", user.user.id), (snap) => {
+          console.log("Users Snap");
           if (!snap.get("userName")) {
             router.push("/user/complete/");
           }
