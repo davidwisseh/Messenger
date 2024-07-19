@@ -13,6 +13,7 @@ import {
   MessageCircleIcon,
   MessageSquareIcon,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const NavCol = ({
   navRef,
@@ -26,6 +27,7 @@ const NavCol = ({
   dbUser: UserObj;
 }) => {
   const { theme, setTheme } = useTheme();
+  const router = useRouter();
   return (
     <div
       //@ts-ignore
@@ -91,7 +93,12 @@ const NavCol = ({
       </div>
 
       <SignOutButton>
-        <div className="hover:scale-110 h-full sm:h-14  items-center transition active:scale-90 my-auto text-2xl w-11 font-bold sm:w-full flex justify-center  sm:my-2 ">
+        <div
+          onClick={() => {
+            router.refresh();
+          }}
+          className="hover:scale-110 h-full sm:h-14  items-center transition active:scale-90 my-auto text-2xl w-11 font-bold sm:w-full flex justify-center  sm:my-2 "
+        >
           <p className="hidden sm:flex">Sign Out</p>
           <div className="sm:hidden px-2 w-12">
             <LogOutIcon />

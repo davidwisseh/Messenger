@@ -11,7 +11,7 @@ import { app } from "./fb";
 import LoadingPage from "@/components/LoadingPage";
 import NavCol from "@/components/NavCol";
 import { useTheme } from "next-themes";
-import Profile from "@/components/Profile/page";
+import Profile from "@/components/Profile/Profile";
 import Page from "./user/complete/page";
 
 export default function Home() {
@@ -65,7 +65,7 @@ export default function Home() {
         {page === "Chat" && (
           <ChatTemp navRef={navRef} toUser={chatTo} dbUser={dbUser}></ChatTemp>
         )}
-        {page === "Profile" && <Page DUser={dbUser} />}
+        {page === "Profile" && <Profile DUser={dbUser} />}
       </div>
     );
   }
