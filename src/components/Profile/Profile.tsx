@@ -1,4 +1,4 @@
-import { UserName, UserObj } from "@/util/util";
+import { UploadButton, UserName, UserObj } from "@/util/util";
 import MaxWidthWrapper from "../MaxWidthWrapper";
 import { useUser } from "@clerk/nextjs";
 import {
@@ -141,20 +141,26 @@ const Profile = ({ DUser }: { DUser?: UserObj }) => {
               <div
                 //@ts-ignore
                 ref={pencilRef}
-                className=" rounded-full relative outline outline-1 invisible  transition ml-auto mr-1 h-5 w-5  -mt-3 sm:-mt-5 flex items-center justify-center"
+                className=" rounded-full  relative outline outline-1 invisible transition ml-auto mr-1 h-5 w-5  -mt-3 sm:-mt-5 flex items-center justify-center"
               >
-                <input
-                  onClick={(e) => {
-                    e.stopPropagation();
+                <PencilIcon className=" absolute z-0 h-4 w-4 "></PencilIcon>
+                <UploadButton
+                  onUploadBegin={() => {
+                    pencilRef.current?.classList.add("pointer-events-none");
+                    pencilRef.current?.classList.add("cursor-wait");
                   }}
+                  onUploadProgress={(val) => {}}
+                  className="opacity-0"
+                  endpoint="imageUploader"
+                ></UploadButton>
+                {/* <input
                   accept="image/jpeg,image/jpg,image/png"
-                  onSubmit={(e) => {
-                    console.log(e);
-                  }}
                   type="file"
                   className="h-full hover:cursor-pointer opacity-0  absolute w-full"
-                />
-                <PencilIcon className="   h-4 w-4 "></PencilIcon>
+                  onChange={(e) => {
+                    console.log(e.target.files![0], "file");
+                  }}
+                /> */}
               </div>
             </div>
           </div>

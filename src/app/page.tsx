@@ -12,7 +12,6 @@ import LoadingPage from "@/components/LoadingPage";
 import NavCol from "@/components/NavCol";
 import { useTheme } from "next-themes";
 import Profile from "@/components/Profile/Profile";
-import Page from "./user/complete/page";
 
 export default function Home() {
   const navRef = useRef<HTMLDivElement>();
@@ -27,35 +26,36 @@ export default function Home() {
   const [page, setPage] = useState<string>("Chat");
 
   useEffect(() => {
+    let u = () => {};
     console.log("here");
     if (user.isLoaded && !user.isSignedIn) {
       router.push("/Welcome");
     }
+
     if (user.user) {
       if (!dbUser) {
         const db = getFirestore(app);
-        const u = onSnapshot(
+        u = onSnapshot(
           doc(db, "Users", user.user.id),
           (d) => {
-            console.log("snap dbUser");
             const dbUserTemp = d.data() as UserObj;
             if (!dbUserTemp.userName) {
               router.push(`/user/complete/`);
+            } else {
+              setDbUser(dbUserTemp);
             }
-
-            setDbUser(dbUserTemp);
           },
           (e) => {
             console.error(e);
           }
         );
-        return () => {
-          u();
-        };
       }
     }
-    return () => {};
-  }, [user, router]);
+
+    return () => {
+      u();
+    };
+  }, [user.user, router]);
   const db = getFirestore(app);
 
   if (dbUser?.userName) {

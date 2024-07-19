@@ -69,10 +69,12 @@ const NavCol = ({
           { "bg-black/20 ": page === "Profile" }
         )}
       >
-        <DefUser img={dbUser.img_url} />
-        <p className="text-xl hidden sm:block transition font-bold mx-auto uppercase">
-          profile
-        </p>
+        <div className="flex transition  gap-1 items-center">
+          <DefUser className="hover:scale-100" img={dbUser.img_url} />
+          <p className="text-2xl hidden sm:block transition font-bold mx-auto uppercase">
+            profile
+          </p>
+        </div>
       </div>
       <div
         onClick={() => {
