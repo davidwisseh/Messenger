@@ -46,7 +46,6 @@ const ChatBox = ({
             message: AES.decrypt(mes.message, messaged.chat).toString(enc),
           };
         });
-
         setChatObj({ ...data, messages: decMess } as Chat);
       },
       (err) => {
@@ -138,6 +137,7 @@ const ChatBox = ({
             <div
               //@ts-ignore
               ref={chatDivRef}
+              onLoad={handleLoad}
               className="h-full flex flex-col dark:bg-slate-800 bg-gray-100 overflow-y-scroll "
             >
               {chatObj.messages.map((messa, i) => {
