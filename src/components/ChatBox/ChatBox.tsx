@@ -77,7 +77,7 @@ const ChatBox = ({
             "flex flex-col  mt-5  bg-gray-600/20   border-t-[1px] w-[90%]  mx-auto border-gray-200/50 shadow-md dark:shadow-slate-800 dark:border-slate-800 dark:bg-slate-800 rounded-md",
             isClosed
               ? "max-w-screen-2xl hover:scale-105 transition"
-              : "h-screen w-full mt-0 dark:bg-slate-900 rounded-none"
+              : "h-full w-full mt-0 dark:bg-slate-900 rounded-none"
           )}
         >
           <MaxWidthWrapper className="items-end">

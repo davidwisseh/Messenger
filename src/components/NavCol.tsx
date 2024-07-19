@@ -25,7 +25,7 @@ const NavCol = ({
       //@ts-ignore
       ref={navRef}
       className={cn(
-        "    flex sm:flex sm:flex-col items-center  flex-row dark:bg-slate-900/80 brightness-125 sm:max-w-40 bg-gray-600/20 border-t-2 sm:border-t-0 sm:border-r-2 border-black/20 shadow-lg h-14 w-full sm:h-screen"
+        "    flex sm:flex sm:flex-col items-center  flex-row dark:bg-slate-900/80 brightness-125 sm:max-w-40 bg-gray-600/20 border-t-2 sm:border-t-0 sm:border-r-2 border-black/20 shadow-lg h-14 w-full sm:h-full"
       )}
     >
       <div

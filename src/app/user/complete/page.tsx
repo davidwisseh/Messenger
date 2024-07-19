@@ -102,7 +102,7 @@ const Page = () => {
   }, [user.isLoaded, router]);
   if (user.isSignedIn) {
     return (
-      <div className="h-screen w-screen min-w-80 min-h-[600px] bg-gray-100 dark:bg-gray-900 flex flex-col items-center justify-center">
+      <div className="h-full w-screen min-w-80 min-h-[600px] bg-gray-100 dark:bg-gray-900 flex flex-col items-center justify-center">
         <h1 className="text-3xl md:text-5xl font-bold drop-shadow-md  ">
           Complete your acount
         </h1>

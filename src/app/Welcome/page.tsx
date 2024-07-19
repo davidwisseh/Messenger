@@ -16,7 +16,7 @@ const Page = () => {
   }, [user.isSignedIn, router]);
   if (!user.isSignedIn) {
     return (
-      <div className="w-screen h-screen bg-gray-100 dark:bg-slate-900">
+      <div className="w-screen h-full bg-gray-100 dark:bg-slate-900">
         <NavBar />
       </div>
     );
