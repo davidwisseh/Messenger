@@ -23,10 +23,10 @@ import { ArrowRightCircle, Loader2Icon, PencilIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-const Page = (props) => {
+const Page = ({ DUser }: { DUser?: UserObj }) => {
   const user = useUser();
   const db = getFirestore(app);
-  const [dbUser, setDbUser] = useState<UserObj | undefined>(props.DUser);
+  const [dbUser, setDbUser] = useState<UserObj | undefined>(DUser);
   const router = useRouter();
   const userNameRef = useRef<HTMLInputElement>();
   const displayNameRef = useRef<HTMLInputElement>();
