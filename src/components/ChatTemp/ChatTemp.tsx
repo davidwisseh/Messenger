@@ -51,7 +51,7 @@ const ChatTemp = ({
   };
 
   return (
-    <div className="h-screen w-full relative flex overflow-y-hidden">
+    <div className="h-full w-full relative flex overflow-y-hidden">
       <div className="m-auto w-full h-full overflow-y-scroll">
         <MaxWidthWrapper className="justify-center hidden items-start  gap-2 ">
           <div className="pt-2">
@@ -78,10 +78,10 @@ const ChatTemp = ({
                 selected={selected}
                 onClick={(isTrue) => {
                   if (isTrue) {
-                    navRef.current?.classList.toggle("hidden");
+                    navRef.current?.classList.add("hidden");
                     setSelected(messaged.chat);
                   } else {
-                    navRef.current?.classList.toggle("hidden");
+                    navRef.current?.classList.remove("hidden");
                     setSelected("");
                   }
                 }}
