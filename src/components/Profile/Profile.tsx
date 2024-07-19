@@ -22,7 +22,7 @@ const Profile = ({ DUser }: { DUser?: UserObj }) => {
   const user = useUser();
   const db = getFirestore(app);
   const [dbUser, setDbUser] = useState<UserObj | undefined>(DUser);
-  const router = DUser ? null : useRouter();
+  const router = useRouter();
   const userNameRef = useRef<HTMLInputElement>();
   const displayNameRef = useRef<HTMLInputElement>();
   const pencilRef = useRef<HTMLDivElement>();
