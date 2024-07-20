@@ -4,7 +4,7 @@ import { SignedIn, UserButton } from "@clerk/nextjs";
 import { getFirestore } from "firebase/firestore";
 import { SearchIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { MutableRefObject, useState } from "react";
+import { MutableRefObject, useEffect, useState } from "react";
 import { UserObj } from "../../util/util";
 import ChatBox from "../ChatBox/ChatBox";
 import MaxWidthWrapper from "../MaxWidthWrapper";
@@ -27,6 +27,7 @@ const ChatTemp = ({
   const router = useRouter();
   const [enabled, setEnabled] = useState<boolean>(true);
   const [selected, setSelected] = useState<string>("");
+  const [loading, setLoading] = useState(false);
   const handleCLick = () => {
     if (enabled) {
       setEnabled(false);
@@ -51,49 +52,51 @@ const ChatTemp = ({
   };
 
   return (
-    <div className={cn("h-full w-full relative flex overflow-y-hidden")}>
-      <div className="m-auto w-full h-full overflow-y-scroll">
-        <MaxWidthWrapper className="justify-center hidden items-start  gap-2 ">
-          <div className="pt-2">
-            <SearchIcon></SearchIcon>
-          </div>
-          <SearchBar
-            className="h-full "
-            toUser={toUser}
-            dbUser={dbUser}
-          ></SearchBar>
-          <Button
-            className={cn(
-              !enabled ? "pointer-events-none hover:cursor-wait" : ""
-            )}
-            onClick={() => handleCLick()}
-          >
-            Chat
-          </Button>
-        </MaxWidthWrapper>
-        {dbUser.messaged
-          .map((messaged) => {
-            return (
-              <ChatBox
-                selected={selected}
-                onClick={(isTrue) => {
-                  if (isTrue) {
-                    navRef.current?.classList.add("hidden");
-                    setSelected(messaged.chat);
-                  } else {
-                    navRef.current?.classList.remove("hidden");
-                    setSelected("");
-                  }
-                }}
-                dbUser={dbUser}
-                messaged={messaged}
-                key={messaged.chat}
-              />
-            );
-          })
-          .reverse()}
+    !loading && (
+      <div className={cn("h-full w-full relative flex overflow-y-hidden")}>
+        <div className="m-auto w-full h-full overflow-y-scroll">
+          <MaxWidthWrapper className="justify-center hidden items-start  gap-2 ">
+            <div className="pt-2">
+              <SearchIcon></SearchIcon>
+            </div>
+            <SearchBar
+              className="h-full "
+              toUser={toUser}
+              dbUser={dbUser}
+            ></SearchBar>
+            <Button
+              className={cn(
+                !enabled ? "pointer-events-none hover:cursor-wait" : ""
+              )}
+              onClick={() => handleCLick()}
+            >
+              Chat
+            </Button>
+          </MaxWidthWrapper>
+          {dbUser.messaged
+            .map((messaged) => {
+              return (
+                <ChatBox
+                  selected={selected}
+                  onClick={(isTrue) => {
+                    if (isTrue) {
+                      navRef.current?.classList.add("hidden");
+                      setSelected(messaged.chat);
+                    } else {
+                      navRef.current?.classList.remove("hidden");
+                      setSelected("");
+                    }
+                  }}
+                  dbUser={dbUser}
+                  messaged={messaged}
+                  key={messaged.chat}
+                />
+              );
+            })
+            .reverse()}
+        </div>
       </div>
-    </div>
+    )
   );
 };
 

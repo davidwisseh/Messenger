@@ -102,6 +102,9 @@ const Profile = ({ DUser }: { DUser?: UserObj }) => {
       }
     }
   }, [user.isLoaded, router]);
+  useEffect(() => {
+    setDbUser(DUser);
+  }, [DUser]);
 
   if (user.isSignedIn) {
     const onUser = pathname.includes("user");

@@ -12,6 +12,7 @@ import LoadingPage from "@/components/LoadingPage";
 import NavCol from "@/components/NavCol";
 import { useTheme } from "next-themes";
 import Profile from "@/components/Profile/Profile";
+import { cn } from "@/lib/utils";
 
 export default function Home() {
   const navRef = useRef<HTMLDivElement>();
@@ -43,6 +44,7 @@ export default function Home() {
               router.push(`/user/complete/`);
             } else {
               setDbUser(dbUserTemp);
+              dbUserRef.current = dbUserTemp;
             }
           },
           (e) => {
@@ -62,9 +64,15 @@ export default function Home() {
     return (
       <div className="flex h-full w-full  flex-col-reverse sm:flex-row bg-gray-100 dark:bg-gray-900">
         <NavCol dbUser={dbUser} page={page} setPage={setPage} navRef={navRef} />
-        {page === "Chat" && (
-          <ChatTemp navRef={navRef} toUser={chatTo} dbUser={dbUser}></ChatTemp>
-        )}
+        {
+          <div className={cn("h-full w-full ", { hidden: page !== "Chat" })}>
+            <ChatTemp
+              navRef={navRef}
+              toUser={chatTo}
+              dbUser={dbUser}
+            ></ChatTemp>
+          </div>
+        }
         {page === "Profile" && <Profile DUser={dbUser} />}
       </div>
     );
