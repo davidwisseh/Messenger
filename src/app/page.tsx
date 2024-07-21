@@ -13,6 +13,7 @@ import NavCol from "@/components/NavCol";
 import { useTheme } from "next-themes";
 import Profile from "@/components/Profile/Profile";
 import { cn } from "@/lib/utils";
+import SearchBar from "@/components/SearchBar/SearchBar";
 
 export default function Home() {
   const navRef = useRef<HTMLDivElement>();
@@ -74,6 +75,7 @@ export default function Home() {
           </div>
         }
         {page === "Profile" && <Profile DUser={dbUser} />}
+        {page === "Search" && <SearchBar dbUser={dbUser}  />}
       </div>
     );
   }

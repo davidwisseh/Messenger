@@ -12,6 +12,7 @@ import {
   LogOutIcon,
   MessageCircleIcon,
   MessageSquareIcon,
+  SearchIcon,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -44,7 +45,7 @@ const NavCol = ({
             setTheme("light");
           }
         }}
-        className="px-2 sm:px-2 sm:mx-0 w-10  sm:w-full  py-2 h-full sm:h-14  flex justify-start items-center  active:scale-90 sm:place-self-start hover:scale-110 transform duration-300  brightness-125 rounded-full dark:text-yellow-700"
+        className="px-2 sm:px-2 sm:mx-0 w-10  sm:w-full  py-2 h-full sm:h-14  flex justify-center items-center  active:scale-90 sm:place-self-start hover:scale-110 transform duration-300  brightness-125 rounded-full dark:text-yellow-700"
       >
         <div className="w-6  block h-6 sm:w-9 sm:h-9">
           <svg
@@ -56,7 +57,7 @@ const NavCol = ({
             <path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.73 1.73 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.73 1.73 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.73 1.73 0 0 0 1.097-1.097zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.16 1.16 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.16 1.16 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732z" />
           </svg>
         </div>
-        <p className="text-2xl hidden sm:block mx-auto uppercase font-bold">
+        <p className="text-2xl hidden sm:block ml-2 uppercase font-bold">
           {theme === "light" ? "dark" : "light"}
         </p>
       </div>
@@ -65,7 +66,7 @@ const NavCol = ({
           setPage("Profile");
         }}
         className={cn(
-          "sm:pl-2  px-2 *:hover:scale-110 *:active:scale-90 sm:py-2  flex justify-start items-center h-full sm:h-fit sm:w-full",
+          "sm:pl-2  px-2 *:hover:scale-105 *:active:scale-90 sm:py-2  flex justify-start items-center h-full sm:h-fit sm:w-full",
           { "bg-black/20 ": page === "Profile" }
         )}
       >
@@ -81,29 +82,43 @@ const NavCol = ({
           setPage("Chat");
         }}
         className={cn(
-          "w-11 *:hover:scale-110 *:active:scale-90 px-2  flex h-full sm:w-full sm:h-14 sm:py-2",
+          "w-11 *:hover:scale-110 *:active:scale-90 px-2 items-center justify-center  flex h-full sm:w-full sm:h-14 sm:py-2",
           {
             "bg-black/20 ": page === "Chat",
           }
         )}
       >
-        <p className="mx-auto hidden transition    sm:flex items-center justify-center  text-2xl font-bold uppercase">
-          Chat
-        </p>
-
-        <MessageSquareIcon className="mx-auto my-auto transition h-8 w-8 sc sm:hidden "></MessageSquareIcon>
+        <div className="transition h-full w-full flex items-center justify-center">
+          <MessageSquareIcon className="  sm:h-10 sm:w-10 h-8 w-8 sc "></MessageSquareIcon>
+          <p className=" hidden    ml-2 sm:flex items-center justify-center  text-2xl font-bold uppercase">
+            Chat
+          </p>
+        </div>
       </div>
-
+      <div
+        onClick={() => {
+          setPage("Search");
+        }}
+        className={cn(
+          " *:hover:scale-110 *:active:scale-90 items-center text-2xl font-bold justify-center sm:h-14 sm:w-full h-full w-11 flex",
+          { "bg-black/20": page === "Search" }
+        )}
+      >
+        <div className="flex w-full transition h-full items-center justify-center">
+          <SearchIcon className="w-7 sm:h-10 sm:w-10 h-7" />
+          <p className="ml-2 hidden sm:block">Search</p>
+        </div>
+      </div>
       <SignOutButton>
         <div
           onClick={() => {
             router.refresh();
           }}
-          className="hover:scale-110 h-full sm:h-14  items-center transition active:scale-90 my-auto text-2xl w-11 font-bold sm:w-full flex justify-center  sm:my-2 "
+          className="hover:scale-105 h-full sm:h-14  items-center transition active:scale-90 my-auto text-2xl w-11 font-bold sm:w-full flex justify-center  sm:my-2 "
         >
-          <p className="hidden sm:flex">Sign Out</p>
-          <div className="sm:hidden px-2 w-12">
-            <LogOutIcon />
+          <div className=" flex items-center justify-center h-full w-full">
+            <LogOutIcon className="sm:w-10 sm:h-10" />
+            <p className=" ml-2 hidden sm:flex">Sign Out</p>
           </div>
         </div>
       </SignOutButton>

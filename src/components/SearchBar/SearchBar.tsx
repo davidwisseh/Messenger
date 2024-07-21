@@ -34,11 +34,9 @@ import { UserName, UserObj } from "@/util/util";
 const SearchBar = ({
   className,
   dbUser,
-  toUser,
 }: {
   className?: ClassValue;
   dbUser: UserObj;
-  toUser: MutableRefObject<string>;
 }) => {
   const [db, setDb] = useState(getFirestore(app));
   const inputRef = useRef<undefined | HTMLInputElement>(undefined);
@@ -49,7 +47,6 @@ const SearchBar = ({
   let buffering = false;
 
   const buffer = () => {
-    toUser.current = "";
     if (!buffering) {
       buffering = !buffering;
       setTimeout(() => {
@@ -69,6 +66,7 @@ const SearchBar = ({
             const data = snap.docs
               .filter((d) => {
                 if (
+                  d.data().id != dbUser.id &&
                   d
                     .data()
                     .name.match(new RegExp(`${inputRef.current?.value}`, "ig"))
@@ -88,14 +86,21 @@ const SearchBar = ({
   };
 
   return (
-    <div className={cn([" ring ring-slate-300 rounded-sm   w-fit", className])}>
-      <input
-        type="text"
-        className="w-full pt-2 h-full min-w-fit px-2"
-        onChange={() => buffer()}
-        //@ts-ignore
-        ref={inputRef}
-      />
+    <div className="w-full h-full flex flex-col ">
+      <div
+        className={cn([
+          "h-10 rounded-sm flex justify-center mt-5  w-full",
+          className,
+        ])}
+      >
+        <input
+          type="text"
+          className="h-full min-w-fit px-2"
+          onChange={() => buffer()}
+          //@ts-ignore
+          ref={inputRef}
+        />
+      </div>
       <div>
         {filteredCon?.map((username) => {
           return (
@@ -105,7 +110,7 @@ const SearchBar = ({
               key={username.id}
               onClick={() => {
                 inputRef.current!.value = username.displayName;
-                toUser.current = username.id;
+                inputRef.current?.blur();
                 setFilteredCon(undefined);
               }}
             >
