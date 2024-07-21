@@ -87,7 +87,7 @@ const SearchBar = ({
   };
 
   return (
-    <div className="w-full h-full flex flex-col ">
+    <div className=" overflow-y-hidden w-full h-full flex flex-col ">
       <div
         className={cn([
           "h-10 rounded-sm  items-center flex justify-center mt-5 mb-2 w-full",
