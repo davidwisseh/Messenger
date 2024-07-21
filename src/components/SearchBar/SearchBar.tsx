@@ -108,7 +108,7 @@ const SearchBar = ({
           </p>
         </div>{" "}
       </div>
-      <div className="h-full overflow-y-scroll">
+      <div className=" overflow-y-scroll">
         {filteredCon?.map((username) => {
           return (
             <Button
