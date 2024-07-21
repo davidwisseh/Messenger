@@ -55,24 +55,6 @@ const ChatTemp = ({
     !loading && (
       <div className={cn("h-full w-full relative flex overflow-y-hidden")}>
         <div className="m-auto w-full h-full overflow-y-scroll">
-          <MaxWidthWrapper className="justify-center hidden items-start  gap-2 ">
-            <div className="pt-2">
-              <SearchIcon></SearchIcon>
-            </div>
-            <SearchBar
-              className="h-full "
-              toUser={toUser}
-              dbUser={dbUser}
-            ></SearchBar>
-            <Button
-              className={cn(
-                !enabled ? "pointer-events-none hover:cursor-wait" : ""
-              )}
-              onClick={() => handleCLick()}
-            >
-              Chat
-            </Button>
-          </MaxWidthWrapper>
           {dbUser.messaged
             .map((messaged) => {
               return (
