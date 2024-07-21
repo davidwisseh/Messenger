@@ -112,7 +112,7 @@ const SearchBar = ({
         {filteredCon?.map((username) => {
           return (
             <Button
-              className=" h-80 dark:hover:bg-slate-900/80 border-b border-gray-600/20 hover:bg-gray-600/20 brightness-125 block w-full rounded-none text-left"
+              className=" h-10 dark:hover:bg-slate-900/80 border-b border-gray-600/20 hover:bg-gray-600/20 brightness-125 block w-full rounded-none text-left"
               variant={"ghost"}
               key={username.id}
               onClick={() => {
