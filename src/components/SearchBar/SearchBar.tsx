@@ -30,6 +30,7 @@ import {
 } from "firebase/firestore";
 import { app } from "@/app/fb";
 import { UserName, UserObj } from "@/util/util";
+import { MessageSquareIcon, SearchIcon } from "lucide-react";
 
 const SearchBar = ({
   className,
@@ -89,23 +90,29 @@ const SearchBar = ({
     <div className="w-full h-full flex flex-col ">
       <div
         className={cn([
-          "h-10 rounded-sm flex justify-center mt-5  w-full",
+          "h-10 rounded-sm  items-center flex justify-center mt-5 mb-2 w-full",
           className,
         ])}
       >
         <input
           type="text"
-          className="h-full min-w-fit px-2"
+          className="rounded-md h-full min-w-fit px-2"
           onChange={() => buffer()}
           //@ts-ignore
           ref={inputRef}
         />
+        <div className="transition hover:scale-110 active:scale-90 ml-2 rounded-md px-1 bg-slate-600/20 h-full flex items-center justify-center">
+          <MessageSquareIcon className=" sm:hidden sm:h-10 sm:w-10 h-8 w-8 sc "></MessageSquareIcon>
+          <p className=" hidden    sm:flex items-center justify-center  text-2xl font-bold uppercase">
+            Chat
+          </p>
+        </div>{" "}
       </div>
-      <div>
+      <div className="h-full overflow-y-scroll">
         {filteredCon?.map((username) => {
           return (
             <Button
-              className="  block w-full rounded-none text-left"
+              className=" h-80 dark:hover:bg-slate-900/80 border-b border-gray-600/20 hover:bg-gray-600/20 brightness-125 block w-full rounded-none text-left"
               variant={"ghost"}
               key={username.id}
               onClick={() => {
