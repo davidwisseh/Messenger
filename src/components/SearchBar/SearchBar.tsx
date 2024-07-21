@@ -98,31 +98,40 @@ const SearchBar = ({
           type="text"
           className="rounded-md h-full min-w-fit px-2"
           onChange={() => buffer()}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key == "Return") {
+              e.currentTarget.blur();
+            }
+          }}
           //@ts-ignore
           ref={inputRef}
-        />
-        <div className="transition hover:scale-110 active:scale-90 ml-2 rounded-md px-1 bg-slate-600/20 h-full flex items-center justify-center">
-          <MessageSquareIcon className=" sm:hidden sm:h-10 sm:w-10 h-8 w-8 sc "></MessageSquareIcon>
-          <p className=" hidden    sm:flex items-center justify-center  text-2xl font-bold uppercase">
-            Chat
-          </p>
-        </div>{" "}
+        />{" "}
       </div>
       <div className=" overflow-y-scroll">
         {filteredCon?.map((username) => {
           return (
             <Button
-              className=" h-10 dark:hover:bg-slate-900/80 border-b border-gray-600/20 hover:bg-gray-600/20 brightness-125 block w-full rounded-none text-left"
+              className=" h-fit dark:hover:bg-slate-900/80 border-b border-gray-600/20 hover:bg-gray-600/20 brightness-125 flex justify-between  w-full rounded-none text-left"
               variant={"ghost"}
               key={username.id}
-              onClick={() => {
-                inputRef.current!.value = username.displayName;
-                inputRef.current?.blur();
-                setFilteredCon(undefined);
-              }}
             >
-              <span>@{username.name}-</span>
-              <span className="text-slate-600">{username.displayName}</span>
+              <div>
+                <span>@{username.name}-</span>
+                <span className="text-slate-600">{username.displayName}</span>
+              </div>
+              <div
+                onClick={() => {
+                  inputRef.current!.value = username.displayName;
+                  inputRef.current?.blur();
+                  setFilteredCon(undefined);
+                }}
+                className="transition py-0.5 hover:scale-110 active:scale-90 ml-2 rounded-md px-1 w-fit bg-slate-600/20 h-fit flex items-center justify-center"
+              >
+                <MessageSquareIcon className=" sm:hidden sm:h-10 sm:w-10 h-8 w-8 sc "></MessageSquareIcon>
+                <p className=" hidden    sm:flex items-center justify-center  text-xl font-bold uppercase">
+                  Chat
+                </p>
+              </div>
             </Button>
           );
         })}
