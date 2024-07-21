@@ -15,7 +15,7 @@ import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { toast } from "../ui/use-toast";
 import { cn } from "@/lib/utils";
-import { ArrowRightCircle, PencilIcon } from "lucide-react";
+import { ArrowRightCircle, Loader2Icon, PencilIcon } from "lucide-react";
 import LoadingPage from "../LoadingPage";
 
 const Profile = ({ DUser }: { DUser?: UserObj }) => {
@@ -28,6 +28,8 @@ const Profile = ({ DUser }: { DUser?: UserObj }) => {
   const pencilRef = useRef<HTMLDivElement>();
   const [isLoading, setIsLoading] = useState(false);
   const pathname = usePathname();
+  const [imgFileUrl, setImgFileUrl] = useState<string>("");
+
   const handleClick = () => {
     setIsLoading(true);
     if (userNameRef.current) {
@@ -109,18 +111,27 @@ const Profile = ({ DUser }: { DUser?: UserObj }) => {
   if (user.isSignedIn) {
     const onUser = pathname.includes("user");
     return (
-      <div className="h-full w-screen min-w-80 min-h-[600px] bg-gray-100 dark:bg-gray-900 flex flex-col items-center justify-center">
+      <div className="h-full  w-screen min-w-80 min-h-[600px] bg-gray-100 dark:bg-gray-900 flex flex-col items-center justify-center">
         {onUser && (
           <h1 className="text-3xl md:text-5xl font-bold drop-shadow-md  ">
             Complete your acount
           </h1>
         )}
+
         <MaxWidthWrapper
           className={cn(
-            " w-[70vw] min-h-[520px] p-5  min-w-fit h-[80%] items-center  flex-col  dark:bg-gray-700/30 shadow-2xl rounded-3xl",
+            " w-[70vw] relative min-h-[520px] p-5  min-w-fit h-[80%] items-center  flex-col  dark:bg-gray-700/30 shadow-2xl rounded-3xl",
             { "mt-14 h-[70%]": onUser }
           )}
         >
+          <div
+            className={cn(
+              "absolute w-full h-full  -mt-5 rounded-3xl bg-black/50 hidden items-center justify-center",
+              { flex: isLoading }
+            )}
+          >
+            <Loader2Icon className="animate-spin" />
+          </div>
           <div className="sm:w-40 w-32 flex flex-col sm:h-40 h-32 rounded-full mx-auto object-contain">
             <div
               onMouseEnter={() => {
@@ -146,10 +157,10 @@ const Profile = ({ DUser }: { DUser?: UserObj }) => {
               <div
                 //@ts-ignore
                 ref={pencilRef}
-                className=" rounded-full  relative outline outline-1 invisible transition ml-auto mr-1 h-5 w-5  -mt-3 sm:-mt-5 flex items-center justify-center"
+                className=" rounded-full overflow-hidden relative outline outline-1 invisible transition ml-auto mr-1 h-5 w-5  -mt-3 sm:-mt-5 flex items-center justify-center"
               >
                 <PencilIcon className=" absolute z-0 h-4 w-4 "></PencilIcon>
-                <UploadButton
+                {/* <UploadButton
                   onUploadBegin={() => {
                     pencilRef.current?.classList.add("pointer-events-none");
                     pencilRef.current?.classList.add("cursor-wait");
@@ -157,15 +168,16 @@ const Profile = ({ DUser }: { DUser?: UserObj }) => {
                   onUploadProgress={(val) => {}}
                   className="opacity-0"
                   endpoint="imageUploader"
-                ></UploadButton>
-                {/* <input
+                ></UploadButton> */}
+                <input
                   accept="image/jpeg,image/jpg,image/png"
                   type="file"
                   className="h-full hover:cursor-pointer opacity-0  absolute w-full"
                   onChange={(e) => {
+                    setIsLoading(true);
                     console.log(e.target.files![0], "file");
                   }}
-                /> */}
+                />
               </div>
             </div>
           </div>

@@ -47,6 +47,7 @@ const Message = ({ toUser }: { toUser: string }) => {
           if (e.key === "Enter" || e.key == "Return") {
             if (mobile) {
               e.preventDefault();
+              e.currentTarget.blur();
               handleMessageSend();
             } else {
               if (e.shiftKey) {
