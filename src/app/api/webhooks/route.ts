@@ -73,8 +73,6 @@ export async function POST(req: Request) {
     const data = evt.data;
     const { id, email_addresses, image_url, first_name } = data;
 
-    console.log("creating firestore user");
-
     await setDoc(doc(db, "Users", id), {
       id,
       displayName: first_name,
@@ -94,20 +92,15 @@ export async function POST(req: Request) {
       displayName: first_name,
       image_url,
     } as UserName);
-
-    console.log("created firestore user successfully");
   } else if (eventType === "user.deleted") {
     const data = evt.data;
     const { id } = data;
-    console.log("deleting firestore user");
     await deleteDoc(doc(db, "Users", id!)).catch((error) => {
       console.error(error);
     });
     await deleteDoc(doc(db, "UserNames", id!)).catch((error) => {
       console.error(error);
     });
-
-    console.log("successfully deleted firestore user");
   } else if (eventType === "user.updated") {
     console.log(evt.data);
   } else {

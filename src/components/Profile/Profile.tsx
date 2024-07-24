@@ -235,9 +235,7 @@ const Profile = ({ DUser }: { DUser?: UserObj }) => {
                     type="file"
                     className="h-full hover:cursor-pointer opacity-0  absolute w-full"
                     onChange={(e) => {
-                      console.log(e.target.files);
                       const image = e.target.files![0];
-                      console.log(URL.createObjectURL(image));
                       setImgFileUrl(URL.createObjectURL(image));
                     }}
                   />

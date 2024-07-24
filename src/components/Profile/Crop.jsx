@@ -16,7 +16,6 @@ const Crop = ({ image, setIsLoading, inputRef }) => {
   const { startUpload } = useUploadThing("imageUploader");
 
   const onCropComplete = (croppedArea, croppedAreaPixels) => {
-    console.log(croppedArea, croppedAreaPixels);
     setCropped(croppedAreaPixels);
   };
 

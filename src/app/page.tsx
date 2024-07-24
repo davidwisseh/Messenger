@@ -29,7 +29,6 @@ export default function Home() {
 
   useEffect(() => {
     let u = () => {};
-    console.log("here");
     if (user.isLoaded && !user.isSignedIn) {
       router.push("/Welcome");
     }

@@ -30,7 +30,6 @@ const ChatBox = ({
   const messageDate = useRef<number>(0);
   const year = new Date(Date.now()).getFullYear();
   useEffect(() => {
-    console.log("chatbox");
     getDoc(doc(db, "UserNames", messaged.user)).then((doc) => {
       const username = doc.data() as UserName;
       setToUser(username);
@@ -38,7 +37,6 @@ const ChatBox = ({
     const unsub = onSnapshot(
       doc(db, "Chats", messaged.chat),
       (snap) => {
-        console.log("Message snap");
         const data = snap.data();
         const { messages } = data as Chat;
         const decMess = messages.map((mes) => {
