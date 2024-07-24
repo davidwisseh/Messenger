@@ -7,7 +7,15 @@ import getCroppedImg, { createImage } from "./actions";
 import { useUploadThing } from "@/util/uploadthing";
 import { cn } from "@/lib/utils";
 
-const Crop = ({ image, setIsLoading, inputRef }) => {
+const Crop = ({
+  image,
+  setIsLoading,
+  inputRef,
+}: {
+  image: any;
+  setIsLoading: any;
+  inputRef: any;
+}) => {
   const [loadingPic, setLoadingPic] = useState(false);
 
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -15,11 +23,11 @@ const Crop = ({ image, setIsLoading, inputRef }) => {
   const [zoom, setZoom] = useState(1);
   const { startUpload } = useUploadThing("imageUploader");
 
-  const onCropComplete = (croppedArea, croppedAreaPixels) => {
+  const onCropComplete = (croppedArea: any, croppedAreaPixels: any) => {
     setCropped(croppedAreaPixels);
   };
 
-  function base64ToBlob(base64, mimeType) {
+  function base64ToBlob(base64: any, mimeType: any) {
     const byteCharacters = atob(base64);
     const byteNumbers = new Array(byteCharacters.length);
     for (let i = 0; i < byteCharacters.length; i++) {
