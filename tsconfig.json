@@ -28,7 +28,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "src/components/Profile/Crop.tsx",
-    "src/components/Profile/actions.tsx"
+    "src/components/Profile/actions.jsx"
   ],
   "exclude": ["node_modules"]
 }
