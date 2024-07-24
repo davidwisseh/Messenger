@@ -7,15 +7,7 @@ import getCroppedImg, { createImage } from "./actions";
 import { useUploadThing } from "@/util/uploadthing";
 import { cn } from "@/lib/utils";
 
-const Crop = ({
-  image,
-  setIsLoading,
-  inputRef,
-}: {
-  image: string;
-  setIsLoading: Dispatch<React.SetStateAction<string>>;
-  inputRef: MutableRefObject<HTMLInputElement | undefined>;
-}) => {
+const Crop = ({ image, setIsLoading, inputRef }) => {
   const [loadingPic, setLoadingPic] = useState(false);
 
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -28,7 +20,7 @@ const Crop = ({
     setCropped(croppedAreaPixels);
   };
 
-  function base64ToBlob(base64: string, mimeType: string) {
+  function base64ToBlob(base64, mimeType) {
     const byteCharacters = atob(base64);
     const byteNumbers = new Array(byteCharacters.length);
     for (let i = 0; i < byteCharacters.length; i++) {
@@ -60,7 +52,7 @@ const Crop = ({
           />
           <div
             onClick={() => {
-              inputRef.current!.value = "";
+              inputRef.current.value = "";
               setIsLoading("");
             }}
             className="hover:scale-110 brightness-150 active:scale-90 transition absolute top-5 right-5 bg-red-700 rounded-full"
@@ -71,16 +63,13 @@ const Crop = ({
             onClick={() => {
               setLoadingPic(true);
               getCroppedImg(image, cropped).then((res) => {
-                const blob = base64ToBlob(
-                  res?.split(",")[1] as string,
-                  "image/jpeg"
-                );
+                const blob = base64ToBlob(res?.split(",")[1], "image/jpeg");
                 const file = new File([blob], "filename.jpeg", {
                   type: "image/jpeg",
                 });
                 startUpload([file]).then(() => {
                   setIsLoading("");
-                  inputRef.current!.value = "";
+                  inputRef.current.value = "";
                   setLoadingPic(false);
                 });
               });
