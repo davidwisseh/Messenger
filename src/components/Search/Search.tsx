@@ -11,8 +11,10 @@ import {
 import { Button } from "../ui/button";
 import {
   ChangeEvent,
+  Dispatch,
   LegacyRef,
   MutableRefObject,
+  SetStateAction,
   useEffect,
   useRef,
   useState,
@@ -30,17 +32,25 @@ import {
 } from "firebase/firestore";
 import { app } from "@/app/fb";
 import { UserName, UserObj } from "@/util/util";
-import { MessageSquareIcon, SearchIcon } from "lucide-react";
+import { Loader2Icon, MessageSquareIcon, SearchIcon } from "lucide-react";
+import NewChat from "./NewChat";
 
-const SearchBar = ({
+const Search = ({
   className,
   dbUser,
+  setSelected,
+  setPage,
 }: {
   className?: ClassValue;
   dbUser: UserObj;
+
+  setPage: Dispatch<SetStateAction<string>>;
+  setSelected: Dispatch<SetStateAction<string>>;
 }) => {
+  const [to, setTo] = useState<UserName>();
   const [db, setDb] = useState(getFirestore(app));
   const inputRef = useRef<undefined | HTMLInputElement>(undefined);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [filteredCon, setFilteredCon] = useState<UserName[] | undefined>(
     undefined
   );
@@ -87,16 +97,25 @@ const SearchBar = ({
   };
 
   return (
-    <div className=" overflow-y-hidden w-full h-full flex flex-col ">
+    <div className=" relative overflow-y-hidden w-full h-full flex flex-col ">
+      <div
+        className={cn(
+          "absolute w-full h-full   bg-black/50 hidden items-center justify-center",
+          { flex: isLoading }
+        )}
+      >
+        <Loader2Icon className="animate-spin" />
+      </div>
       <div
         className={cn([
           "h-10 rounded-sm  items-center flex justify-center mt-5 mb-2 w-full",
           className,
         ])}
       >
+        <SearchIcon className="mr-2" />
         <input
           type="text"
-          className="rounded-md h-full min-w-fit px-2"
+          className="rounded-md h-full min-w-fit  border-2 px-2"
           onChange={() => buffer()}
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key == "Return") {
@@ -108,6 +127,9 @@ const SearchBar = ({
         />{" "}
       </div>
       <div className=" overflow-y-scroll">
+        {filteredCon && !filteredCon.length && (
+          <div className=" h-full w-full flex justify-center">no results</div>
+        )}
         {filteredCon?.map((username) => {
           return (
             <Button
@@ -121,9 +143,17 @@ const SearchBar = ({
               </div>
               <div
                 onClick={() => {
-                  inputRef.current!.value = username.displayName;
-                  inputRef.current?.blur();
-                  setFilteredCon(undefined);
+                  const exists = dbUser.messaged.find((mess) => {
+                    return mess.user === username.id;
+                  });
+                  if (!exists) {
+                    setTo(username);
+                    inputRef.current?.blur();
+                    setFilteredCon(undefined);
+                  } else {
+                    setSelected(exists.chat);
+                    setPage("Chat");
+                  }
                 }}
                 className="transition py-0.5 hover:scale-110 active:scale-90 ml-2 rounded-md px-1 w-fit bg-slate-600/20 h-fit flex items-center justify-center"
               >
@@ -135,8 +165,17 @@ const SearchBar = ({
             </Button>
           );
         })}
+        {to && (
+          <NewChat
+            setSelected={setSelected}
+            to={to}
+            setTo={setTo}
+            setPage={setPage}
+            setIsLoading={setIsLoading}
+          />
+        )}
       </div>
     </div>
   );
 };
-export default SearchBar;
+export default Search;

@@ -30,9 +30,6 @@ const NavBar = () => {
                   <UserButton></UserButton>
                 </div>
 
-                {/* <Avatar>
-                <AvatarImage src={user.user.imageUrl} />
-                </Avatar> */}
                 <SignOutButton>Sign out</SignOutButton>
               </div>
             </div>

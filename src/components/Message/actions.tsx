@@ -19,9 +19,11 @@ import { currentUser } from "@clerk/nextjs/server";
 export const sendMessage = async ({
   message,
   to,
+  chatId,
 }: {
   message: string;
   to: string;
+  chatId?: string;
 }) => {
   const user = await currentUser();
   if (!user) {
@@ -43,7 +45,11 @@ export const sendMessage = async ({
     return;
   }
 
-  let chat = dbUser.messaged.find((mess) => mess.user === to)!;
+  let chat = dbUser.messaged.find((mess) => mess.user === to);
+  if (!chat) {
+    chat = { chat: chatId, user: to } as Messaged;
+    await setDoc(doc(db, "Chats", chatId!), chat);
+  }
 
   const messObj: Message = {
     time: Date.now(),

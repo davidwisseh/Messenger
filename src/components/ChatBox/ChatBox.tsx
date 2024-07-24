@@ -26,10 +26,11 @@ const ChatBox = ({
   const [db, setDb] = useState(getFirestore(app));
   const [toUser, setToUser] = useState<UserName | null>(null);
   const chatDivRef = useRef<HTMLDivElement | undefined>(undefined);
-  const [isClosed, setIsClosed] = useState<boolean>(true);
+  const isClosed = selected !== messaged.chat;
   const messageDate = useRef<number>(0);
   const year = new Date(Date.now()).getFullYear();
   useEffect(() => {
+    console.log("chatbox");
     getDoc(doc(db, "UserNames", messaged.user)).then((doc) => {
       const username = doc.data() as UserName;
       setToUser(username);
@@ -71,7 +72,7 @@ const ChatBox = ({
           onClick={() => {
             if (isClosed) {
               onClick(true);
-              setIsClosed(false);
+              false;
             }
           }}
           className={cn(
@@ -123,7 +124,6 @@ const ChatBox = ({
               <div
                 onClick={(e) => {
                   e.stopPropagation();
-                  setIsClosed(true);
                   onClick(false);
                 }}
                 className="ml-auto hover:scale-125 active:scale-100 transition mr-2  sm:mr-4 mt-2 sm:mt-4 mb-auto "

@@ -1,20 +1,11 @@
 import { cn } from "@/lib/utils";
-import { Button } from "./ui/button";
-import { SignedIn, SignOutButton, UserButton } from "@clerk/nextjs";
-import { useTheme } from "next-themes";
-import { Switch } from "@/components/ui/switch";
-import { Dispatch, MutableRefObject, SetStateAction } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import DefUser from "./DefUser";
 import { UserObj } from "@/util/util";
-import {
-  DoorOpenIcon,
-  LogOutIcon,
-  MessageCircleIcon,
-  MessageSquareIcon,
-  SearchIcon,
-} from "lucide-react";
+import { SignOutButton } from "@clerk/nextjs";
+import { LogOutIcon, MessageSquareIcon, SearchIcon } from "lucide-react";
+import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
+import { Dispatch, MutableRefObject, SetStateAction } from "react";
+import DefUser from "./DefUser";
 
 const NavCol = ({
   navRef,

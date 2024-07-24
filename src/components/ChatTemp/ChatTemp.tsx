@@ -1,15 +1,10 @@
 "use client";
 import { cn } from "@/lib/utils";
-import { SignedIn, UserButton } from "@clerk/nextjs";
 import { getFirestore } from "firebase/firestore";
-import { SearchIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { MutableRefObject, useEffect, useState } from "react";
+import { Dispatch, MutableRefObject, SetStateAction, useState } from "react";
 import { UserObj } from "../../util/util";
 import ChatBox from "../ChatBox/ChatBox";
-import MaxWidthWrapper from "../MaxWidthWrapper";
-import SearchBar from "../SearchBar/SearchBar";
-import { Button } from "../ui/button";
 import { toast } from "../ui/use-toast";
 import { makeEmptyChat } from "./actions";
 
@@ -17,16 +12,20 @@ const ChatTemp = ({
   dbUser,
   toUser,
   navRef,
+  selected,
+  setSelected,
 }: {
   dbUser: UserObj;
   toUser: MutableRefObject<string>;
   navRef: MutableRefObject<HTMLDivElement | undefined>;
+  selected: string;
+  setSelected: Dispatch<SetStateAction<string>>;
 }) => {
   const [chats, setChats] = useState();
   const db = getFirestore();
   const router = useRouter();
   const [enabled, setEnabled] = useState<boolean>(true);
-  const [selected, setSelected] = useState<string>("");
+
   const [loading, setLoading] = useState(false);
   const handleCLick = () => {
     if (enabled) {
@@ -53,8 +52,19 @@ const ChatTemp = ({
 
   return (
     !loading && (
-      <div className={cn("h-full w-full relative flex overflow-y-hidden")}>
-        <div className="m-auto w-full h-full overflow-y-scroll">
+      <div
+        className={cn(
+          "h-full w-full relative flex justify-center overflow-y-hidden"
+        )}
+      >
+        <div className=" w-full h-full overflow-y-scroll">
+          <div
+            className={cn("w-full h-full flex items-center justify-center", {
+              hidden: dbUser.messaged.length,
+            })}
+          >
+            <p>No Chats</p>
+          </div>
           {dbUser.messaged
             .map((messaged) => {
               return (

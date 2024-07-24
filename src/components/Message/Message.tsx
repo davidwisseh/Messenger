@@ -1,35 +1,81 @@
 "use client";
-import { UserObj } from "@/util/util";
+import { UserName, UserObj } from "@/util/util";
 import { useUser } from "@clerk/nextjs";
-import { useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { useToast } from "../ui/use-toast";
 import { sendMessage } from "./actions";
-const Message = ({ toUser }: { toUser: string }) => {
+import { nanoid } from "nanoid";
+const Message = ({
+  toUser,
+  setTo,
+  setPage,
+  setSelected,
+  setIsLoading,
+}: {
+  toUser: string;
+  setTo?: Dispatch<SetStateAction<UserName | undefined>>;
+  setPage?: Dispatch<SetStateAction<string>>;
+  setSelected?: Dispatch<SetStateAction<string>>;
+  setIsLoading?: Dispatch<SetStateAction<boolean>>;
+}) => {
   const { toast } = useToast();
   const [messageText, setMessageText] = useState("");
   const textRef = useRef<HTMLTextAreaElement | undefined>(undefined);
 
   const handleMessageSend = () => {
-    if (!messageText.trim()) {
-      toast({
-        title: "No Message",
-        description: new Date(Date.now()).toLocaleString("en-US"),
-        variant: "destructive",
-      });
-      return;
-    } else {
-      sendMessage({
-        message: messageText.trim(),
-        to: toUser,
-      }).catch((error: Error) => {
+    if (setTo) {
+      const chatId = nanoid();
+
+      if (!messageText.trim()) {
         toast({
-          title: error.message,
+          title: "No Message",
+          description: new Date(Date.now()).toLocaleString("en-US"),
           variant: "destructive",
         });
-      });
-      setMessageText("");
+        return;
+      } else {
+        setIsLoading!(true);
+        sendMessage({
+          message: messageText.trim(),
+          to: toUser,
+          chatId,
+        })
+          .catch((error: Error) => {
+            toast({
+              title: error.message,
+              variant: "destructive",
+            });
+          })
+          .then(() => {
+            setSelected!(chatId);
+            setPage!("Chat");
+          });
+        setMessageText("");
+        setTo(undefined);
+      }
+    } else {
+      if (!messageText.trim()) {
+        toast({
+          title: "No Message",
+          description: new Date(Date.now()).toLocaleString("en-US"),
+          variant: "destructive",
+        });
+        return;
+      } else {
+        sendMessage({
+          message: messageText.trim(),
+          to: toUser,
+        }).catch((error: Error) => {
+          toast({
+            title: error.message,
+            variant: "destructive",
+          });
+        });
+
+        setMessageText("");
+      }
     }
   };
   function isMobile() {

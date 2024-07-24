@@ -13,14 +13,14 @@ import NavCol from "@/components/NavCol";
 import { useTheme } from "next-themes";
 import Profile from "@/components/Profile/Profile";
 import { cn } from "@/lib/utils";
-import SearchBar from "@/components/SearchBar/SearchBar";
+import Search from "@/components/Search/Search";
 
 export default function Home() {
   const navRef = useRef<HTMLDivElement>();
   const user = useUser();
   const [dbUser, setDbUser] = useState<null | UserObj>(null);
 
-  const [chats, setChats] = useState<undefined | string[]>(undefined);
+  const [chat, setChat] = useState<string>("");
   const chatTo = useRef<string>("");
   const dbUserRef = useRef<UserObj | undefined>(undefined);
   const router = useRouter();
@@ -68,6 +68,8 @@ export default function Home() {
         {
           <div className={cn("h-full w-full ", { hidden: page !== "Chat" })}>
             <ChatTemp
+              selected={chat}
+              setSelected={setChat}
               navRef={navRef}
               toUser={chatTo}
               dbUser={dbUser}
@@ -75,7 +77,9 @@ export default function Home() {
           </div>
         }
         {page === "Profile" && <Profile DUser={dbUser} />}
-        {page === "Search" && <SearchBar dbUser={dbUser}  />}
+        {page === "Search" && (
+          <Search setPage={setPage} setSelected={setChat} dbUser={dbUser} />
+        )}
       </div>
     );
   }
