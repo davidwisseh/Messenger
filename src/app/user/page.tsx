@@ -18,12 +18,15 @@ const User = () => {
       if (!user.isSignedIn) {
         router.push("/Welcome");
       } else {
-        onSnapshot(doc(db, "Users", user.user.id), (snap) => {
+        const unsub = onSnapshot(doc(db, "Users", user.user.id), (snap) => {
           if (!snap.get("userName")) {
             router.push("/user/complete/");
           }
           setDbUser(snap.data() as UserObj);
         });
+        return () => {
+          unsub();
+        };
       }
     }
   }, [user.isLoaded, router]);
