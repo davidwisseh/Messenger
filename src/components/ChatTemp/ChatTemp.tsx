@@ -2,13 +2,19 @@
 import { cn } from "@/lib/utils";
 import { getFirestore } from "firebase/firestore";
 import { useRouter } from "next/navigation";
-import { Dispatch, MutableRefObject, SetStateAction, useState } from "react";
+import {
+  Dispatch,
+  MutableRefObject,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import { SwipeAction, TrailingActions } from "react-swipeable-list";
 import { UserObj } from "../../util/util";
 import ChatBox from "../ChatBox/ChatBox";
 
 const ChatTemp = ({
-  dbUser,
+  dbUser: dbUseR,
   toUser,
   navRef,
   selected,
@@ -24,8 +30,11 @@ const ChatTemp = ({
   const db = getFirestore();
   const router = useRouter();
   const [enabled, setEnabled] = useState<boolean>(true);
-
+  const [dbUser, setDbUser] = useState(dbUseR);
   const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    setDbUser(dbUseR);
+  }, [dbUseR]);
 
   return (
     !loading && (

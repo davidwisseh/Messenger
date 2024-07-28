@@ -37,7 +37,7 @@ import NewChat from "./NewChat";
 
 const Search = ({
   className,
-  dbUser,
+  dbUser: dbUseR,
   setSelected,
   setPage,
 }: {
@@ -56,6 +56,10 @@ const Search = ({
   );
   const btnRef = useRef<null | HTMLButtonElement>(null);
   let buffering = false;
+  const [dbUser, setDbUser] = useState(dbUseR);
+  useEffect(() => {
+    setDbUser(dbUseR);
+  }, [dbUseR]);
 
   const buffer = () => {
     if (!buffering) {

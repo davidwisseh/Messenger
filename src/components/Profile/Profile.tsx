@@ -116,12 +116,16 @@ const Profile = ({ DUser }: { DUser?: UserObj }) => {
         if (!user.isSignedIn) {
           router!.push("/Welcome");
         } else {
-          onSnapshot(doc(db, "Users", user.user.id), (doc) => {
+          const unsub = onSnapshot(doc(db, "Users", user.user.id), (doc) => {
             setDbUser(doc.data() as UserObj);
             if (displayNameRef.current) {
               displayNameRef.current.value = doc.get("displayName");
             }
           });
+
+          return () => {
+            unsub();
+          };
         }
       }
     } else {
