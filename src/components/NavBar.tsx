@@ -48,7 +48,7 @@ const NavBar = () => {
               </p>
             </div>
             <div className="h-full flex items-center">
-              <SignInButton>
+              <SignInButton forceRedirectUrl={"/"}>
                 <Button
                   variant={"secondary"}
                   className="bg-slate-600/60 dark:bg-slate-900"

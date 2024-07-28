@@ -82,10 +82,10 @@ const ChatBox = ({
             }
           }}
           className={cn(
-            "flex relative   mt-5  bg-gray-600/20   border-t-[1px] w-[90%]  mx-auto border-gray-200/50 shadow-md dark:shadow-slate-800 dark:border-slate-800 dark:bg-slate-800 rounded-md",
+            "flex relative max-w-screen-2xl   mt-5  bg-gray-600/20   border-t-[1px] w-[90%]  mx-auto border-gray-200/50 shadow-md dark:shadow-slate-800 dark:border-slate-800 dark:bg-slate-800 rounded-md",
             isClosed
-              ? "max-w-screen-2xl hover:scale-105 transition"
-              : "h-full flex-col w-full mt-0 dark:bg-slate-900 rounded-none"
+              ? " hover:scale-105 transition"
+              : "h-full flex-col  w-full mt-0 dark:bg-slate-900 rounded-none"
           )}
         >
           <div
@@ -118,7 +118,7 @@ const ChatBox = ({
               Cancel
             </Button>
           </div>
-          <MaxWidthWrapper className="items-end">
+          <MaxWidthWrapper className="items-end pr-6 sm:pr-5">
             <div className="pb-1 sm:pb-0">
               <DefUser img={toUser!.image_url}></DefUser>
             </div>
@@ -170,7 +170,7 @@ const ChatBox = ({
           </MaxWidthWrapper>
           <div
             className={cn(
-              "flex items-end pr-2 pb-5 hover:scale-110 transition active:scale-90 -ml-4",
+              "flex items-center justify-center pr-1 sm:pr-2 mt-4 hover:scale-110 transition active:scale-90 -ml-4",
               {
                 hidden: !isClosed,
               }
