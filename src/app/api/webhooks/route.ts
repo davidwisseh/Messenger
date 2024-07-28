@@ -81,7 +81,6 @@ export async function POST(req: Request) {
       img_url: image_url,
       blocked: [],
       blockedBy: [],
-      chats: [],
       friends: [],
       messaged: [],
       userName: "",

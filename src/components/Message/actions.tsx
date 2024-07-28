@@ -80,6 +80,6 @@ export const sendMessage = async ({
   toMessaged.push(chat);
 
   await updateDoc(doc(db, "Users", to), {
-    messaged: toMessaged,
+    messaged: { chat: chatId, user: user.id },
   });
 };

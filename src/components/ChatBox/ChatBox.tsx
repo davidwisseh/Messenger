@@ -3,11 +3,15 @@ import { app } from "@/app/fb";
 import { cn } from "@/lib/utils";
 import { Chat, Messaged, UserName, UserObj } from "@/util/util";
 import { doc, getDoc, getFirestore, onSnapshot } from "firebase/firestore";
-import { XIcon } from "lucide-react";
+import { Trash, XIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import "react-swipeable-list/dist/styles.css";
 import DefUser from "../DefUser";
 import MaxWidthWrapper from "../MaxWidthWrapper";
 import Message from "../Message/Message";
+import { deleteChat } from "./actions";
+import { Button } from "../ui/button";
+
 var AES = require("crypto-js/aes");
 var enc = require("crypto-js/enc-utf8");
 
@@ -22,6 +26,8 @@ const ChatBox = ({
   onClick: (isTrue: boolean) => void;
   selected: string;
 }) => {
+  const [deleter, setDeleter] = useState<boolean>(false);
+  const mainRef = useRef<HTMLDivElement>();
   const [chatObj, setChatObj] = useState<null | Chat>(null);
   const [db, setDb] = useState(getFirestore(app));
   const [toUser, setToUser] = useState<UserName | null>(null);
@@ -67,6 +73,8 @@ const ChatBox = ({
       chatObj &&
       toUser && (
         <div
+          //@ts-ignore
+          ref={mainRef}
           onClick={() => {
             if (isClosed) {
               onClick(true);
@@ -74,12 +82,42 @@ const ChatBox = ({
             }
           }}
           className={cn(
-            "flex flex-col  mt-5  bg-gray-600/20   border-t-[1px] w-[90%]  mx-auto border-gray-200/50 shadow-md dark:shadow-slate-800 dark:border-slate-800 dark:bg-slate-800 rounded-md",
+            "flex relative   mt-5  bg-gray-600/20   border-t-[1px] w-[90%]  mx-auto border-gray-200/50 shadow-md dark:shadow-slate-800 dark:border-slate-800 dark:bg-slate-800 rounded-md",
             isClosed
               ? "max-w-screen-2xl hover:scale-105 transition"
-              : "h-full w-full mt-0 dark:bg-slate-900 rounded-none"
+              : "h-full flex-col w-full mt-0 dark:bg-slate-900 rounded-none"
           )}
         >
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+            className={cn(
+              "absolute w-full h-full hidden justify-center items-center gap-5",
+              { flex: deleter }
+            )}
+          >
+            <Button
+              className="hover:scale-110 transition active:scale-90"
+              onClick={(e) => {
+                e.stopPropagation();
+                deleteChat( toUser.id);
+                mainRef.current!.classList.add("hidden");
+              }}
+              variant={"destructive"}
+            >
+              Delete
+            </Button>
+            <Button
+              className="hover:scale-110 transition active:scale-90"
+              onClick={(e) => {
+                e.stopPropagation();
+                setDeleter(false);
+              }}
+            >
+              Cancel
+            </Button>
+          </div>
           <MaxWidthWrapper className="items-end">
             <div className="pb-1 sm:pb-0">
               <DefUser img={toUser!.image_url}></DefUser>
@@ -130,6 +168,21 @@ const ChatBox = ({
               </div>
             )}
           </MaxWidthWrapper>
+          <div
+            className={cn(
+              "flex items-end pr-2 pb-5 hover:scale-110 transition active:scale-90 -ml-4",
+              {
+                hidden: !isClosed,
+              }
+            )}
+            onClick={(e) => {
+              e.stopPropagation();
+
+              setDeleter(true);
+            }}
+          >
+            <Trash className="text-red-700" />
+          </div>
           {!isClosed && (
             //@ts-ignore
             <div

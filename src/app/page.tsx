@@ -40,7 +40,7 @@ export default function Home() {
           doc(db, "Users", user.user.id),
           (d) => {
             const dbUserTemp = d.data() as UserObj;
-            if (!dbUserTemp.userName) {
+            if (dbUserTemp.userName) {
               router.push(`/user/complete/`);
             } else {
               setDbUser(dbUserTemp);

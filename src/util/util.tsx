@@ -35,7 +35,6 @@ export interface UserObj {
   friends: string[];
   blocked: string[];
   blockedBy: string[];
-  chats: string[];
   displayName: string;
   id: string;
   email: string;
@@ -54,38 +53,4 @@ export interface UserName {
   name: string;
   displayName: string;
   image_url: string;
-}
-
-export class UserObjStr {
-  string: string;
-  constructor(obj: UserObj) {
-    const blocked = JSON.stringify(obj.blocked);
-    const blockedBy = JSON.stringify(obj.blocked);
-    const chats = JSON.stringify(obj.blocked);
-    const complete = JSON.stringify(obj.blocked);
-    const displayName = JSON.stringify(obj.blocked);
-    const email = JSON.stringify(obj.blocked);
-    const friends = JSON.stringify(obj.blocked);
-    const id = JSON.stringify(obj.blocked);
-    const img_url = JSON.stringify(obj.blocked);
-    const messaged = JSON.stringify(obj.blocked);
-
-    const userName = JSON.stringify(obj.blocked);
-
-    this.string = blocked.concat(
-      blockedBy.concat(
-        chats.concat(
-          complete.concat(
-            displayName.concat(
-              email.concat(
-                friends.concat(
-                  id.concat(img_url.concat(messaged.concat(userName)))
-                )
-              )
-            )
-          )
-        )
-      )
-    );
-  }
 }

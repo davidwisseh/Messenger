@@ -77,7 +77,7 @@ const Profile = ({ DUser }: { DUser?: UserObj }) => {
               image_url: dbUser?.img_url,
               name: userNameRef.current?.value,
             } as UserName;
-            fetch("/api/user/", {
+            fetch("/api/user", {
               method: "POST",
               body: JSON.stringify(userName),
               headers: {
@@ -118,7 +118,9 @@ const Profile = ({ DUser }: { DUser?: UserObj }) => {
         } else {
           onSnapshot(doc(db, "Users", user.user.id), (doc) => {
             setDbUser(doc.data() as UserObj);
-            displayNameRef.current!.value = doc.get("displayName");
+            if (displayNameRef.current) {
+              displayNameRef.current.value = doc.get("displayName");
+            }
           });
         }
       }

@@ -3,10 +3,9 @@ import { cn } from "@/lib/utils";
 import { getFirestore } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { Dispatch, MutableRefObject, SetStateAction, useState } from "react";
+import { SwipeAction, TrailingActions } from "react-swipeable-list";
 import { UserObj } from "../../util/util";
 import ChatBox from "../ChatBox/ChatBox";
-import { toast } from "../ui/use-toast";
-import { makeEmptyChat } from "./actions";
 
 const ChatTemp = ({
   dbUser,
@@ -27,28 +26,6 @@ const ChatTemp = ({
   const [enabled, setEnabled] = useState<boolean>(true);
 
   const [loading, setLoading] = useState(false);
-  const handleCLick = () => {
-    if (enabled) {
-      setEnabled(false);
-      if (!toUser.current) {
-        toast({ title: "No User", variant: "destructive" });
-        setEnabled(false);
-      } else if (dbUser.blockedBy.includes(toUser.current)) {
-        toast({ title: "Blocked by User", variant: "destructive" });
-        setEnabled(false);
-      } else if (!dbUser.messaged.every((me) => me.user !== toUser.current)) {
-        toast({
-          title: "Messaged Already",
-          variant: "destructive",
-        });
-        setEnabled(false);
-      } else {
-        makeEmptyChat(toUser.current).then(() => {
-          router.push("/");
-        });
-      }
-    }
-  };
 
   return (
     !loading && (
@@ -69,6 +46,7 @@ const ChatTemp = ({
             .map((messaged) => {
               return (
                 <ChatBox
+                  key={messaged.chat}
                   selected={selected}
                   onClick={(isTrue) => {
                     if (isTrue) {
@@ -81,7 +59,6 @@ const ChatTemp = ({
                   }}
                   dbUser={dbUser}
                   messaged={messaged}
-                  key={messaged.chat}
                 />
               );
             })
