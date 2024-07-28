@@ -68,7 +68,6 @@ export const sendMessage = async ({
   ) as Messaged[];
   myMessaged = myMessaged.filter((me) => me.chat !== chat.chat);
   myMessaged.push(chat);
-
   await updateDoc(doc(db, "Users", id), {
     messaged: myMessaged,
   });
@@ -77,9 +76,8 @@ export const sendMessage = async ({
     "messaged"
   ) as Messaged[];
   toMessaged = toMessaged.filter((me) => me.chat !== chat.chat);
-  toMessaged.push(chat);
-
+  toMessaged.push({ chat: chat.chat, user: user.id } as Messaged);
   await updateDoc(doc(db, "Users", to), {
-    messaged: { chat: chatId, user: user.id },
+    messaged: toMessaged,
   });
 };
