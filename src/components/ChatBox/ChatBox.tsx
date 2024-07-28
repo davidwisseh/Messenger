@@ -101,7 +101,7 @@ const ChatBox = ({
               className="hover:scale-110 transition active:scale-90"
               onClick={(e) => {
                 e.stopPropagation();
-                deleteChat( toUser.id);
+                deleteChat(toUser.id);
                 mainRef.current!.classList.add("hidden");
               }}
               variant={"destructive"}
@@ -231,7 +231,11 @@ const ChatBox = ({
                             ? "ml-1 sm:ml-2"
                             : "mr-1 sm:mr-2"
                         }
-                        img={dbUser.img_url}
+                        img={
+                          messa.from == dbUser.id
+                            ? dbUser.img_url
+                            : toUser.image_url
+                        }
                       ></DefUser>
 
                       <div
