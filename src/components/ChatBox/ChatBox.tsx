@@ -118,8 +118,8 @@ const ChatBox = ({
               Cancel
             </Button>
           </div>
-          <MaxWidthWrapper className="items-end pr-6 sm:pr-5">
-            <div className="pb-1 sm:pb-0">
+          <MaxWidthWrapper className="items-end pr-6 xs:pr-5">
+            <div className="pb-1 xs:pb-0">
               <DefUser img={toUser!.image_url}></DefUser>
             </div>
 
@@ -162,7 +162,7 @@ const ChatBox = ({
                   e.stopPropagation();
                   onClick(false);
                 }}
-                className="ml-auto hover:scale-125 active:scale-100 transition mr-2  sm:mr-4 mt-2 sm:mt-4 mb-auto "
+                className="ml-auto hover:scale-125 active:scale-100 transition mr-2  xs:mr-4 mt-2 xs:mt-4 mb-auto "
               >
                 <XIcon />
               </div>
@@ -170,7 +170,7 @@ const ChatBox = ({
           </MaxWidthWrapper>
           <div
             className={cn(
-              "flex items-center justify-center pr-1 sm:pr-2 mt-4 hover:scale-110 transition active:scale-90 -ml-4",
+              "flex items-center justify-center pr-1 xs:pr-2 mt-4 hover:scale-110 transition active:scale-90 -ml-4",
               {
                 hidden: !isClosed,
               }
@@ -228,8 +228,8 @@ const ChatBox = ({
                       <DefUser
                         className={
                           messa.from === dbUser.id
-                            ? "ml-1 sm:ml-2"
-                            : "mr-1 sm:mr-2"
+                            ? "ml-1 xs:ml-2"
+                            : "mr-1 xs:mr-2"
                         }
                         img={
                           messa.from == dbUser.id
@@ -264,7 +264,7 @@ const ChatBox = ({
             </div>
           )}
           {!isClosed && (
-            <div className="p-2 sm:p-4">
+            <div className="p-2 xs:p-4">
               <Message toUser={toUser?.id!}></Message>
             </div>
           )}

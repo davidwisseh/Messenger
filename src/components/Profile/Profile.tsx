@@ -182,7 +182,7 @@ const Profile = ({ DUser }: { DUser?: UserObj }) => {
                 image={imgFileUrl}
               />
             </div>
-            <div className="sm:w-40 w-32 sm:h-40 h-32 flex flex-col  rounded-full mx-auto object-contain">
+            <div className="xs:w-40 w-32 xs:h-40 h-32 flex flex-col  rounded-full mx-auto object-contain">
               <div
                 onMouseEnter={() => {
                   if (pencilRef.current) {
@@ -222,7 +222,7 @@ const Profile = ({ DUser }: { DUser?: UserObj }) => {
                 <div
                   //@ts-ignore
                   ref={pencilRef}
-                  className=" rounded-full overflow-hidden relative outline outline-1 invisible transition ml-auto mr-1 h-5 w-5  -mt-3 sm:-mt-5 flex items-center justify-center"
+                  className=" rounded-full overflow-hidden relative outline outline-1 invisible transition ml-auto mr-1 h-5 w-5  -mt-3 xs:-mt-5 flex items-center justify-center"
                 >
                   <PencilIcon className=" absolute z-0 h-4 w-4 "></PencilIcon>
                   {/* <UploadButton
@@ -249,7 +249,7 @@ const Profile = ({ DUser }: { DUser?: UserObj }) => {
               </div>
             </div>
 
-            <div className=" mt-20 md:mt-32 max-w-full -ml-1 sm:text-2xl  lg:text-3xl text-nowrap capitalize flex flex-col md:flex-row">
+            <div className=" mt-20 md:mt-32 max-w-full -ml-1 xs:text-2xl  lg:text-3xl text-nowrap capitalize flex flex-col md:flex-row">
               <p className="mx-auto">User Name:</p>
               <span className="w-full ml-2  h-full">
                 <span className="mr-1">@</span>
@@ -262,7 +262,7 @@ const Profile = ({ DUser }: { DUser?: UserObj }) => {
                 />
               </span>
             </div>
-            <div className="mt-8 max-w-full sm:text-2xl  lg:text-3xl text-nowrap capitalize flex flex-col md:flex-row">
+            <div className="mt-8 max-w-full xs:text-2xl  lg:text-3xl text-nowrap capitalize flex flex-col md:flex-row">
               <p className="mx-auto pr-1">Display Name:</p>
               <span className="w-full ml-1 md:ml-0 h-full">
                 <span className="mr-1 invisible md:hidden">@</span>

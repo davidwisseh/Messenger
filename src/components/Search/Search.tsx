@@ -161,8 +161,8 @@ const Search = ({
                 }}
                 className="transition py-0.5 hover:scale-110 active:scale-90 ml-2 rounded-md px-1 w-fit bg-slate-600/20 h-fit flex items-center justify-center"
               >
-                <MessageSquareIcon className=" sm:hidden sm:h-10 sm:w-10 h-8 w-8 sc "></MessageSquareIcon>
-                <p className=" hidden    sm:flex items-center justify-center  text-xl font-bold uppercase">
+                <MessageSquareIcon className=" xs:hidden xs:h-10 xs:w-10 h-8 w-8 sc "></MessageSquareIcon>
+                <p className=" hidden    xs:flex items-center justify-center  text-xl font-bold uppercase">
                   Chat
                 </p>
               </div>

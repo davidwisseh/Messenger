@@ -13,7 +13,7 @@ const DefUser = ({
   <div
     onClick={onClick}
     className={cn(
-      " min-h-7 min-w-7 sm:min-h-10 sm:min-w-10    h-7 w-7 sm:h-10 sm:w-10 flex justify-center transition duration-200 text-slate-900 hover:scale-110 dark:text-slate-100 active:scale-90",
+      " min-h-7 min-w-7 xs:min-h-10 xs:min-w-10    h-7 w-7 xs:h-10 xs:w-10 flex justify-center transition duration-200 text-slate-900 hover:scale-110 dark:text-slate-100 active:scale-90",
       className
     )}
   >

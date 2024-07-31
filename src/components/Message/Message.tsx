@@ -116,7 +116,7 @@ const Message = ({
         placeholder="..."
       ></Textarea>
       {!mobile && (
-        <div className="flex gap-2 mt-2 sm:mt-4 items-center">
+        <div className="flex gap-2 mt-2 xs:mt-4 items-center">
           <p className="ml-auto text-xs text-slate-500/50">Shift + Enter</p>
           <Button
             variant={"secondary"}

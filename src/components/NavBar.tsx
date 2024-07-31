@@ -31,9 +31,9 @@ const NavBar = () => {
                   setTheme("light");
                 }
               }}
-              className=" sm:mx-0 w-10 sm:w-full sm:pr-2  h-full my-auto     flex justify-center items-center  active:scale-90 sm:place-self-start hover:scale-110 transform duration-300  brightness-125 rounded-full dark:text-yellow-700"
+              className=" xs:mx-0 w-10 xs:w-full xs:pr-2  h-full my-auto     flex justify-center items-center  active:scale-90 xs:place-self-start hover:scale-110 transform duration-300  brightness-125 rounded-full dark:text-yellow-700"
             >
-              <div className="w-6  block h-6 sm:w-8 sm:h-8">
+              <div className="w-6  block h-6 xs:w-8 xs:h-8">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="currentColor"
@@ -43,7 +43,7 @@ const NavBar = () => {
                   <path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.73 1.73 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.73 1.73 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.73 1.73 0 0 0 1.097-1.097zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.16 1.16 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.16 1.16 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732z" />
                 </svg>
               </div>
-              <p className="text-2xl pl-1 hidden sm:block mx-auto uppercase font-bold">
+              <p className="text-2xl pl-1 hidden xs:block mx-auto uppercase font-bold">
                 {theme === "light" ? "dark" : "light"}
               </p>
             </div>

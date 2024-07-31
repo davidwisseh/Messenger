@@ -43,7 +43,7 @@ const Crop = ({
       {!loadingPic && (
         <div
           className={cn(
-            "flex relative flex-col w-[80%] h-[60%] mt-24 sm:mt-40 justify-end items-center md:items-end"
+            "flex relative flex-col w-[80%] h-[60%] mt-24 xs:mt-40 justify-end items-center md:items-end"
           )}
         >
           <Cropper

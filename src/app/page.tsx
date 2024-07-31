@@ -62,7 +62,7 @@ export default function Home() {
 
   if (dbUser?.userName) {
     return (
-      <div className="flex h-full w-full  flex-col-reverse sm:flex-row bg-gray-100 dark:bg-gray-900">
+      <div className="flex h-full w-full  flex-col-reverse xs:flex-row bg-gray-100 dark:bg-gray-900">
         <NavCol dbUser={dbUser} page={page} setPage={setPage} navRef={navRef} />
         {
           <div className={cn("h-full w-full ", { hidden: page !== "Chat" })}>

@@ -41,7 +41,7 @@ const NewChat = ({
         )}
       >
         <MaxWidthWrapper className="items-end">
-          <div className="pb-1 sm:pb-0">
+          <div className="pb-1 xs:pb-0">
             <DefUser img={toUser!.image_url}></DefUser>
           </div>
 
@@ -55,13 +55,13 @@ const NewChat = ({
               setTo(undefined);
               e.stopPropagation();
             }}
-            className="ml-auto hover:scale-125 active:scale-100 transition mr-2  sm:mr-4 mt-2 sm:mt-4 mb-auto "
+            className="ml-auto hover:scale-125 active:scale-100 transition mr-2  xs:mr-4 mt-2 xs:mt-4 mb-auto "
           >
             <XIcon />
           </div>
         </MaxWidthWrapper>
 
-        <div className="p-2 sm:p-4">
+        <div className="p-2 xs:p-4">
           <Message
             setPage={setPage}
             setTo={setTo}
