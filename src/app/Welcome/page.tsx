@@ -27,12 +27,12 @@ const Page = () => {
   }, [user.isSignedIn, router]);
   if (user.isLoaded && !user.isSignedIn) {
     return (
-      <>
+      <div className="h-full relative flex flex-col min-h-[570px] ">
         <NavBar />
-        <div className="w-full h-full pt-16  bg-gray-100 dark:bg-slate-900">
-          <div className="w-full h-full flex justify-center ">
+        <div className="w-full h-full mt-16   bg-gray-100 dark:bg-slate-900">
+          <div className="w-full h-full flex justify-center items-center ">
             <Carousel
-              className="w-[70%] flex justify-center items-center h-full "
+              className="max-w-[70%]  xs:hidden  h-full "
               plugins={[
                 Autoplay({
                   delay: 15000,
@@ -40,16 +40,16 @@ const Page = () => {
               ]}
             >
               <CarouselContent>
-                <CarouselItem className=" xs:hidden  h-[90vh] flex items-center justify-center">
+                <CarouselItem className="h-full  flex items-center  ">
                   <video
-                    className="scale-90  border-t-2 border-b-2 border-black"
+                    className=" max-h-full  "
                     preload=""
                     autoPlay
                     playsInline
                     muted
                     loop
                   >
-                    <source src="/Pvid1.mp4" type="video/mp4" />
+                    <source src="/Mobile1.mp4" type="video/mp4" />
                     <track
                       src="/path/to/captions.vtt"
                       kind="subtitles"
@@ -59,8 +59,68 @@ const Page = () => {
                     Your browser does not support the video tag.
                   </video>{" "}
                 </CarouselItem>
-                <CarouselItem className="hidden xs:block">
-                  <video preload="" autoPlay playsInline muted loop>
+
+                <CarouselItem className="h-full flex items-center  ">
+                  <video
+                    className=" max-h-full  "
+                    preload=""
+                    autoPlay
+                    playsInline
+                    muted
+                    loop
+                  >
+                    <source src="/Mobile2.mp4" type="video/mp4" />
+                    <track
+                      src="/path/to/captions.vtt"
+                      kind="subtitles"
+                      srcLang="en"
+                      label="English"
+                    />
+                    Your browser does not support the video tag.
+                  </video>{" "}
+                </CarouselItem>
+
+                <CarouselItem className="h-full  flex items-center  ">
+                  <video
+                    className=" max-h-full  "
+                    preload=""
+                    autoPlay
+                    playsInline
+                    muted
+                    loop
+                  >
+                    <source src="/Mobile3.mp4" type="video/mp4" />
+                    <track
+                      src="/path/to/captions.vtt"
+                      kind="subtitles"
+                      srcLang="en"
+                      label="English"
+                    />
+                    Your browser does not support the video tag.
+                  </video>{" "}
+                </CarouselItem>
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
+            <Carousel
+              className="max-w-[70%]  hidden xs:block  h-full "
+              plugins={[
+                Autoplay({
+                  delay: 15000,
+                }),
+              ]}
+            >
+              <CarouselContent>
+                <CarouselItem className="h-full  flex items-center  ">
+                  <video
+                    className=" max-h-full  "
+                    preload=""
+                    autoPlay
+                    playsInline
+                    muted
+                    loop
+                  >
                     <source src="/vid1.mp4" type="video/mp4" />
                     <track
                       src="/path/to/captions.vtt"
@@ -71,15 +131,53 @@ const Page = () => {
                     Your browser does not support the video tag.
                   </video>{" "}
                 </CarouselItem>
-                <CarouselItem>2</CarouselItem>
-                <CarouselItem>3</CarouselItem>
+
+                <CarouselItem className="h-full flex items-center  ">
+                  <video
+                    className=" max-h-full  "
+                    preload=""
+                    autoPlay
+                    playsInline
+                    muted
+                    loop
+                  >
+                    <source src="/vid2.mp4" type="video/mp4" />
+                    <track
+                      src="/path/to/captions.vtt"
+                      kind="subtitles"
+                      srcLang="en"
+                      label="English"
+                    />
+                    Your browser does not support the video tag.
+                  </video>{" "}
+                </CarouselItem>
+
+                <CarouselItem className="h-full  flex items-center  ">
+                  <video
+                    className=" max-h-full  "
+                    preload=""
+                    autoPlay
+                    playsInline
+                    muted
+                    loop
+                  >
+                    <source src="/vid3.mp4" type="video/mp4" />
+                    <track
+                      src="/path/to/captions.vtt"
+                      kind="subtitles"
+                      srcLang="en"
+                      label="English"
+                    />
+                    Your browser does not support the video tag.
+                  </video>{" "}
+                </CarouselItem>
               </CarouselContent>
               <CarouselPrevious />
               <CarouselNext />
             </Carousel>
           </div>
         </div>
-      </>
+      </div>
     );
   } else {
     return <LoadingPage />;

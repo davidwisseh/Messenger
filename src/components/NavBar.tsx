@@ -17,7 +17,7 @@ const NavBar = () => {
   const { theme, setTheme } = useTheme();
 
   return (
-    <nav className="h-16 fixed brightness-125 w-full dark:text-white bg-gray-400/80 dark:bg-slate-900/80">
+    <nav className="h-16 absolute z-99999 brightness-125 w-full dark:text-white bg-gray-400/80 dark:bg-slate-900/80">
       <MaxWidthWrapper className="gap-1 h-full items-center">
         <p className="text-2xl">Messenger</p>
 
