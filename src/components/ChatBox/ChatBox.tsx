@@ -2,7 +2,15 @@
 import { app } from "@/app/fb";
 import { cn } from "@/lib/utils";
 import { Chat, Messaged, UserName, UserObj } from "@/util/util";
-import { doc, getDoc, getFirestore, onSnapshot } from "firebase/firestore";
+import {
+  arrayRemove,
+  doc,
+  getDoc,
+  getFirestore,
+  onSnapshot,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { Trash, XIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import "react-swipeable-list/dist/styles.css";
@@ -44,14 +52,21 @@ const ChatBox = ({
       doc(db, "Chats", messaged.chat),
       (snap) => {
         const data = snap.data();
-        const { messages } = data as Chat;
-        const decMess = messages.map((mes) => {
-          return {
-            ...mes,
-            message: AES.decrypt(mes.message, messaged.chat).toString(enc),
-          };
-        });
-        setChatObj({ ...data, messages: decMess } as Chat);
+        if (data) {
+          const { messages } = data as Chat;
+
+          const decMess = messages.map((mes) => {
+            return {
+              ...mes,
+              message: AES.decrypt(mes.message, messaged.chat).toString(enc),
+            };
+          });
+          setChatObj({ messages: decMess } as Chat);
+        } else {
+          updateDoc(doc(db, "Users", dbUser.id), {
+            messaged: dbUser.messaged.filter((m) => m.chat != messaged.chat),
+          });
+        }
       },
       (err) => {
         console.error(err.message);
@@ -68,7 +83,7 @@ const ChatBox = ({
     chatDivRef.current!.scrollTop = chatDivRef.current!.scrollHeight;
   };
 
-  if (!selected || selected == messaged.chat) {
+  if (chatObj) {
     return (
       chatObj &&
       toUser && (

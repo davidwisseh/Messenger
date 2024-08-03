@@ -18,12 +18,22 @@ import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { toast } from "../ui/use-toast";
 import { cn } from "@/lib/utils";
-import { ArrowRightCircle, Check, Loader2Icon, PencilIcon } from "lucide-react";
+import {
+  ArrowRightCircle,
+  Check,
+  Loader2Icon,
+  PencilIcon,
+  Trash,
+} from "lucide-react";
 import LoadingPage from "../LoadingPage";
-import DefUser from "../DefUser";
+const defUser = require("../../../public/defUser.svg");
+const blob = new Blob([defUser], { type: "image/svg+xml" });
+
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import Crop from "./Crop";
 import getCroppedImage from "./actions";
+import { url } from "inspector";
+import { Button } from "../ui/button";
 
 const Profile = ({ DUser }: { DUser?: UserObj }) => {
   const user = useUser();
@@ -37,7 +47,7 @@ const Profile = ({ DUser }: { DUser?: UserObj }) => {
   const pathname = usePathname();
   const [imgFileUrl, setImgFileUrl] = useState<string>("");
   const fileRef = useRef<HTMLInputElement>();
-
+  const [delUser, setDelUser] = useState(false);
   const handleClick = () => {
     setIsLoading(true);
     if (userNameRef.current) {
@@ -172,6 +182,35 @@ const Profile = ({ DUser }: { DUser?: UserObj }) => {
             </div>
             <div
               className={cn(
+                "absolute w-full -mt-5 h-full flex gap-5 items-center justify-center bg-black/70",
+                { hidden: !delUser }
+              )}
+            >
+              <Button
+                className="hover:scale-110 active:scale-90 transition"
+                onClick={() => {
+                  setIsLoading(true);
+                  setDelUser(false);
+                  fetch("/api/delete-user", { method: "DELETE" }).then(() => {
+                    router!.push("/Welcome");
+                  });
+                }}
+                variant={"destructive"}
+              >
+                Delete
+              </Button>
+              <Button
+                onClick={() => {
+                  setDelUser(false);
+                }}
+                className="hover:scale-110 active:scale-90 transition"
+                variant={"secondary"}
+              >
+                Cancel
+              </Button>
+            </div>
+            <div
+              className={cn(
                 "absolute w-full h-full   -mt-5  bg-black/50 hidden items-center justify-center rounded-3xl overflow-hidden",
                 { flex: imgFileUrl }
               )}
@@ -200,26 +239,19 @@ const Profile = ({ DUser }: { DUser?: UserObj }) => {
                 className="flex flex-col"
               >
                 <Avatar
-                  className={cn({ "brightness-50": imgFileUrl || isLoading })}
+                  className={cn({
+                    "brightness-50": imgFileUrl || isLoading || delUser,
+                  })}
                 >
                   <AvatarImage className="w-full" src={dbUser?.img_url} />
                 </Avatar>
-
                 <div
                   //@ts-ignore
                   ref={pencilRef}
                   className=" rounded-full overflow-hidden relative outline outline-1 invisible transition ml-auto mr-1 h-5 w-5  -mt-3 xs:-mt-5 flex items-center justify-center"
                 >
                   <PencilIcon className=" absolute z-0 h-4 w-4 "></PencilIcon>
-                  {/* <UploadButton
-                  onUploadBegin={() => {
-                    pencilRef.current?.classList.add("pointer-events-none");
-                    pencilRef.current?.classList.add("cursor-wait");
-                    }}
-                    onUploadProgress={(val) => {}}
-                    className="opacity-0"
-                    endpoint="imageUploader"
-                    ></UploadButton> */}
+
                   <input
                     //@ts-ignore
                     ref={fileRef}
@@ -273,6 +305,16 @@ const Profile = ({ DUser }: { DUser?: UserObj }) => {
                 }}
                 className=" transition  active:scale-100 hover:cursor-pointer hover:animate-pulse text-black h-10 w-10 md:h-14 md:w-14 hover:scale-110  rounded-full"
               ></ArrowRightCircle>
+            </div>
+            <div
+              className={cn(" flex   mt-4 md:mt-7", onUser ? "hidden " : "")}
+            >
+              <Trash
+                onClick={() => {
+                  setDelUser(true);
+                }}
+                className=" transition  active:scale-100 hover:cursor-pointer hover:animate-pulse text-red-700 h-10 w-10 md:h-14 md:w-14 hover:scale-110  rounded-full"
+              ></Trash>
             </div>
           </MaxWidthWrapper>
         </div>
